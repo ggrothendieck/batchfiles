@@ -1,0 +1,103 @@
+Changes in Version 0.2-9
+
+  o updated README and other documentation files and inline documentation
+
+  o added sweave.bat
+
+Changes in Version 0.2-8
+
+  o bug fix in copydir.bat and movedir.bat
+
+Changes in Version 0.2-7
+
+  o removed extra popup from Rversions.hta
+
+  o Rfind.bat now looks in registry for MiKTeX, replacing
+    previous heuristic.  [Thanks for help from Duncan
+    Murdoch].  Also RToolsDir typo fixed in Rfind.bat.
+
+Changes in Version 0.2-6
+
+  o batch files no longer use short names internally since this
+    triggers a bug in Windows batch in the case of the new R
+    folder naming conventions.
+
+  o Rversions.hta - fix for path names with spaces
+
+  o Rrefresh.bat has been removed (after having been deprecated in
+    in previous versions of batchfiles).
+
+  o tested movedir.bat by using it to upgrade R-2.2.0pat to R-2.2.1.  
+    See instructions in README.
+
+Changes in Version 0.2-5
+
+  o added movedir.bat which moves libraries from one version of
+    R to another.  This is like copydir.bat but is much faster and
+    can be used when the older version of R is no longer needed
+    (unlike copydir.bat which preserves the older version).  See
+    README for usage.
+
+Changes in Version 0.2-3
+
+  o added copydir.bat which can copy libraries from one version of
+    R to another.  (This is a temporary solution until R provides
+    facilities for upgrading the libraries, expected in R 2.3.0 .)
+    See README for usage.
+    
+  o eliminated all code associated with reading and manipulation of
+    R_ENVIRON, R_PROFILE and R_LIBS simplifying the batch files.  Use
+    copydir.bat instead.
+
+  o Rversions.hta is a javascript GUI version of Rversions.bat 
+
+Changes in Version 0.2-2
+
+  o added jgr.bat which starts up the JGR GUI.
+
+  o added Rversions.bat which can list the directories of all R versions 
+    available and can set one to become the current R version.
+
+  o all batch scripts which used the environment variable name Rrw now 
+    use the environment variable name R_HOME instead.
+
+  o Rcmd.bat, Rgui.bat, R.bat, jgr.bat files will now read R_ENVIRON, 
+    if present, and set the R_LIBS definition in it, if present (unless
+    R_LIBS is already defined as an environment variable).  All R_ENVIRON
+    file syntax accepted by R is supported including comments (#), 
+    var=value, var=${foo-bar} and recursions, var=${A-${B-C}}.
+
+  o makepkg.bat internals were simplified due to previous point.
+
+  o updated WISHLIST.
+
+  o updated THANKS.
+
+  o updated README.  More introductory information.  Also instructions 
+    for Rgui shortcut will disable screen flash on startup. Corrections.
+
+Changes in Version 0.2-1
+
+  o improvements to README
+
+Changes in Version 0.2-0
+
+  o can now support configurations without *.site files (as well as
+    configurations with *.site files) thereby reducing the minimum 
+    configuration even further.  
+
+  o Rcmd.bat, Rgui.bat and R.bat now temporarily set R_ENVIRON,
+    R_PROFILE and R_LIBS as needed so that it is no longer necessary to 
+    copy the *.site files into the etc directory eliminating all
+    reconfiguration when upgrading to a new version of R (except for
+    refreshing MiKTeX).
+
+  o new command miktex-refresh.bat is used to refresh MiKTeX after a
+    new version of R is installed. Previously this was done in
+    Rrefresh.bat which is now deprecated.  Rrefresh.bat is no longer 
+    needed (unless you want each R version to have its own *.site files).
+
+  o new NEWS, WISHLIST and RESOURCES files.
+
+  o README provides additional details.
+

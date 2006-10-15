@@ -1,0 +1,95 @@
+<html>
+<head>
+<STYLE TYPE="text/css">
+.highlight {background:#ff00ff}
+.text {color:#ff00ff}
+.both {color:white;background:black}
+</STYLE> 
+</head>
+<body>
+<h1>Change R Version</h1>
+The drop down menu lists all R versions on the current system that
+were found.  The current version, if any, is the one
+highlighted in purple and initially displayed.
+To change the current version, select
+the desired one and press Apply.
+<form name="RVersionForm">
+<select name="dropdown">
+<script type="text/jscript">
+
+function MSDOS(DOSCmd, Stream) {
+  var alines, sCmd, stemp, ofs, oWS, tempfile;
+  sCmd = "%comspec% /c " + DOSCmd + " " + Stream + "> ";
+  ofs = new ActiveXObject("Scripting.FileSystemObject");
+  stemp = ofs.GetTempName();
+  oWS = new ActiveXObject("Wscript.Shell");
+  stemp = oWS.Environment("PROCESS")("TEMP") + "\\" + stemp;
+  oWS.Run(sCmd + stemp, 0, true);
+  tempFile = ofs.OpenTextFile(stemp)
+  alines = tempFile.ReadAll().split(/\r*\n/);
+  tempFile.close()
+  ofs.DeleteFile(stemp);
+  alines.length = alines.length - 1
+  return alines;
+}
+
+function SetRVersion(menu) {
+	menuo = menu.options[menu.selectedIndex];
+	WshShell.Run("\"" + menuo.value + "\\bin\\RSetReg.exe\"", 0);
+	alert("Current R Version Set to\n" + menuo.value);
+	close();
+}
+
+var fso, WshShell;
+var arr, cmd, fc, fields, File, Folder, i, key, parent, regrhome;
+var rhome, selected, ver;
+WshShell = new ActiveXObject("Wscript.Shell");
+fso = new ActiveXObject("Scripting.FileSystemObject");
+
+key = "HKLM\\software\\r-core\\r\\InstallPath";
+regrhome = WshShell.RegRead(key);
+
+rhome = WshShell.Environment("PROCESS").item("R_HOME")
+
+if (rhome == "") {
+	if (fso.FileExists("bin\Rcmd.exe")) 
+		rhome = WshShell.CurrentDirectory;
+}
+
+if (rhome == "")  rhome = regrhome;
+
+if (rhome == "") {
+	alert("Error: R not found");
+} else {
+	parent = fso.GetParentFolderName(rhome);
+	Folder = fso.GetFolder(parent);
+	arr = new Array();
+	fc = new Enumerator(Folder.SubFolders);
+	for (;!fc.atEnd(); fc.moveNext()) {
+		File = fc.item();
+		WshShell.CurrentDirectory = File.Path;
+		if (fso.FileExists("bin\\R.exe")) {
+			selected = "";
+			if (File.Path == regrhome) {
+				selected = "selected=selected class=highlight";
+			}
+			cmd = "bin\\R.exe --version";
+			ver = MSDOS(cmd, 2)[0];
+			arr.push(ver + "\n" + File.Path + "\n" + selected);
+			// document.write("<option " + selected + " value=\"" + File.Path + "\">" + ver + " - " +  File.Path + "</option>");
+		}
+	}
+	arr.sort().reverse();
+	for(i in arr) {
+		fields = arr[i].split("\n");
+		document.write("<option " + fields[2] + " value=\"" + fields[1] + "\">" + fields[0] + " - " +  fields[1] + "</option>");
+	}
+}
+</script>
+</select>
+<input type="button" name="Submit" value="Apply" onClick="javascript:SetRVersion(document.RVersionForm.dropdown)">
+<input type="button" name="Cancel" value="Cancel" onClick="javascript:window.close()">
+</form>
+
+</body>
+</html>
