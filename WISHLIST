@@ -1,0 +1,9 @@
+WISHLIST (no particular order)
+
+o makepkg
+  -- allow flags/switches on makepkg.bat eliminating manually editing at top
+  -- allow one to specify a library on makepkg other than .\library
+
+o testing on NT/2000. 
+  [Note: I only have access to XP]
+

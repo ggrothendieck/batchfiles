@@ -1,0 +1,34 @@
+
+batchfiles consists of a set of Windows XP (not tested on 
+NT/2k) batch and javascript files which facilitate:
+
+1. starting R, automatically locating it in the registry
+   each time they are run, so that when a new version of 
+   R is installed its not necessary to update them all 
+   - Rcmd.bat, Rgui.bat, R.bat, jgr.bat
+
+2. locating all R versions and optionally setting one in the
+   registry - Rversions.bat, Rversions.hta
+
+3. use of .Rbuildignore when checking and installing 
+   R packages automatically running a build first and then 
+   'Rcmd CHECK' or 'Rcmd INSTALL' in one step.  Also sets R_LIBS
+   to .../R/library if R_LIBS has not already been set.
+   - makepkgs.bat
+
+4. locating various R tools that are used in building R packages
+   on your system by querying the registry.
+   - Rfind.bat
+
+5. copying/moving libraries from one version of R to another.  This 
+   is a temporary measure that will be eliminated once R 2.3.0 
+   incorporates the expected replacement functionality in its installer.  
+   - copydir.bat, movedir.bat
+
+6. withgs.bat - temporarily adds ghostscript to your path (finding its
+   path in the registry) and runs the command given as an argument.
+
+See NEWS for changes since last version.
+
+Comments welcome.  Send to ggrothendieck@gmail.com
+
