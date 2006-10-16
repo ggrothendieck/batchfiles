@@ -4,6 +4,26 @@
 :: run sweave, pdflatex and display pdf
 setlocal
 ver | findstr XP >NUL
+
+if "%1"=="" goto:help
+if "%1"=="-h" goto:help
+if "%1"=="--help" goto:help
+if "%1"=="/?" goto:help
+goto:continue
+:help
+	echo Run sweave and pdflatex on input file.  Then view file.
+	echo Syntax:
+	echo    sweave filename
+	echo If extension is .Rnw, .Snw or .Rtex it can 
+	echo optionally be omitted.
+	echo e.g. 
+	echo    sweave mydoc.Rnw
+	echo    sweave mydoc
+	goto:eof
+:continue
+
+
+
 if errorlevel 1 echo Warning: This script has only been tested on Windows XP.
 if exist "%1.Rtex" set infile="%1.Rtex"
 if exist "%1.Snw" set infile="%1.Snw"
