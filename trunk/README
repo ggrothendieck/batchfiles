@@ -4,69 +4,156 @@ NEWS.  See NEWS file.
 
 INSTALLATIION
 
-To install these utilities, just copy all the .bat and .hta files in this distribution to any directory in your PATH.  (The Windows console command
+To install these utilities, just copy all the .bat and .hta
+files in this distribution to any directory in your PATH.
+(The Windows console command
+
    PATH 
+
 isused without arguments will display your path.)
 
 FILES
 
-1. R.bat, Rcmd.bat, Rgui.bat, JGR.bat - these are front ends to  the corresponding .exe files which locate R via the registry  and then run it.  This has the advantage that they do not  have to be updated each time you install a new version of R.  Also you can put Rgui.bat on your desktop, associate a Windows ShortCut key with it (see http://support.microsoft.com/kb/310417) and not have to redo this on each install of a new version of R.  They have the same syntax as the corresponding .exe files in R, e.g.
+1. R.bat, Rcmd.bat, Rgui.bat, JGR.bat - these are front ends
+to  the corresponding .exe files which locate R via the
+registry  and then run it.  This has the advantage that they
+do not  have to be updated each time you install a new
+version of R.  Also you can put Rgui.bat on your desktop,
+associate a Windows ShortCut key with it (see
+http://support.microsoft.com/kb/310417) and not have to redo
+this on each install of a new version of R.  They have the
+same syntax as the corresponding .exe files in R, e.g.
 
 	Rcmd INSTALL mypackage -l library
 	Rcmd check mypackage 
 	Rcmd build mypackage
 	Rcmd build mypackage --binary
 
-2. Rversions.hta - GUI lists all versions of R on your system  and allows you to choose one as your default, setting the  registry appropriately.  Just run without arguments, .e.g.
- Rversions.hta
-For example, suppose you want to check a package using two different versions of R.  Then run 'Rcmd check mypkg', run Rversions.hta to change the current R version, run 'Rcmd check mypkg' again and then run Rversions.hta to set the R version back to the original.
+2. Rversions.hta - GUI lists all versions of R on your
+system  and allows you to choose one as your default,
+setting the  registry appropriately.  Just run without
+arguments, .e.g.  
+	Rversions.hta 
+For example, suppose we want to check a package using two
+different versions of R.  Then run 
 
-3. Rversions.bat - similar to Rversions.hta but batch rather  than GUI.  Run without arguments to list the versions available.  Run  with a single argument equal to one of the lines listed to  set a new version.  e.g.  to set the current version to be R-2.4.0 issue this command:
- Rversions R-2.4.0
+	Rcmd check mypkg
 
-4. copydir.bat - can be used to copy the libraries from an old version of R to your new one.  It will not overwrite any libraries already there so it should be safe to use. e.g. to upgrade R to a new version
+	:: in next command set different version of R
+	Rversions.hta 
+	Rcmd check mypkg
 
-  :: first, download and install R-2.2.0, say
+	:: in next command reset to original version of R
+	Rversions.hta 
+
+3. Rversions.bat - similar to Rversions.hta but batch rather
+than GUI.  Run without arguments to list the versions
+available.  Run  with a single argument equal to one of the
+lines listed to  set a new version.  e.g.  
+
+	:: list R versions
+	reversions.bat
+
+	:: check mypkg using R current version, 2.4.0, say
+	Rcmd check mypkg
+
+	:: switch to version R-2.5.0 and recheck
+	rversions R-2.5.0
+	Rcmd check mypkg
+
+	:: reset back to version 2.4.0
+	rversions.bat R-2.4.0
+
+4. copydir.bat - can be used to copy the libraries from an
+old version of R to your new one.  It will not overwrite any
+libraries already there so it should be safe to use. e.g. to
+upgrade R to a new version
+
+  :: first, download and install R-2.5.0, say
   :: now perform the next two commands at the Windows console
   cd \Program Files\R
-  copydir rw2011pat\library R-2.2.0\library
+  copydir R-2.4.0\library R-2.5.0\library
+
   :: next command only needed if you have *.site files
-  copy rw2011pat\etc\*.site R-2.2.0\etc
-  :: ... now startup new version of R and choose menu packages | Update
+  copy R-2.4.0\etc\*.site R-2.5.0\etc
+
+  :: ... now startup new version of R and choose menu: Packages | Update
   :: ... exit R and start it up again ...
 
-It is anticipated that this command will ultimately be superceded by functionality in the R setup procedure at which time this will be deprecated.  Note that this method of just copying libraries may not work depending on the versions of R involved.  If its necessary to re-install most packages it can be done by issuing the following R command after performing the copydir.bat:
-  install.packages(installed.packages()[,1])
+It is anticipated that this command will ultimately be
+superceded by functionality in the R setup procedure at
+which time this will be deprecated.  Note that this method
+of just copying libraries may not work depending on the
+versions of R involved.  If its necessary to re-install most
+packages it can be done by issuing the following R command
+after performing the copydir.bat:
+install.packages(installed.packages()[,1])
  
-(Note that 2.8 of the R Windows FAQ 
- http://cran.r-project.org/bin/windows/base/rw-FAQ.html#What_0027s-the-best-way-to-upgrade_003f
-refers to copying any installed package to the library folder but does not address how to accomplish that.  That omission is what copydir.bat addresses.)
+(Note that 2.8 of the R Windows FAQ
 
-5. movedir - same arguments as copydir.  Only difference is that it moves the directories rather than copy them.  This can be used if you are no longer interested in maintaining the old version of R.  This has the advantage that its much faster than copydir.  The example under copydir works with movedir too.  Just replace copydir with movedir in that example.  Comments under copydir.bat apply here too.
+http://cran.r-project.org/bin/windows/base/rw-FAQ.html#What_0027s-the-best-way-to-upgrade_003f
 
-6. Rfind.bat - will search system for various tools needed to make R packages.  It also shows where the current R installation is (R_HOME line).  It does not actually set or change any environment variables or any other aspect of the system so it is always safe to run.  It takes no arguments. e.g. Rfind
+refers to copying any installed package to the library
+folder but does not address how to accomplish that.  That
+omission is what copydir.bat addresses.)
 
-7. sweave.bat - will run sweave, then pdflatex and then display latex file.  Requires Rcmd.bat .  e.g.
+5. movedir - same arguments as copydir.  Only difference is
+that it moves the directories rather than copy them.  This
+can be used if you are no longer interested in maintaining
+the old version of R.  This has the advantage that its much
+faster than copydir.  The example under copydir works with
+movedir too.  Just replace copydir with movedir in that
+example.  Comments under copydir.bat apply here too.
+
+6. Rfind.bat - will search system for various tools needed
+to make R packages.  It also shows where the current R
+installation is (R_HOME line).  It does not actually set or
+change any environment variables or any other aspect of the
+system so it is always safe to run.  It takes no arguments.
+e.g. Rfind
+
+7. sweave.bat - will run sweave, then pdflatex and then
+display latex file.  Requires Rcmd.bat .  e.g.
+
       sweave mydoc.Rnw
    or
       sweave mydoc 
+
 The script runs sweave, pdflatex and then displays the pdf
-file (assuming the user has .pdf extension associated with
-a pdf viewer).  If there is an error in sweave or the .tex
+file (assuming the user has .pdf extension associated with a
+pdf viewer).  If there is an error in sweave or the .tex
 file is not newer than the sweaved file the script stops.
-Similarly if there is an error in pdflatex or the .pdf
-is not newer than the .tex file then the script stops.
+Similarly if there is an error in pdflatex or the .pdf is
+not newer than the .tex file then the script stops.
 
-8. withgs.bat - temporarily adds ghostscript to your path(finding its path in the registry) and runs the command given as an argument.
+8. withgs.bat - temporarily adds ghostscript to your
+path (finding its path in the registry) and runs the 
+command given as an argument.  For example, to use the
+fig2dev command to create a tiff file from a fig file
+try this:
 
-9. makepkg.bat.  This is only needed by users who build their own packages and make use of the .Rbuildignore facility. It will automatically run a build followed by check or install so that files listed in the .Rbuildignore file are not checked or installed.  The first argument is install or check and the second argument is the package name.  If the package is called mypackage then the current directory should have a mypackage and a library folder in it.  e.g.
+ withgs fig2dev -L tiff myfile.fig > myfile.tiff
+
+9. makepkg.bat.  This is only needed by users who build
+their own packages and make use of the .Rbuildignore
+facility. It will automatically run a build followed by
+check or install so that files listed in the .Rbuildignore
+file are not checked or installed.  The first argument is
+install or check and the second argument is the package
+name.  If the package is called mypackage then the current
+directory should have a mypackage and a library folder in
+it.  e.g.
 
 	makepkg check mypackage
 	makepkg install mypackage
 
 You can set flags in the first few lines of the batch file.
+Users may wish to use svn to maintain versions of their 
+source packages in which case the .Rbuildignore facility
+is less important in which case this command would not
+be needed either.
 
-DEPRECATED
+DEPRECATED AND CHANGED
 
 Some functionality in older versions of batchfiles has been
 deprecated or eliminated:
