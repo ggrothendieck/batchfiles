@@ -1,3 +1,12 @@
+Changes in Version 0.2-10
+
+  o acrobat cannot display two documents with the same name at the same time
+    so previously if you forgot to close the prior pdf file the new one
+    would not display until you did.  Now we generate a second copy of the
+    pdf with a unique file name and display that so that there can be no
+    interference.  (The user is responsible for deleting all *.bck.pdf
+    files when done.)  Thanks to foxidrive for idea.
+    
 Changes in Version 0.2-9
 
   o updated README and other documentation files and inline documentation
