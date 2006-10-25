@@ -33,6 +33,7 @@ set infileslash=%infile:\=/%
 call Rcmd Sweave %infileslash%
 if errorlevel 1 goto:eof
 
+echo %cd%
 set base=%~sdpn1
 if not exist "%base%.tex" goto:eof
 for /f "delims=" %%a in ('dir %infile% "%base%.tex" /od/b ^| more +1'
@@ -43,7 +44,18 @@ if errorlevel 1 goto:eof
 if not exist "%base%.pdf" goto:eof
 for /f "delims=" %%a in ('dir "%base%.pdf" "%base%.tex" /od/b ^| more +1'
 ) do set ext=%%~xa
-if "%ext%"==".pdf" start "" "%base%.pdf"
+if not "%ext%"==".pdf" goto:eof
+set pdffile=%base%.pdf
+set tmpfile=%date%-%time%
+set tmpfile=%tmpfile: =-%
+set tmpfile=%tmpfile::=.%
+set tmpfile=%tmpfile:/=.%
+set tmpfile=%base%-%tmpfile%.bck.pdf
+echo on
+copy "%base%.pdf" "%tmpfile%"
+start "" "%tmpfile%"
+echo *** delete *.bck.pdf files when done ***
 
 endlocal
+
 
