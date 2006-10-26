@@ -125,6 +125,15 @@ pdf viewer).  If there is an error in sweave or the .tex
 file is not newer than the sweaved file the script stops.
 Similarly if there is an error in pdflatex or the .pdf is
 not newer than the .tex file then the script stops.
+Note that _two_ .pdf files are generated.  They are
+identical except one has a unique name created by
+suffixing the base with the date and time.  The one
+with the unique name is the one viewed.  This overcomes
+problems of not being able to view the .pdf if the .pdf
+from a prior run is current being viewed (which would
+happen since the Acrobat viewer won't allow you to view
+two files of the same name concurrently).  Every so often
+the user should delete all *.bck.pdf files.
 
 8. withgs.bat - temporarily adds ghostscript to your
 path (finding its path in the registry) and runs the 
