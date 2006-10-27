@@ -13,29 +13,21 @@ echo    or  sweave abc
 echo switches:
 echo    -t or --tex or     produce tex file and exit
 echo    -p or --pdf or     produce pdf file and exit
-echo    -n or --nobck.pdf  do not create .bck.pdf file but display pdf directly
-echo This command 1. runs sweave producing a .tex file, 2. runs pdflatex
-echo producing a pdf file and then 3. copies pdf file to unique file
-echo name ending in .bck.pdf (because acrobat won't display two files with
-echo same name at same time so if previous version of file were still on screen
-echo it would cause program to hang there) and 4. displays file.
-echo Switches can start with -- or -. They are case insensitive and only 
-echo first letter of switch used:
+echo    -n or --nobck.pdf  do not create .bck.pdf; instead display pdf directly
+echo 1. run sweave giving .tex file, 2. then run pdflatex giving .pdf file,
+echo 3. then make copy of pdf giving .bck.pdf file, 4. then display on screen
 echo e.g. 
+echo.
 echo    Run sweave, pdflatex, create backup pdf with unique name, display it
 echo     sweave mydoc.Rnw
-echo
 echo    Same
 echo     sweave mydoc
-echo
 echo   Run sweave to create tex file.  Do not run pdflatex or display.
 echo    sweave mydoc --tex
-echo
-echo   Run sweave and pdflatex creating pdf file.  Do not create backup
-echo   nor display.
+echo   Run sweave and pdflatex creating pdf file.  Do not create .bck.pdf
+echo   file and do not display file.
 echo    sweave mydoc --pdf
-echo
-echo   Run sweave and pdflatex, do not create backup but display pdf directly.
+echo   Run sweave and pdflatex, do not create backup but display .pdf directly.
 echo    sweave mydoc --nobck
 goto:eof
 :continue
