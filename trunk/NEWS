@@ -6,6 +6,9 @@ Changes in Version 0.2-10
     pdf with a unique file name and display that so that there can be no
     interference.  (The user is responsible for deleting all *.bck.pdf
     files when done.)  Thanks to foxidrive for idea.
+
+  o new --tex, --pdf, --nobck.pdf switches are available on sweave.  Also
+    expanded help when entering sweave without args.
     
 Changes in Version 0.2-9
 
