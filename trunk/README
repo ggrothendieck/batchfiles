@@ -78,12 +78,18 @@ upgrade R to a new version
   copy R-2.4.0\etc\*.site R-2.5.0\etc
 
   :: ... now startup new version of R and issue command
-  :: ... the checkBuilt=TRUE will cause many packages to download
-  :: ... (If in a hurray try update.packages(ask = "graphics") and
-  :: ... then only repeat it with checkBuilt = TRUE if you run into trouble.)
   update.packages(checkBuilt = TRUE, ask = "graphics")
+  :: or (see note below)
+  update.packages(ask = "graphics")
+
   :: press OK and it will update those packages as necessary
   :: ... exit R and start it up again ...
+
+Note that the checkBuilt=TRUE argument will potentially cause
+all your packages to be downloaded again so you could try
+leaving it off and then reissue the command with checkBuilt=TRUE
+later only if you run into problems.  I normally do it without
+the checkBuilt=TRUE.
 
 It is anticipated that this command will ultimately be
 superceded by functionality in the R setup procedure at
