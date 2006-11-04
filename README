@@ -77,7 +77,12 @@ upgrade R to a new version
   :: next command only needed if you have *.site files
   copy R-2.4.0\etc\*.site R-2.5.0\etc
 
-  :: ... now startup new version of R and choose menu: Packages | Update
+  :: ... now startup new version of R and issue command
+  :: ... the checkBuilt=TRUE will cause many packages to download
+  :: ... (If in a hurray try update.packages(ask = "graphics") and
+  :: ... then only repeat it with checkBuilt = TRUE if you run into trouble.)
+  update.packages(checkBuilt = TRUE, ask = "graphics")
+  :: press OK and it will update those packages as necessary
   :: ... exit R and start it up again ...
 
 It is anticipated that this command will ultimately be
