@@ -1,3 +1,8 @@
+
+Changes in Version 0.3-1
+
+  o new find-miktex.bat which lists the mixktex folders from the registry
+
 Changes in Version 0.3-0
 
   o sweave now generates a second .pdf ending which is a copy of the first

@@ -154,7 +154,10 @@ try this:
 
  withgs fig2dev -L tiff myfile.fig > myfile.tiff
 
-9. makepkg.bat.  This is only needed by users who build
+9. find-miktex.bat - this is run without arguments to list
+the MiKTeX folders as found in the Windows registry.
+
+10. makepkg.bat.  This is only needed by users who build
 their own packages and make use of the .Rbuildignore
 facility. It will automatically run a build followed by
 check or install so that files listed in the .Rbuildignore
