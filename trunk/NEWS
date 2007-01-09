@@ -3,6 +3,8 @@ Changes in Version 0.3-1
 
   o new find-miktex.bat which lists the mixktex folders from the registry
 
+  o new Rscript.bat which runs Rscript.exe (found in R 2.5.0 and later)
+
 Changes in Version 0.3-0
 
   o sweave now generates a second .pdf ending which is a copy of the first
