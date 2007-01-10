@@ -8,26 +8,28 @@ To install these utilities, just copy all the .bat and .hta
 files in this distribution to any directory in your PATH.
 (The Windows console command
 
-   PATH 
+   path
 
 isused without arguments will display your path.)
 
 FILES
 
-1. R.bat, Rcmd.bat, Rgui.bat, JGR.bat - these are front ends
-to  the corresponding .exe files which locate R via the
-registry  and then run it.  This has the advantage that they
-do not  have to be updated each time you install a new
-version of R.  Also you can put Rgui.bat on your desktop,
-associate a Windows ShortCut key with it (see
-http://support.microsoft.com/kb/310417) and not have to redo
-this on each install of a new version of R.  They have the
+1. R.bat, Rcmd.bat, Rscirpt.bat, Rgui.bat, JGR.bat - are front ends
+to  the corresponding .exe files.  Running any of these causes the
+corresponding R command in your current version of R (automatically
+located via the registry) to be run.  Because of the automatic
+location of R it means that the user does not  have to update anything 
+associated with these commands each time a new version of R is installed.  
+Also you can put Rgui.bat on your desktop, associate a Windows 
+ShortCut key with it (see http://support.microsoft.com/kb/310417) and 
+not have to redo this on each install of a new version of R.  They have the
 same syntax as the corresponding .exe files in R, e.g.
 
 	Rcmd INSTALL mypackage -l library
 	Rcmd check mypackage 
 	Rcmd build mypackage
 	Rcmd build mypackage --binary
+	Rscript -f myprog.R < mydata.dat
 
 2. Rversions.hta - GUI lists all versions of R on your
 system  and allows you to choose one as your default,
