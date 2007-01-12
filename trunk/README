@@ -14,7 +14,7 @@ isused without arguments will display your path.)
 
 FILES
 
-1. R.bat, Rcmd.bat, Rscirpt.bat, Rgui.bat, JGR.bat - are front ends
+1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, JGR.bat - are front ends
 to  the corresponding .exe files.  Running any of these causes the
 corresponding R command in your current version of R (automatically
 located via the registry) to be run.  Because of the automatic

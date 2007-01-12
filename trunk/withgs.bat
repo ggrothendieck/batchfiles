@@ -1,4 +1,4 @@
-@echo off
+:: @echo off
 setlocal
 if "%1"=="" goto:help
 if "%1"=="-h" goto:help
@@ -13,7 +13,9 @@ goto:continue
 	echo e.g. withgs fig2dev -L tiff myfile.fig > myfile.tiff
 	goto:eof
 :continue
-call :getreg result "HKEY_LOCAL_MACHINE\SOFTWARE\AFPL Ghostscript\8.13" /v GS_DLL
+for /f "delims=" %%s in ('reg query "HKEY_LOCAL_MACHINE\SOFTWARE\AFPL Ghostscript"') do set KEY=%%s 
+call :trim key
+call :getreg result "%KEY%" /v GS_DLL
 if "%result%"=="" (
 	echo Error: ghostscript not found.  Install ghostscript and rerun.
 	goto:eof
@@ -101,4 +103,5 @@ rem          echo [%val%]
       goto:eof
 
 endlocal
+
 
