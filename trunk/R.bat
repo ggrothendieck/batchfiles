@@ -30,6 +30,8 @@ for %%i in (%0) do set cmd=%%~ni.exe
 
 cd %R_HOME%\bin
 if /i %cmd%==rgui.exe set st=start
+if /i %0==#rscript.bat set cmd=rscript.exe
+if /i %0==#rscript set cmd=rscript.exe
 cd %here%
 set cmdpath=%R_HOME%\bin\%cmd%
 

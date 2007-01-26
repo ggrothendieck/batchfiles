@@ -14,8 +14,8 @@ isused without arguments will display your path.)
 
 FILES
 
-1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, JGR.bat - are front ends
-to  the corresponding .exe files.  Running any of these causes the
+1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, Rscript.bat, JGR.bat - are 
+front ends to  the corresponding .exe files.  Running any of these causes the
 corresponding R command in your current version of R (automatically
 located via the registry) to be run.  Because of the automatic
 location of R it means that the user does not  have to update anything 
@@ -30,6 +30,16 @@ same syntax as the corresponding .exe files in R, e.g.
 	Rcmd build mypackage
 	Rcmd build mypackage --binary
 	Rscript -f myprog.R < mydata.dat
+
+Also #Rscript.bat is provided which can be used as the first line
+of an R script that to make it callable as a batch file.  It
+should look like this:
+
+#Rscript %0 %*
+...R code goes here...
+
+and should be named with .bat extension. See the Rtidy.bat file
+for an example.
 
 2. Rversions.hta - GUI lists all versions of R on your
 system  and allows you to choose one as your default,
