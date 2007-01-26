@@ -11,6 +11,10 @@ Thanks to the following people for discussion related to R:
   Duncan Murdoch <murdoch@stats.uwo.ca>
   Tobias Verbeke <tobias.verbeke@telenet.be>
 
+The tidy.bat script was translated from the tidy UNIX script by:
+
+  George Georgalis <george@galis.org>
+
 Also thanks to the following for discussion related to Windows batch:
 
   William Allen

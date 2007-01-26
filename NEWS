@@ -3,7 +3,14 @@ Changes in Version 0.3-1
 
   o new find-miktex.bat which lists the mixktex folders from the registry
 
-  o new Rscript.bat which runs Rscript.exe (found in R 2.5.0 and later)
+  o new Rscript.bat and #Rscript.bat which make use of Rscript facility 
+    found in R 2.5.0 and later.  One can turn an R script into a batch
+    file by placing this on the first line of the batch file
+    #Rscript.bat %0 %*  
+    and the remaining lines are the R script.
+
+  o new tidy.bat is a sample Rscript that uses the #Rscript facility
+    based on George Georgalis' UNIX code
 
   o withgs.bat now checks for latest ghostscript version.  (Previously 
     version was hard coded and it only worked for that version.)
