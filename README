@@ -29,17 +29,19 @@ same syntax as the corresponding .exe files in R, e.g.
 	Rcmd check mypackage 
 	Rcmd build mypackage
 	Rcmd build mypackage --binary
-	Rscript -f myprog.R < mydata.dat
+	Rscript myprog.R < mydata.dat
 
 Also #Rscript.bat is provided which can be used as the first line
-of an R script that to make it callable as a batch file.  It
+of an R script to make it callable as a batch file.  It
 should look like this:
 
 #Rscript %0 %*
 ...R code goes here...
 
 and should be named with .bat extension. See the Rtidy.bat file
-for an example.
+for an example.  Note that it does have the disadvantage that
+the output of the R program starts off with the command itself.
+R needs to be able to handle the perl/python/ruby -x switch.
 
 2. Rversions.hta - GUI lists all versions of R on your
 system  and allows you to choose one as your default,
