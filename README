@@ -14,6 +14,10 @@ isused without arguments will display your path.)
 
 FILES
 
+0. runR.bat.  If this file is copied to myfile.bat then running 
+myfile (possibly with arguments) will run myfile.R with those same
+arguments.
+
 1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, Rscript.bat, JGR.bat - are 
 front ends to  the corresponding .exe files.  Running any of these causes the
 corresponding R command in your current version of R (automatically
