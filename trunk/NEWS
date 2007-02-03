@@ -3,31 +3,28 @@ Changes in Version 0.3-1
 
   o new find-miktex.bat which lists the mixktex folders from the registry
 
-  o new runR.bat file which can be copied to myfile.bat in which case
-    entering myfile will run myfile.R with the same arguments. This
-    uses the Rscript 
-    use
-
   o new Rscript.bat which allows one to use the Rscript facility in 
     R 2.5.0 and later without changing pathnames.  Just place Rscript.bat
     in any existing path and it will automatically find the
     current version of R from the registry and run the Rscript.exe that
     is there.
 
-  o runR.bat.  If you have a script such as myfile.R then you can create
-    a script for it by copying runR.bat to myfile.bat.  Then when you
+  o runR.bat.  If you have an R script such as myfile.R then you can create
+    a batch script for it by copying runR.bat to myfile.bat.  Then when you
     issue the command myfile or myfile.bat it will run the R script in
-    myfile.R .  Just place myfile.bat and Rscript.bat anywhere in your path.  
+    myfile.R .  Just place myfile.bat and myfile.R anywhere in your path.  
+    This uses Rscript.bat .
 
   o #Rscript.  If you have an Rscript called myfile.R, say, then if you
     copy the script to myfile.bat and place 
        #Rscript %0 %*  
     as the first line with the remainder being the R commands then issuing
     the command myfile or myfile.bat will run the R script.  The advantage
-    over the runR.bat method is that there is only one file, myfile.bat,
-    since you don't need myfile.R anymore but the disadvantage is that
-    it will echo the #Rscript line into the stdout.  runR method will not
-    echo additional lines but does require two files.
+    over the runR.bat method is that there is only one file, myfile.bat.
+    You don't need myfile.R anymore.  The disadvantage is that it will 
+    echo the #Rscript line to stdout.  This will be fixed if and when 
+    Rscript ever gets the perl/python/ruby -x flag.  (The runR approach will 
+    not echo additional lines but does require two files.)  
 
   o new Rtidy.bat is a sample Rscript that uses the #Rscript facility
     based on George Georgalis' UNIX code
