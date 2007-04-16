@@ -4,6 +4,8 @@ Changes in version 0.3-2
     with a basic R installation (i.e. sh.exe not needed).  Previously it
     required Rcmd.bat but now it requires Rterm.bat instead.
 
+  o added Rterm.bat (just a copy of Rcmd.bat)
+
 Changes in Version 0.3-1
 
   o new find-miktex.bat which lists the mixktex folders from the registry
