@@ -145,7 +145,7 @@ system so it is always safe to run.  It takes no arguments.
 e.g. Rfind
 
 7. sweave.bat - will run sweave, then pdflatex and then
-display latex file.  Requires Rcmd.bat .  e.g.
+display latex file.  Requires Rterm.bat .  e.g.
 
       sweave mydoc.Rnw
    or
@@ -166,6 +166,12 @@ from a prior run is current being viewed (which would
 happen since the Acrobat viewer won't allow you to view
 two files of the same name concurrently).  Every so often
 the user should delete all *.bck.pdf files.
+
+Try:
+
+sweave
+
+without arguments to see options and get more info.
 
 8. withgs.bat - temporarily adds ghostscript to your
 path (finding its path in the registry) and runs the 

@@ -56,7 +56,8 @@ if exist "%file%.Snw" set infile="%file%.Snw"
 if exist "%file%.Rnw" set infile="%file%.Rnw"
 if exist "%file%" set infile="%file%" 
 set infileslash=%infile:\=/%
-call Rcmd Sweave %infileslash%
+:: call Rcmd Sweave %infileslash%
+echo library('utils'); Sweave(%infileslash%) | Rterm --no-restore --slave
 :: echo on
 if errorlevel 1 goto:eof
 if /i "%switch%"=="t" goto:eof
@@ -86,6 +87,4 @@ start "" "%tmpfile%"
 echo *** delete *.bck.pdf files when done ***
 
 endlocal
-
-
 
