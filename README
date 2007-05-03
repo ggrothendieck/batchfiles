@@ -131,11 +131,13 @@ omission is what copydir.bat addresses.)
 
 5. movedir - same arguments as copydir.  Only difference is
 that it moves the directories rather than copy them.  This
-can be used if you are no longer interested in maintaining
-the old version of R.  This has the advantage that its much
-faster than copydir.  The example under copydir works with
-movedir too.  Just replace copydir with movedir in that
-example.  Comments under copydir.bat apply here too.
+can be used if you are no longer interested in using the
+packages with the old version of R other than by reinstalling
+them.)  This has the advantage that its much faster than 
+copydir.  The example under copydir works with movedir too.  
+Just replace copydir with movedir in that example.  Comments 
+under copydir.bat apply here too.  I mostly use movedir.bat
+myself instead of copydir.bat since its so much faster.
 
 6. Rfind.bat - will search system for various tools needed
 to make R packages.  It also shows where the current R
