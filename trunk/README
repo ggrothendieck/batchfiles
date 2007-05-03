@@ -129,18 +129,20 @@ refers to copying any installed package to the library
 folder but does not address how to accomplish that.  That
 omission is what copydir.bat addresses.)
 
-An alternative to copydir is to reinstall all packages:
+An alternative to copydir is to reinstall all packages
 
 #---run in previous version
 packages <- installed.packages()[,"Package"]
-save(packages, file="Rpackages")
+save(packages, file = "~/Rpackages")
 
 #---run in new version
-load("Rpackages")
+load("~/Rpackages")
 for (p in setdiff(packages, installed.packages()[,"Package"]))
-install.packages(p)
+   install.packages(p)
 
-The reinstallation code above is taken from:
+file.remove("~/Ppackages")
+
+This copydir alternative is based on:
 https://www.stat.math.ethz.ch/pipermail/r-help/2007-May/131131.html
 
 
