@@ -100,10 +100,19 @@ upgrade R to a new version
 
   :: ... now startup new version of R and issue command
   update.packages(checkBuilt = TRUE, ask = "graphics")
-  :: or (see note below)
+  # or (see note below)
   update.packages(ask = "graphics")
 
   :: press OK and it will update those packages as necessary
+
+  # ... optionally check for deprecated packages
+  # 1. set repositories to all those that you use with menu:
+  #    Packages | Repositories
+  # 2. check if there are any deprecated packages that
+  #    were copied over but are not longer on CRAN or other repository
+  dp <- setdiff(installed.packages()[,1], available.packages()[,1])
+  # remove.packages(dp)
+
   :: ... exit R and start it up again ...
 
 Note that the checkBuilt=TRUE argument will potentially cause
@@ -131,6 +140,20 @@ omission is what copydir.bat addresses.)
 
 An alternative to copydir is to reinstall all packages
 
+# Alternative 1
+# this example is for moving from 2.4.1 to 2.5.0
+# run this in R 2.5.0
+setwd(R.home())
+ip <- installed.packages(lib.loc = "../R-2.4.1/library")
+ip <- ip[ip[,1]!="base" ,1]
+install.packages(ip)
+
+The above is taken from:
+https://www.stat.math.ethz.ch/pipermail/r-help/2007-May/131806.html
+Note that you may still have to use movedir.bat or copydir.bat
+after the above if it fails to install everything.
+
+# Alternative 2
 #---run in previous version
 packages <- installed.packages()[,"Package"]
 save(packages, file = "~/Rpackages")
@@ -144,7 +167,6 @@ file.remove("~/Ppackages")
 
 This copydir alternative is based on:
 https://www.stat.math.ethz.ch/pipermail/r-help/2007-May/131131.html
-
 
 5. movedir - same arguments as copydir.  Only difference is
 that it moves the directories rather than copy them.  This
