@@ -90,15 +90,18 @@ old version of R to your new one.  It will not overwrite any
 libraries already there so it should be safe to use. e.g. to
 upgrade R to a new version
 
+  :: Example is for upgrading from R-2.4.1 to R-2.5.0
+
   :: first, download and install R-2.5.0, say
   :: now perform the next two commands at the Windows console
   cd \Program Files\R
-  copydir R-2.4.0\library R-2.5.0\library
+  copydir R-2.4.1\library R-2.5.0\library
 
   :: next command only needed if you have *.site files
   copy R-2.4.0\etc\*.site R-2.5.0\etc
 
-  :: ... now startup new version of R and issue command
+  :: ... now startup new version of R (R 2.5.0 in this example)
+  # issue this command in R 2.5.0
   update.packages(checkBuilt = TRUE, ask = "graphics")
   # or (see note below)
   update.packages(ask = "graphics")
@@ -106,11 +109,14 @@ upgrade R to a new version
   :: press OK and it will update those packages as necessary
 
   # ... optionally check for deprecated packages
-  # 1. set repositories to all those that you use with menu:
+  # 1. first select all repositories that you use with menu:
   #    Packages | Repositories
-  # 2. check if there are any deprecated packages that
+  # 2. second check if there are any deprecated packages that
   #    were copied over but are not longer on CRAN or other repository
   dp <- setdiff(installed.packages()[,1], available.packages()[,1])
+  # look at what we have
+  dp
+  # if you wish to remove them issue the remove.packages command:
   # remove.packages(dp)
 
   :: ... exit R and start it up again ...
@@ -151,19 +157,19 @@ install.packages(ip)
 The above is taken from:
 https://www.stat.math.ethz.ch/pipermail/r-help/2007-May/131806.html
 Note that you may still have to use movedir.bat or copydir.bat
-after the above if it fails to install everything.
+after the above if it fails to install everything.  Since movedir.bat
+and copydir.bat won't overwrite anything this should be safe.
 
 # Alternative 2
-#---run in previous version
+#---run in previous version, e.g. R 2.4.1
 packages <- installed.packages()[,"Package"]
 save(packages, file = "~/Rpackages")
 
-#---run in new version
+#---run in new version, e.g. R 2.5.0
 load("~/Rpackages")
-for (p in setdiff(packages, installed.packages()[,"Package"]))
-   install.packages(p)
+install.packages(setdiff(packages, installed.packages()[,"Package"]))
 
-file.remove("~/Ppackages")
+file.remove("~/Rpackages")
 
 This copydir alternative is based on:
 https://www.stat.math.ethz.ch/pipermail/r-help/2007-May/131131.html
