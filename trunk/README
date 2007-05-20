@@ -230,6 +230,7 @@ try this:
 
 9. find-miktex.bat - this is run without arguments to list
 the MiKTeX folders as found in the Windows registry.
+Note that it has only been tested with MiKTeX 2.4 .
 
 10. makepkg.bat.  This is only needed by users who build
 their own packages and make use of the .Rbuildignore

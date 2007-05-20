@@ -2,6 +2,8 @@ Changes in version 0.3-3
 
   o updated copydir.bat portion of README to discuss additional alternatives
 
+  o added caveat about find-miktex.bat
+
 Changes in version 0.3-2
  
   o sweave.bat now uses Rterm.bat rather than Rcmd.bat which makes it usable
