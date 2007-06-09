@@ -35,6 +35,19 @@ same syntax as the corresponding .exe files in R, e.g.
 	Rcmd build mypackage --binary
 	Rscript myprog.R < mydata.dat
 
+One caveat is the Rcmd BATCH has problems with pathnames that have
+embedded spaces.  To use such pathnames find the short name using
+the Windows dir/x command and use that.  For example, suppose we
+have a file C:\Documents and Settings\Administrator\myfile.R .
+Then try this:
+
+	cd \
+	dir/x doc*
+	Rcmd BATCH c:\docume~1\Administrator\myfile.R
+
+where the dir/x command showed us the short name corresponding to
+the longer space-embedded name: Documents and Settings.  
+
 Also #Rscript.bat is provided which can be used as the first line
 of an R script to make it callable as a batch file.  It
 should look like this:
