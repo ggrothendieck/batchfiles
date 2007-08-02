@@ -1,3 +1,7 @@
+Changes in version 0.3-4
+
+  o improved message given by sweave when issued with no arguments
+
 Changes in version 0.3-3
 
   o updated copydir.bat portion of README to discuss additional alternatives

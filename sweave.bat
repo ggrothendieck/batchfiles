@@ -14,21 +14,23 @@ echo switches:
 echo    -t or --tex or     produce tex file and exit
 echo    -p or --pdf or     produce pdf file and exit
 echo    -n or --nobck.pdf  do not create .bck.pdf; instead display pdf directly
-echo 1. run sweave giving .tex file, 2. then run pdflatex giving .pdf file,
-echo 3. then make copy of pdf giving .bck.pdf file, 4. then display on screen
-echo e.g. 
+echo Runs sweave producing a .tex file.  Then it runs pdflatex producing
+echo  a .pdf file and a .bck.pdf file.  Finally the .bck.pdf file is 
+echo  displayed on screen.
 echo.
-echo    Run sweave, pdflatex, create backup pdf with unique name, display it
-echo     sweave mydoc.Rnw
-echo    Same
-echo     sweave mydoc
-echo   Run sweave to create tex file.  Do not run pdflatex or display.
-echo    sweave mydoc --tex
-echo   Run sweave and pdflatex creating pdf file.  Do not create .bck.pdf
-echo   file and do not display file.
-echo    sweave mydoc --pdf
-echo   Run sweave and pdflatex, do not create backup but display .pdf directly.
-echo    sweave mydoc --nobck
+echo Examples:
+echo.
+echo 1. Run sweave, pdflatex, create backup pdf with unique name, display it
+echo       sweave mydoc.Rnw
+echo 2. Same
+echo       sweave mydoc
+echo 3. Run sweave to create tex file.  Do not run pdflatex or display.
+echo       sweave mydoc --tex
+echo 4. Run sweave and pdflatex creating pdf file.  Do not create .bck.pdf
+echo    file and do not display file.
+echo       sweave mydoc --pdf
+echo 5. Run sweave and pdflatex. Do not create .bck.pdf. Display .pdf file.
+echo       sweave mydoc --nobck
 goto:eof
 :continue
 
