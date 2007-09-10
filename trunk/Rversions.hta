@@ -84,7 +84,7 @@ if (rhome != "") arr.push(rhome)
 
 // push subkeys
 key = MSDOS("reg query hklm\\software\\r-core\\r /s", 1);
-alert(key.join(";\n"));
+// alert(key.join(";\n"));
 for(i in key) {
    if (key[i].match("InstallPath")) 
       arr.push(key[i].split(/ /).slice(2).join(" "));
