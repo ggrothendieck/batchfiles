@@ -1,6 +1,6 @@
 @echo off
 setlocal
-ver | findstr XP >NUL
+rem rem ver | findstr XP >NUL
 
 if "%1"=="" goto:help
 if "%1"=="-h" goto:help

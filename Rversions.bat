@@ -7,8 +7,8 @@
 :: Note: Use Rfind.bat and look on R_HOME line to find current version of R.
 
 setlocal
-ver | findstr XP >NUL
-if errorlevel 1 echo Warning: This script has only been tested on Windows XP.
+rem ver | findstr XP >NUL
+rem if errorlevel 1 echo Warning: This script has only been tested on Windows XP.
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: use environment variable R_HOME if defined
