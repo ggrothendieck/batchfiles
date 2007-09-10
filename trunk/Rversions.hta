@@ -1,3 +1,4 @@
+
 <html>
 <head>
 <STYLE TYPE="text/css">
@@ -19,7 +20,7 @@ the desired one and press Apply.
 
 function MSDOS(DOSCmd, Stream) {
   var alines, sCmd, stemp, ofs, oWS, tempfile;
-  sCmd = "%comspec% /c " + DOSCmd + " " + Stream + "> ";
+  sCmd = "%comspec% /c \"" + DOSCmd + "\" " + Stream + "> ";
   ofs = new ActiveXObject("Scripting.FileSystemObject");
   stemp = ofs.GetTempName();
   oWS = new ActiveXObject("Wscript.Shell");
@@ -29,15 +30,36 @@ function MSDOS(DOSCmd, Stream) {
   alines = tempFile.ReadAll().split(/\r*\n/);
   tempFile.close()
   ofs.DeleteFile(stemp);
-  alines.length = alines.length - 1
+  // alines.length = alines.length - 1
   return alines;
 }
 
 function SetRVersion(menu) {
 	menuo = menu.options[menu.selectedIndex];
-	WshShell.Run("\"" + menuo.value + "\\bin\\RSetReg.exe\"", 0);
+	// this worked on XP:
+	// WshShell.Run("\"" + menuo.value + "\\bin\\RSetReg.exe\"", 0);
+	WshShell.CurrentDirectory = menuo.value;
+	// execute at elevated privledge
+	// only tested on Vista
+	new ActiveXObject("Shell.Application").ShellExecute("bin\\RSetReg.exe", "", "", "runas");
 	alert("Current R Version Set to\n" + menuo.value);
 	close();
+}
+
+// Johan Känngård, http://dev.kanngard.net, wrote uunique() and contains()
+function uunique(a) {
+	tmp = new Array(0);
+	for(i=0;i<a.length;i++){
+		if(!contains(tmp, a[i])){
+			tmp.length+=1;
+			tmp[tmp.length-1]=a[i];
+		}
+	}
+	return tmp;
+}
+function contains(a, e) {
+	for(j=0;j<a.length;j++)if(a[j]==e)return true;
+	return false;
 }
 
 var fso, WshShell;
@@ -46,44 +68,76 @@ var rhome, selected, ver;
 WshShell = new ActiveXObject("Wscript.Shell");
 fso = new ActiveXObject("Scripting.FileSystemObject");
 
+arr = new Array();
+
+// push main key value
 key = "HKLM\\software\\r-core\\r\\InstallPath";
 regrhome = WshShell.RegRead(key);
+arr.push(regrhome);
 
+// push current directory
+arr.push(WshShell.CurrentDirectory);
+
+// push R_HOME
 rhome = WshShell.Environment("PROCESS").item("R_HOME")
+if (rhome != "") arr.push(rhome)
 
-if (rhome == "") {
-	if (fso.FileExists("bin\Rcmd.exe")) 
-		rhome = WshShell.CurrentDirectory;
+// push subkeys
+key = MSDOS("reg query hklm\\software\\r-core\\r /s", 1);
+alert(key.join(";\n"));
+for(i in key) {
+   if (key[i].match("InstallPath")) 
+      arr.push(key[i].split(/ /).slice(2).join(" "));
 }
 
-if (rhome == "")  rhome = regrhome;
+// sort and remove duplicates
+arr.sort();
+arr = uunique(arr);
 
-if (rhome == "") {
-	alert("Error: R not found");
-} else {
-	parent = fso.GetParentFolderName(rhome);
-	Folder = fso.GetFolder(parent);
-	arr = new Array();
-	fc = new Enumerator(Folder.SubFolders);
-	for (;!fc.atEnd(); fc.moveNext()) {
-		File = fc.item();
-		WshShell.CurrentDirectory = File.Path;
-		if (fso.FileExists("bin\\R.exe")) {
-			selected = "";
-			if (File.Path == regrhome) {
-				selected = "selected=selected class=highlight";
-			}
-			cmd = "bin\\R.exe --version";
-			ver = MSDOS(cmd, 2)[0];
-			arr.push(ver + "\n" + File.Path + "\n" + selected);
-			// document.write("<option " + selected + " value=\"" + File.Path + "\">" + ver + " - " +  File.Path + "</option>");
+// push those that correspond to R directories
+arr2 = new Array();
+for(i in arr) {
+	arr[i].replace(/\\$/);
+	if (fso.FileExists(arr[i] + "\\" + "bin\\Rcmd.exe"))
+		arr2.push(arr[i]);
+}
+
+// push on sibs that correspond to R directories
+n = arr2.length;
+for(i = 0; i < n; i++) {
+	parent = fso.GetParentFolderName(arr2[i]);
+	lastdir = parent.replace(/.*\\/, "");
+	if (lastdir == "R") {
+		Folder = fso.GetFolder(parent);
+		fc = new Enumerator(Folder.SubFolders);
+		for (;!fc.atEnd(); fc.moveNext()) {
+			File = fc.item();
+			WshShell.CurrentDirectory = File.Path;
+			if (!contains(arr2, File.Path) &&
+				fso.FileExists("bin\\R.exe"))
+					arr2.push(File.Path);
 		}
 	}
-	arr.sort().reverse();
-	for(i in arr) {
-		fields = arr[i].split("\n");
-		document.write("<option " + fields[2] + " value=\"" + fields[1] + "\">" + fields[0] + " - " +  fields[1] + "</option>");
+}
+
+// entries to arr2 are a single string with three \n-separated fields:
+// version, path, selected status
+for(i in arr2) {
+	selected = "";
+	if (arr2[i] == regrhome) {
+		selected = "selected=selected class=highlight";
 	}
+	WshShell.CurrentDirectory = arr2[i];
+	cmd = "bin\\R.exe --version";
+	ver = MSDOS(cmd, 2)[0];
+	arr2[i] = ver + "\n" + arr2[i] + "\n" + selected;
+}
+
+
+arr2.sort().reverse();
+for(i in arr2) {
+	fields = arr2[i].split("\n");
+	document.write("<option " + fields[2] + " value=\"" + fields[1] + "\">" + fields[0] + " - " +  fields[1] + "</option>");
 }
 </script>
 </select>

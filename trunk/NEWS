@@ -2,6 +2,13 @@ Changes in version 0.3-4
 
   o improved message given by sweave when issued with no arguments
 
+  o removed only tested on XP messages since they are annoying on Vista
+
+  o changed algorithm in Rversions.bat.  Now it checks current directory,
+    R_HOME and all keys in R's portion of the registry plus all sibling
+    folders of those mentioned.  Also it runs RSetReg.exe elevated
+    on Vista.  New version has not been tested on XP.
+
 Changes in version 0.3-3
 
   o updated copydir.bat portion of README to discuss additional alternatives
