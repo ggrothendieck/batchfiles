@@ -2,15 +2,15 @@ batchfiles contains batch and GUI files for installing and maintaing R.
 
 NEWS.  See NEWS file.
 
-INSTALLATIION
+INSTALLATION
 
 To install these utilities, just copy all the .bat and .hta
 files in this distribution to any directory in your PATH.
-(The Windows console command
+The Windows console command
 
    path
 
-isused without arguments will display your path.)
+isused without arguments will display your path.
 
 FILES
 
@@ -19,15 +19,23 @@ myfile (possibly with arguments) will run myfile.R with those same
 arguments.
 
 1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, Rscript.bat, JGR.bat - are 
-front ends to  the corresponding .exe files.  Running any of these causes the
-corresponding R command in your current version of R (automatically
-located via the registry) to be run.  Because of the automatic
-location of R it means that the user does not  have to update anything 
-associated with these commands each time a new version of R is installed.  
-Also you can put Rgui.bat on your desktop, associate a Windows 
-ShortCut key with it (see http://support.microsoft.com/kb/310417) and 
-not have to redo this on each install of a new version of R.  They have the
-same syntax as the corresponding .exe files in R, e.g.
+front ends to  the corresponding .exe files.  They locate R in the
+registry (and also look in a few other places if not found there)
+and then run the found R.exe, Rcmd.exe, Rscript.exe, Rgui.exe or 
+JGR.exe with the same arguments.    They are actually all the
+same file just renamed.  The file checks what name it was called
+by and acts accordingly.
+
+Their main advantages are:
+- you don't have to modify your path just to use R.
+- when you upgrade R they automatically work without change since they
+  will pick up the new version from the registry automatically.
+
+You can put Rgui.bat on your desktop, associate a Windows ShortCut key 
+with it (see http://support.microsoft.com/kb/310417) so that you can
+just press the Windows key and R, say, to activate R.
+
+Here are some examples of using them from the command line:
 
 	Rcmd INSTALL mypackage
 	Rcmd INSTALL mypackage -l library
@@ -35,11 +43,15 @@ same syntax as the corresponding .exe files in R, e.g.
 	Rcmd build mypackage
 	Rcmd build mypackage --binary
 	Rscript myprog.R < mydata.dat
+	Rgui
 
-One caveat is the Rcmd BATCH has problems with pathnames that have
-embedded spaces.  To use such pathnames find the short name using
-the Windows dir/x command and use that.  For example, suppose we
-have a file C:\Documents and Settings\Administrator\myfile.R .
+Older version of Rcmd BATCH in R had problems with spaces in
+pathnames so be sure you use a sufficiently recent version of R.
+If you are using an old version of R that has problems use the
+short name corresponding to any long name with spaces:
+
+For example, suppose we have a file 
+   C:\Documents and Settings\Administrator\myfile.R .
 Then try this:
 
 	cd \
@@ -49,26 +61,84 @@ Then try this:
 where the dir/x command showed us the short name corresponding to
 the longer space-embedded name: Documents and Settings.  
 
-Also #Rscript.bat is provided which can be used as the first line
-of an R script to make it callable as a batch file.  It
-should look like this:
+2. #Rscript.bat
+
+#Rscript.bat can be used as the first line of an R script to make 
+it callable as a batch file.  For example, if we have a myfile.R
+file then we can create a myfile.bat file that looks like this:
 
 #Rscript %0 %*
-...R code goes here...
+...R code from myfile.R goes here...
 
-and should be named with .bat extension. See the Rtidy.bat file
-for an example.  Note that it does have the disadvantage that
-the output of the R program starts off with the command itself.
-R needs to be able to handle the perl/python/ruby -x switch.
-In the meantime #Rscript.bat will mainly be useful for those
-scripts where the output does not go to the standard output
-or where the addition of this line is acceptable.
+and now we can just issue the command myfile to run it.  We
+no longer need myfile.R.
 
-2. Rversions.hta - GUI lists all versions of R on your
-system  and allows you to choose one as your default,
-setting the  registry appropriately.  Just run without
-arguments, .e.g.  
+See the Rtidy.bat file for an example.  Note that it does have 
+the disadvantage that the output of the R program starts off 
+with the command itself.  R needs to be able to handle the 
+perl/python/ruby -x switch.  In the meantime #Rscript.bat 
+will mainly be useful for those scripts where the output does 
+not go to the standard output or where the addition of this 
+line is acceptable.
+
+3. RguiStart.bat
+
+This is like Rgui.bat except it runs Rgui.exe with all arguments
+except the first and the first argument speccifies which directory
+it is to run in or which .Rdata file it should load.  The main
+reason for its existence is so that you can place it in your
+SendTo folder.  
+
+On Vista that is found at %APPDATA%\Microsoft\Windows\SendTo .
+Then when you are in Windows Explorer in Vista you can 
+shift right click on any folder and choose 
+Open Command Window Here to start up R in that folder.
+You can also shift right click over an .Rdata file and it will 
+start up R with that .Rdata file loaded although in the case of
+a file rather than a directory its probably easier just to double 
+click the .Rdata file; however, if you have disabled .Rdata -- R file
+type associations then this would still work.
+
+4. sweave.bat - will run sweave, then pdflatex and then
+display latex file.  Requires Rterm.bat .  e.g.
+
+      sweave mydoc.Rnw
+   or
+      sweave mydoc 
+
+The script runs sweave, pdflatex and then displays the pdf
+file (assuming the user has .pdf extension associated with a
+pdf viewer).  If there is an error in sweave or the .tex
+file is not newer than the sweaved file the script stops.
+Similarly if there is an error in pdflatex or the .pdf is
+not newer than the .tex file then the script stops.  Note
+that _two_ .pdf files are generated.  They are identical
+except one has a unique name created by suffixing the base
+with the date and time and .bck.pdf.  The one with the unique name 
+is the one viewed.  This overcomes problems of not being able to
+view the .pdf if the .pdf from a prior run is current being
+viewed (which would happen since the Acrobat viewer won't
+allow you to view two files of the same name concurrently).
+Every so often the user should delete all *.bck.pdf files.
+
+Try:
+
+sweave
+
+without arguments to see options and get more info.
+
+Aside from using sweave from the command line, if you place
+sweave.bat in your SendTo folder as discussed under
+RguiStart.bat you can shift right click .Rnw files and
+choose SendTo > sweave to sweave them.
+
+5. Rversions.hta - This displays a GUI that lists all
+versions of R on your system  and allows you to choose one
+as your default, setting the  registry appropriately.  Just
+run without arguments, .e.g.  
+
 	Rversions.hta 
+
 For example, suppose we want to check a package using two
 different versions of R.  Then run 
 
@@ -81,7 +151,7 @@ different versions of R.  Then run
 	:: in next command reset to original version of R
 	Rversions.hta 
 
-3. Rversions.bat - similar to Rversions.hta but 
+5. Rversions.bat - similar to Rversions.hta but 
 -- its batch whereas Rversions.hta is GUI
 -- uses slightly different heuristic to find R versions
 -- run without args to list versions available; run with any of
@@ -91,7 +161,7 @@ different versions of R.  Then run
 Examples:
 
 	:: list R versions
-	reversions.bat
+	rversions.bat
 
 	:: check mypkg using R current version, 2.4.0, say
 	Rcmd check mypkg
@@ -103,7 +173,7 @@ Examples:
 	:: reset back to version 2.4.0
 	rversions.bat R-2.4.0
 
-4. copydir.bat - can be used to copy the libraries from an
+6. copydir.bat - can be used to copy the libraries from an
 old version of R to your new one.  It will not overwrite any
 libraries already there so it should be safe to use. e.g. to
 upgrade R to a new version
@@ -164,13 +234,13 @@ omission is what copydir.bat addresses.)
 
 An alternative to copydir is to reinstall all packages
 
-# Alternative 1
-# this example is for moving from 2.4.1 to 2.5.0
-# run this in R 2.5.0
-setwd(R.home())
-ip <- installed.packages(lib.loc = "../R-2.4.1/library")
-ip <- ip[ip[,1]!="base" ,1]
-install.packages(ip)
+	# Alternative to copydir.bat #1
+	# this example is for moving from 2.4.1 to 2.5.0
+	# run this in R 2.5.0
+	setwd(R.home())
+	ip <- installed.packages(lib.loc = "../R-2.4.1/library")
+	ip <- ip[ip[,1]!="base" ,1]
+	install.packages(ip)
 
 The above is taken from:
 https://www.stat.math.ethz.ch/pipermail/r-help/2007-May/131806.html
@@ -178,16 +248,16 @@ Note that you may still have to use movedir.bat or copydir.bat
 after the above if it fails to install everything.  Since movedir.bat
 and copydir.bat won't overwrite anything this should be safe.
 
-# Alternative 2
-#---run in previous version, e.g. R 2.4.1
-packages <- installed.packages()[,"Package"]
-save(packages, file = "~/Rpackages")
+	# Alternative to copydir.bat #2
+	#---run in previous version, e.g. R 2.4.1
+	packages <- installed.packages()[,"Package"]
+	save(packages, file = "~/Rpackages")
 
-#---run in new version, e.g. R 2.5.0
-load("~/Rpackages")
-install.packages(setdiff(packages, installed.packages()[,"Package"]))
+	#---run in new version, e.g. R 2.5.0
+	load("~/Rpackages")
+	install.packages(setdiff(packages, installed.packages()[,"Package"]))
 
-file.remove("~/Rpackages")
+	file.remove("~/Rpackages")
 
 This copydir alternative is based on:
 https://www.stat.math.ethz.ch/pipermail/r-help/2007-May/131131.html
@@ -210,46 +280,18 @@ change any environment variables or any other aspect of the
 system so it is always safe to run.  It takes no arguments.
 e.g. Rfind
 
-7. sweave.bat - will run sweave, then pdflatex and then
-display latex file.  Requires Rterm.bat .  e.g.
-
-      sweave mydoc.Rnw
-   or
-      sweave mydoc 
-
-The script runs sweave, pdflatex and then displays the pdf
-file (assuming the user has .pdf extension associated with a
-pdf viewer).  If there is an error in sweave or the .tex
-file is not newer than the sweaved file the script stops.
-Similarly if there is an error in pdflatex or the .pdf is
-not newer than the .tex file then the script stops.  Note
-that _two_ .pdf files are generated.  They are identical
-except one has a unique name created by suffixing the base
-with the date and time.  The one with the unique name is the
-one viewed.  This overcomes problems of not being able to
-view the .pdf if the .pdf from a prior run is current being
-viewed (which would happen since the Acrobat viewer won't
-allow you to view two files of the same name concurrently).
-Every so often the user should delete all *.bck.pdf files.
-
-Try:
-
-sweave
-
-without arguments to see options and get more info.
-
-8. withgs.bat - temporarily adds ghostscript to your path
+7. withgs.bat - temporarily adds ghostscript to your path
 (finding its path in the registry) and runs the command
 given as an argument.  For example, to use the fig2dev
 command to create a tiff file from a fig file try this:
 
  withgs fig2dev -L tiff myfile.fig > myfile.tiff
 
-9. find-miktex.bat - this is run without arguments to list
+8. find-miktex.bat - this is run without arguments to list
 the MiKTeX folders as found in the Windows registry.
 Note that it has only been tested with MiKTeX 2.4 .
 
-10. makepkg.bat.  This is only needed by users who build
+9. makepkg.bat.  This is only needed by users who build
 their own packages and make use of the .Rbuildignore
 facility. It will automatically run a build followed by
 check or install so that files listed in the .Rbuildignore
@@ -265,8 +307,8 @@ it.  e.g.
 You can set flags in the first few lines of the batch file.
 Users may wish to use svn to maintain versions of their 
 source packages in which case the .Rbuildignore facility
-is less important in which case this command would not
-be needed either.
+is less important and so this command would not be needed 
+either.
 
 DEPRECATED AND CHANGED
 
@@ -281,7 +323,8 @@ ADDITIONAL FILES
 
 1. RESOURCES - additional information on writing Windows XP batch files.
 
-2. COPYRIGHT and COPYING - this is free software subject to the GPL license as described.
+2. COPYRIGHT and COPYING - this is free software subject to the GPL license 
+   as described.
 
 3. THANKS - acknowledgments.
 

@@ -1,3 +1,12 @@
+Changes in version 0.3-5
+
+  o added RguiStart.bat
+
+  o added info on how to use RguiStart.bat and sweave.bat with SendTo
+    folder
+
+  o misc improvements to README file
+
 Changes in version 0.3-4
 
   o improved message given by sweave when issued with no arguments
