@@ -1,3 +1,4 @@
+
 @echo off
 setlocal
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -23,13 +24,36 @@ if not defined R_HOME for /f "tokens=2*" %%a in (
 if not defined R_HOME echo "Error: R not found" & goto:eof
 
 set here=%CD%
+set args=%*
 
 :: get name by which this command was called
 :: this allows same file to be used for Rgui, Rterm, etc. by just renaming it
 for %%i in (%0) do set cmd=%%~ni.exe
 
 cd %R_HOME%\bin
+if /i not %cmd%==rguistart.exe goto:notRguiStart
+  set cmd=rgui.exe
+  set firstArgument=%1
+  if defined firstArgument (
+    dir %1 | findstr "<DIR>" > nul
+    if errorlevel 1 goto:notRguiStart
+    set here=%~1
+    set firstArgument=
+  )
+  set args=
+  shift
+  :startloop
+  set firstArgument=%1
+  if defined firstArgument (
+     set args=%args% "%~1" 
+     shift
+     goto:startloop
+  )
+:notRguiStart
+
+set st=
 if /i %cmd%==rgui.exe set st=start
+if /i %cmd%==#rscript.exe set cmd=rscript.exe
 cd %here%
 set cmdpath=%R_HOME%\bin\%cmd%
 
@@ -42,7 +66,8 @@ if /i %cmd%==jgr.exe (
   if exist "%R_HOME%\library\JGR\jgr.exe" set cmdpath=%R_HOME%\library\JGR\jgr.exe
 ) 
 
-if defined st (start "" "%cmdpath%" %*) else "%cmdpath%" %*
+set a
+if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 goto:eof
 
 

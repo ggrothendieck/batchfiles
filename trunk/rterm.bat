@@ -35,6 +35,8 @@ if /i not %cmd%==rguistart.exe goto:notRguiStart
   set cmd=rgui.exe
   set firstArgument=%1
   if defined firstArgument (
+    dir %1 | findstr "<DIR>" > nul
+    if errorlevel 1 goto:notRguiStart
     set here=%~1
     set firstArgument=
   )
