@@ -58,7 +58,7 @@ if exist "%file%.Snw" set infile="%file%.Snw"
 if exist "%file%.Rnw" set infile="%file%.Rnw"
 if exist "%file%" set infile="%file%" 
 set infileslash=%infile:\=/%
-:: call Rcmd Sweave %infileslash%
+:: call sweave
 echo library('utils'); Sweave(%infileslash%) | Rterm --no-restore --slave
 :: echo on
 if errorlevel 1 goto:eof

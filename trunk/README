@@ -10,7 +10,10 @@ The Windows console command
 
    path
 
-isused without arguments will display your path.
+isused without arguments will display your path.  Note that
+all the files are independent of each other except that sweave.bat
+uses Rterm.bat so if you don't want them all you can just keep
+those you do want.
 
 FILES
 
