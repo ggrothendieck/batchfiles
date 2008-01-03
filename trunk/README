@@ -29,6 +29,7 @@ ShortCut key with it (see http://support.microsoft.com/kb/310417) and
 not have to redo this on each install of a new version of R.  They have the
 same syntax as the corresponding .exe files in R, e.g.
 
+	Rcmd INSTALL mypackage
 	Rcmd INSTALL mypackage -l library
 	Rcmd check mypackage 
 	Rcmd build mypackage
@@ -80,10 +81,14 @@ different versions of R.  Then run
 	:: in next command reset to original version of R
 	Rversions.hta 
 
-3. Rversions.bat - similar to Rversions.hta but batch rather
-than GUI.  Run without arguments to list the versions
-available.  Run  with a single argument equal to one of the
-lines listed to  set a new version.  e.g.  
+3. Rversions.bat - similar to Rversions.hta but 
+-- its batch whereas Rversions.hta is GUI
+-- uses slightly different heuristic to find R versions
+-- run without args to list versions available; run with any of
+   the listed versions to set that as the new version
+-- both forms work on XP; to run arg form on Vista run it elevated
+
+Examples:
 
 	:: list R versions
 	reversions.bat
@@ -134,11 +139,11 @@ upgrade R to a new version
 
   :: ... exit R and start it up again ...
 
-Note that the checkBuilt=TRUE argument will potentially cause
-all your packages to be downloaded again so you could try
-leaving it off and then reissue the command with checkBuilt=TRUE
-later only if you run into problems.  I normally do it without
-the checkBuilt=TRUE.
+Note that the checkBuilt=TRUE argument will potentially
+cause all your packages to be downloaded again so you could
+try leaving it off and then reissue the command with
+checkBuilt=TRUE later only if you run into problems.  I
+normally do it without the checkBuilt=TRUE.
 
 It is anticipated that this command will ultimately be
 superceded by functionality in the R setup procedure at
@@ -188,14 +193,15 @@ This copydir alternative is based on:
 https://www.stat.math.ethz.ch/pipermail/r-help/2007-May/131131.html
 
 5. movedir - same arguments as copydir.  Only difference is
-that it moves the directories rather than copy them.  This
+that it moves the directories rather than copying them.  This
 can be used if you are no longer interested in using the
-packages with the old version of R other than by reinstalling
-them.)  This has the advantage that its much faster than 
-copydir.  The example under copydir works with movedir too.  
-Just replace copydir with movedir in that example.  Comments 
-under copydir.bat apply here too.  I mostly use movedir.bat
-myself instead of copydir.bat since its so much faster.
+packages with the old version of R other than by
+reinstalling them.)  This has the advantage that its much
+faster than copydir.  The example under copydir works with
+movedir too.  Just replace copydir with movedir in that
+example.  Comments under copydir.bat apply here too.  I
+mostly use movedir.bat myself instead of copydir.bat since
+its so much faster.
 
 6. Rfind.bat - will search system for various tools needed
 to make R packages.  It also shows where the current R
@@ -216,16 +222,15 @@ file (assuming the user has .pdf extension associated with a
 pdf viewer).  If there is an error in sweave or the .tex
 file is not newer than the sweaved file the script stops.
 Similarly if there is an error in pdflatex or the .pdf is
-not newer than the .tex file then the script stops.
-Note that _two_ .pdf files are generated.  They are
-identical except one has a unique name created by
-suffixing the base with the date and time.  The one
-with the unique name is the one viewed.  This overcomes
-problems of not being able to view the .pdf if the .pdf
-from a prior run is current being viewed (which would
-happen since the Acrobat viewer won't allow you to view
-two files of the same name concurrently).  Every so often
-the user should delete all *.bck.pdf files.
+not newer than the .tex file then the script stops.  Note
+that _two_ .pdf files are generated.  They are identical
+except one has a unique name created by suffixing the base
+with the date and time.  The one with the unique name is the
+one viewed.  This overcomes problems of not being able to
+view the .pdf if the .pdf from a prior run is current being
+viewed (which would happen since the Acrobat viewer won't
+allow you to view two files of the same name concurrently).
+Every so often the user should delete all *.bck.pdf files.
 
 Try:
 
@@ -233,11 +238,10 @@ sweave
 
 without arguments to see options and get more info.
 
-8. withgs.bat - temporarily adds ghostscript to your
-path (finding its path in the registry) and runs the 
-command given as an argument.  For example, to use the
-fig2dev command to create a tiff file from a fig file
-try this:
+8. withgs.bat - temporarily adds ghostscript to your path
+(finding its path in the registry) and runs the command
+given as an argument.  For example, to use the fig2dev
+command to create a tiff file from a fig file try this:
 
  withgs fig2dev -L tiff myfile.fig > myfile.tiff
 
