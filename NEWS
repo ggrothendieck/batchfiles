@@ -4,7 +4,12 @@ Changes in version 0.4-0
     It may still work on XP but if any of the commands do not then use
     version 0.3-2 instead since that was exclusively tested on XP.
 
-  o added RguiStart.bat
+  o added RguiStart.bat which is like Rgui.bat but takes a single argument
+    which is a directory and starts up there
+
+  o added toggleDoc.pl/toggleDoc.js which adds a toggle box to each 00Index.html
+    which when checked collapses similar HTML help lines into one.  Contributed
+    by Dieter Menne.
 
   o added info on how to use RguiStart.bat and sweave.bat with SendTo
     folder
