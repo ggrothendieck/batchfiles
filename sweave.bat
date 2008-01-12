@@ -7,7 +7,18 @@ if "%1"=="-h" goto:help
 if "%1"=="--help" goto:help
 if "%1"=="/?" goto:help
 if "%1"==":Rterm" (
-	shift
+
+	if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
+	if not defined R_HOME for /f "tokens=2*" %%a in (
+	 'reg query hklm\software\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
+	  ) do set R_HOME=%%~b
+	if not defined R_HOME echo "Error: R not found" & goto:eof
+
+	set here=%CD%
+	set args=%2 %3 %4 %5 %6 %7 %8 %9
+
+	set cmd=:Rterm
+
 	goto:Rterm
 )
 goto:continue
@@ -116,6 +127,7 @@ if not defined R_HOME for /f "tokens=2*" %%a in (
   ) do set R_HOME=%%~b
 if not defined R_HOME echo "Error: R not found" & goto:eof
 
+
 set here=%CD%
 set args=%*
 
@@ -195,7 +207,6 @@ if /i %cmd%==jgr.exe (
   if exist "%R_HOME%\library\JGR\jgr.exe" set cmdpath=%R_HOME%\library\JGR\jgr.exe
 ) 
 
-echo if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 goto:eof
 
@@ -203,5 +214,6 @@ endlocal
 
 
 endlocal
+
 
 
