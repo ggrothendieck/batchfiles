@@ -29,7 +29,8 @@ Changes in version 0.4-0
 
   o updated copydir.bat portion of README to discuss additional alternatives
 
-  o added caveat about find-miktex.bat
+  o removed find-miktex.bat, Rfind.bat and makepkg.bat (they are still
+    available in batchfiles version 0.3-2)
 
   o added toggleDoc.pl/toggleDoc.js which adds a toggle box to each 00Index.html
     which when checked collapses similar HTML help lines into one.  Contributed

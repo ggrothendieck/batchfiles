@@ -14,7 +14,18 @@ command
 after which you will be able to run them by just issuing their
 name and any arguments.
 
-FILES
+BATCH & JAVASCRIPT PROGRAMS (also see separate section for perl programs)
+
+0. runR.bat
+1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, JGR.bat
+2. #Rscript.bat
+3. RguiStart.bat
+4. sweave.bat
+5. Rversions.hta
+6. copydir.bat
+7. movedir.bat
+6. Rversions.bat
+
 
 0. runR.bat.  If this file is copied to myfile.bat then running 
 myfile (possibly with arguments) will run myfile.R with those same
@@ -264,7 +275,7 @@ and copydir.bat won't overwrite anything this should be safe.
 This copydir alternative is based on:
 https://www.stat.math.ethz.ch/pipermail/r-help/2007-May/131131.html
 
-5. movedir - same arguments as copydir.  Only difference is
+7. movedir - same arguments as copydir.  Only difference is
 that it moves the directories rather than copying them.  This
 can be used if you are no longer interested in using the
 packages with the old version of R other than by
@@ -274,43 +285,6 @@ movedir too.  Just replace copydir with movedir in that
 example.  Comments under copydir.bat apply here too.  I
 mostly use movedir.bat myself instead of copydir.bat since
 its so much faster.
-
-6. Rfind.bat - will search system for various tools needed
-to make R packages.  It also shows where the current R
-installation is (R_HOME line).  It does not actually set or
-change any environment variables or any other aspect of the
-system so it is always safe to run.  It takes no arguments.
-e.g. Rfind
-
-7. withgs.bat - temporarily adds ghostscript to your path
-(finding its path in the registry) and runs the command
-given as an argument.  For example, to use the fig2dev
-command to create a tiff file from a fig file try this:
-
- withgs fig2dev -L tiff myfile.fig > myfile.tiff
-
-8. find-miktex.bat - this is run without arguments to list
-the MiKTeX folders as found in the Windows registry.
-Note that it has only been tested with MiKTeX 2.4 .
-
-9. makepkg.bat.  This is only needed by users who build
-their own packages and make use of the .Rbuildignore
-facility. It will automatically run a build followed by
-check or install so that files listed in the .Rbuildignore
-file are not checked or installed.  The first argument is
-install or check and the second argument is the package
-name.  If the package is called mypackage then the current
-directory should have a mypackage and a library folder in
-it.  e.g.
-
-	makepkg check mypackage
-	makepkg install mypackage
-
-You can set flags in the first few lines of the batch file.
-Users may wish to use svn to maintain versions of their 
-source packages in which case the .Rbuildignore facility
-is less important and so this command would not be needed 
-either.
 
 PERL PROGRAMS
 
