@@ -1,4 +1,4 @@
-:: @echo off
+@echo off
 setlocal
 if "%1"=="" goto:help
 if "%1"=="-h" goto:help
@@ -10,7 +10,7 @@ goto:continue
 	echo placed in the path even if its not normally there.
 	echo Syntax:
 	echo    withgs ...some command...
-	echo e.g. withgs fig2dev -L tiff myfile.fig > myfile.tiff
+	echo e.g. withgs fig2dev -L tiff myfile.fig ^> myfile.tiff
 	goto:eof
 :continue
 for /f "delims=" %%s in ('reg query "HKEY_LOCAL_MACHINE\SOFTWARE\AFPL Ghostscript"') do set KEY=%%s 

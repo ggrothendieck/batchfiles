@@ -1,11 +1,12 @@
 
-batchfiles consists of a set of Windows XP (not tested on 
-NT/2k) batch and javascript files which facilitate:
+batchfiles 0.4-0 consists of a set of Windows Vista (version 0.3-2
+have been tested on Windows XP) batch, javascript and perl files 
+which facilitate:
 
 1. starting R, automatically locating it in the registry
    each time they are run, so that when a new version of 
    R is installed its not necessary to update them all 
-   - Rcmd.bat, Rgui.bat, R.bat, jgr.bat
+   - Rcmd.bat, Rgui.bat, R.bat, jgr.bat, RguiStart.bat
 
 2. locating all R versions and optionally setting one in the
    registry - Rversions.bat, Rversions.hta
@@ -21,12 +22,25 @@ NT/2k) batch and javascript files which facilitate:
    - Rfind.bat
 
 5. copying/moving libraries from one version of R to another.  This 
-   is a temporary measure that will be eliminated once R 2.3.0 
-   incorporates the expected replacement functionality in its installer.  
+   is a temporary measure that will be eliminated once R incorporates 
+   the expected replacement functionality in its installer.  
    - copydir.bat, movedir.bat
 
 6. withgs.bat - temporarily adds ghostscript to your path (finding its
    path in the registry) and runs the command given as an argument.
+
+7. toggleDoc - cleans up 00index.html HTML help files by collapsing 
+   similar lines if the user checks a toggle box on the HTML page.
+   Contributed by Dieter Menne.
+   - toggleDoc.{pl, js, txt}
+
+With the exceptions listed below all programs are single file standalone 
+scripts and can be installed by simply placing them anywhere in your
+path:
+
+- sweave.bat uses Rterm.bat
+- toggleDoc.pl requires perl and must be placed together with toggleDoc.js
+  in the R .../library folder and run from there.
 
 See NEWS for changes since last version.
 
