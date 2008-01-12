@@ -313,6 +313,20 @@ source packages in which case the .Rbuildignore facility
 is less important and so this command would not be needed 
 either.
 
+PERL PROGRAMS
+
+These program require Perl to run:
+
+toggleDoc.pl - place this Perl program together with toggleDoc.js in
+your R .../library folder and run it without arguments perl toggleDoc.pl
+and it will modify the 00Index.html file of every package in ../library
+to add a Show all toggle box that when unchecked will collapse and reduce
+similar lines into a single line.  Look at:
+http://www.menne-biomed.de/download/toggleDoc/00Index.html
+and try checking and unchecking the Show all box to get a better idea of
+what it does.  toggleDoc.txt has additional documentation.  This program 
+was contributed by Dieter Menne <dieter.menne@menne-biomed.de>.
+
 DEPRECATED AND CHANGED
 
 Some functionality in older versions of batchfiles has been

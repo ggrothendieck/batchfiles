@@ -1,0 +1,41 @@
+toggleDoc.pl
+Perl script to reduce clutter in S4 html files and in S3 files
+with many repetitive functions.
+For an example of generated output, see
+http://www.menne-biomed.de/download/toggleDoc/00Index.html
+
+Put this script and the javascript file toggleDoc.js
+into the Rxxx/library directory (you should also find the R.css file there).
+When you run this script, new files 00IndexNew.html will be generated in
+each directory.
+***** Warning: this script has been tested under Windows only.
+Please report required changes for Linux to
+dieter.menne@menne-biomed.de
+
+
+What it does:
+
+Only 00Index.html files are changed by adding a javascript reference and a
+checkbox to switch between the "Show All" mode and the short mode; the latter
+is made the default on startup.
+All references that have a "," are hidden in the short mode, e.g.
+
+dperm,IndependenceTest-method
+
+In addition, repetitive similar entries with a common target file are collapsed
+to the first entry. For example, in R2HTML the following list only shows the
+first HTML reference in short mode.
+
+HTML              Outputs an object to a HTML file
+HTML.anova.loglm  Outputs an object to a HTML file
+HTML.aov 	        Outputs an object to a HTML file
+
+The program does not touch files with the string "toggleDoc.js" in the
+header, so if you want to protect single files from being processed, simply
+add this string in a comment to the html file (but note that this will be
+overridden anyway on the next update.)
+
+
+The function has been tested with IE and Firefox 1.5 to 2.0.0.11
+
+
