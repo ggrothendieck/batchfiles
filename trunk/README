@@ -4,16 +4,15 @@ NEWS.  See NEWS file.
 
 INSTALLATION
 
-To install these utilities, just copy all the .bat and .hta
-files in this distribution to any directory in your PATH.
-The Windows console command
+To install these utilities, note that all these commands have
+no dependencies so just copy all the .bat and .hta (or just the ones
+you want) to any directory in your PATH.  The Windows console 
+command
 
    path
 
-isused without arguments will display your path.  Note that
-all the files are independent of each other except that sweave.bat
-uses Rterm.bat so if you don't want them all you can just keep
-those you do want.
+after which you will be able to run them by just issuing their
+name and any arguments.
 
 FILES
 
@@ -315,7 +314,12 @@ either.
 
 PERL PROGRAMS
 
-These program require Perl to run:
+This program is independent of all other programs in this
+collection.  It does not depend on any other program here
+and no other program here depends on it.
+
+Unlike the other programs in this collection, this program 
+requires perl to run and has a dependency on toggleDoc.js.  
 
 toggleDoc.pl - Modifies the 00Index.html file of every package in .../library
 adding a "Show All" toggle box to each 00Index.html file.  When this box is
