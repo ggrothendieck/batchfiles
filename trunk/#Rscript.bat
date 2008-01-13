@@ -8,6 +8,8 @@ setlocal
 :: the Windows console command:  path
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+rem at one tine this script had only been tested on XP
+rem recent tests have only been on Vista
 rem ver | findstr XP >NUL
 rem if errorlevel 1 echo Warning: This script has only been tested on Windows XP.
 
@@ -66,7 +68,6 @@ if /i %cmd%==jgr.exe (
   if exist "%R_HOME%\library\JGR\jgr.exe" set cmdpath=%R_HOME%\library\JGR\jgr.exe
 ) 
 
-set a
 if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 goto:eof
 
