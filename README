@@ -31,22 +31,27 @@ BATCH & JAVASCRIPT PROGRAMS (also see separate section for perl programs)
 myfile (possibly with arguments) will run myfile.R with those same
 arguments.
 
-1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, Rscript.bat, JGR.bat - are 
-front ends to  the corresponding .exe files.  They locate R in the
-registry (and also look in a few other places if not found there)
-and then run the found R.exe, Rcmd.exe, Rscript.exe, Rgui.exe or 
-JGR.exe with the same arguments.    They are actually all the
-same file just renamed.  The file checks what name it was called
-by and acts accordingly.
+1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, Rscript.bat,
+JGR.bat - are front ends to  the corresponding .exe files.
+They locate R in the registry (and also look in a few other
+places if not found there) and then run the found R.exe,
+Rcmd.exe, Rscript.exe, Rgui.exe or JGR.exe with the same
+arguments.    They are actually all the same file just
+renamed.  (RguiStart.bat described separately is also the
+same file and all the code from this file is also at the end
+of sweave.bat, also described separately.)  The file checks
+what name it was called by and acts accordingly.
 
 Their main advantages are:
 - you don't have to modify your path just to use R.
-- when you upgrade R they automatically work without change since they
-  will pick up the new version from the registry automatically.
+- when you upgrade R they automatically work without change
+  since they will pick up the new version from the registry
+  automatically.
 
-You can put Rgui.bat on your desktop, associate a Windows ShortCut key 
-with it (see http://support.microsoft.com/kb/310417) so that you can
-just press the Windows key and R, say, to activate R.
+You can put Rgui.bat on your desktop and associate a Windows
+ShortCut key (http://support.microsoft.com/kb/310417) with
+it such as R so that you can just press the Windows key and
+R, say, to activate R.
 
 Here are some examples of using them from the command line:
 
@@ -58,10 +63,11 @@ Here are some examples of using them from the command line:
 	Rscript myprog.R < mydata.dat
 	Rgui
 
-Older version of Rcmd BATCH in R had problems with spaces in
-pathnames so be sure you use a sufficiently recent version of R.
-If you are using an old version of R that has problems use the
-short name corresponding to any long name with spaces:
+Older version of the Rcmd BATCH command in R had problems
+with spaces in pathnames so be sure you use a sufficiently
+recent version of R.  If you are using an old version of R
+that has problems use the short name corresponding to any
+long name with spaces:
 
 For example, suppose we have a file 
    C:\Documents and Settings\Administrator\myfile.R .
