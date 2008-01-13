@@ -1,48 +1,89 @@
 
-batchfiles 0.4-0 consists of a set of Windows Vista (version 0.3-2
-have been tested on Windows XP) batch, javascript and perl files 
-which facilitate:
+batchfiles 0.4-0 consists of a set of Windows Vista .bat, .hta and .pl
+files.
 
-1. starting R, automatically locating it in the registry
-   each time they are run, so that when a new version of 
-   R is installed its not necessary to update them all 
-   - Rcmd.bat, Rgui.bat, R.bat, jgr.bat, RguiStart.bat
+More information is available on the home page:
+http://batchfiles.googlecode.com
 
-2. locating all R versions and optionally setting one in the
-   registry - Rversions.bat, Rversions.hta
+CHANGES
 
-3. use of .Rbuildignore when checking and installing 
-   R packages automatically running a build first and then 
-   'Rcmd CHECK' or 'Rcmd INSTALL' in one step.  Also sets R_LIBS
-   to .../R/library if R_LIBS has not already been set.
-   - makepkgs.bat
+- now tested with Vista exclusively (use 0.3-2 instead on XP)
 
-4. locating various R tools that are used in building R packages
-   on your system by querying the registry.
-   - Rfind.bat
+- sweave.bat now has no dependencies on the other batch
+  files.  With this change all .bat and .hta files now 
+  have no dependencies except possibly for R.
 
-5. copying/moving libraries from one version of R to another.  This 
-   is a temporary measure that will be eliminated once R incorporates 
-   the expected replacement functionality in its installer.  
-   - copydir.bat, movedir.bat
+- RguiStart.bat is like Rgui.bat but takes a single argument
+  which may be an .Rdata file or a folder.  It can be 
+  placed in your SendTo folder in which case you can 
+  right click in Windows Explorer choosing 
+   SendTo | RguiStart.bat
 
-6. withgs.bat - temporarily adds ghostscript to your path (finding its
-   path in the registry) and runs the command given as an argument.
+- Rversions.hta now elevates RSetReg automatically (but
+  you will still be prompted for confirmation)
 
-7. toggleDoc - cleans up 00index.html HTML help files by collapsing 
-   similar lines if the user checks a toggle box on the HTML page.
-   Contributed by Dieter Menne.
-   - toggleDoc.{pl, js, txt}
+- new toggleDoc.pl perl program from Dieter Menne which
+  unclutters 00Index.html Help files in packages.  See
+  sample output at:
+  http://www.menne-biomed.de/download/toggleDoc/00Index.html
+  and try toggling the Show All checkbox to see what it does.
 
-With the exceptions listed below all programs are single file standalone 
-scripts and can be installed by simply placing them anywhere in your
-path:
+- Rversions.bat, Rfind.bat, makepkg.bat and withgs.bat 
+  are no longer part of the package but are still available
+  in version 0.3-2.
 
-- sweave.bat uses Rterm.bat
-- toggleDoc.pl requires perl and must be placed together with toggleDoc.js
-  in the R .../library folder and run from there.
+PACKAGE DESCRIPTION
 
-See NEWS for changes since last version.
+batchfiles is a collection of .bat, .hta and .pl scripts
+that are useful when using R or developing R software.
 
-Comments welcome.  Send to ggrothendieck@gmail.com
+The .bat and .hta files are easy to install as they have no
+dependencies other than R and they automatically look up R
+in the registry so no paths have to be set.  Just place them
+all or just those you want anywhere in your path.  There are
+utilities for running R, creating packages, switching the
+current R version, R scripting and runing sweave as well as 
+others.  
+
+- Rcmd.bat, R.bat and Rgui.bat are all the same file which
+query what name it was called by and acts in a similar way
+to the R .exe files of the same name except that they first
+attempt to find R by checking the registry and common
+locations so to use them all you do is put them anywhere in
+your path.  
+
+- RguiStart.bat is the same as Rgui.bat except it accepts
+a single argument that is an R directory or .Rdata file
+so if you place it in your SendTo folder and right click
+any folder in Windows Explorer choosing SendTo | RguiStart.bat 
+it will start up R in that folder.  If an .Rdata file is
+right clicked then R starts up loading that file.
+
+- sweave.bat will run sweave and the pdflatex and then display
+the pdf file (or some subset of those depending on switches).
+It has builtin makefile functionality so it will not proceed
+to the next step if the prior step has failed.  It also
+creates and displays a backup copy of the pdf with a unique
+name so two versions of the same pdf file can be simultaneously
+displayed.
+
+- #Rscript.bat can be used as the first line of an R script to
+make it callable as a batch file.  Rscript.bat is a variation
+of it used differently.
+
+- Rtidy.bat reformats R programs.  Its primarily included as
+a simple example of #Rscript.bat .
+
+- Rversions.hta - if there are multiple versions of R installed
+this program locates all versions in the registry and
+provides a GUI interface with a drop down menu to choose 
+which one you wish to make current.  
+
+- copydir.bat/movedir.bat copy or move packages from one library 
+to another such as would be done when upgrading R.  They will
+create new copies but will never overwrite any files that are
+already there so they should be safe to use.
+
+- toggleDoc.pl is a perl program which unclutters HTML help
+files contributed by Dieter Menne.  For an example see:
 
