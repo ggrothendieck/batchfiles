@@ -1,16 +1,7 @@
-WISHLIST (no particular order)
-
-o sweave.bat
-  - make sweave.bat standalone -- currently it depends on Rterm.bat
-
-o makepkg
-  - allow flags/switches on makepkg.bat eliminating manually editing at top
-  - allow one to specify a library on makepkg other than .\library
-
-o testing on Windows XP
-  - I only have access to Vista
+WISHLIST
 
 o toogleDoc
-  - eliminate perl dependence
-  - make toggleDoc standalone
+  - eliminate perl dependence (turn it into an R package?)
+  - make it standalone
   - simplify installation so that it can be placed anywhere in path
+
