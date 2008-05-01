@@ -128,6 +128,36 @@ if not defined R_HOME for /f "tokens=2*" %%a in (
 if not defined R_HOME echo "Error: R not found" & goto:eof
 
 
+:: add R_MIKTEX to PATH if defined.  Otherwise if its not 
+:: in the PATH already then check \Program Files\miktex* or \miktex* 
+:: and if found add that to PATH.
+
+:: if miktex found in PATH skip searching for it
+PATH | findstr /i miktex > nul
+if not errorlevel 1 goto:end_miktex
+
+:: check for presence of %ProgramFiles%\miktex* or \miktex*
+
+if not defined R_MIKTEX for /f "delims=" %%a in (
+    'dir /b /on "%ProgramFiles%"\miktex* 2^>NUL'
+) do set R_MIKTEX=%ProgramFiles%\%%a
+
+if not defined R_MIKTEX for /f "delims=" %%a in (
+    'dir /b /on %SystemDrive%:\miktex* 2^>NUL'
+) do set R_MIKTEX=%SystemDrive%:\miktex\%%a
+
+:end_miktex
+if defined R_MIKTEX PATH %R_MIKTEX%\miktex\bin;%PATH%
+
+if not defined R_TOOLS for /f "tokens=2*" %%a in (
+ 'reg query hklm\software\R-core\Rtools /v InstallPath 2^>NUL ^|
+findstr InstallPath'
+ ) do set R_TOOLS=%%~b
+
+if defined R_TOOLS (
+    PATH %R_TOOLS%\bin;%R_TOOLS%\perl\bin;%R_TOOLS%\MinGW\bin;%PATH%
+)
+
 set here=%CD%
 set args=%*
 

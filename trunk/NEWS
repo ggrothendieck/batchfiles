@@ -1,3 +1,12 @@
+Changes in version 0.4-1
+
+  o it is no longer necessary to set any paths to build R packages
+    provided Rtools 2.7 or later is used.  Rcmd.bat and the other
+    scripts automatically find Rtools from the registry (including perl)
+    and if MikTeX is at %ProgramFiles%\MiKTeX* or %SystemDrive%:\MiKTex  
+    then it will find MiKTeX too.  New optional environment variables 
+    R_TOOLS and R_MIKTEX are available to force specified paths to be used.
+
 Changes in version 0.4-0
 
   o as of 0.4-0 batchfiles is being developed and tested on Vista.
