@@ -16,7 +16,7 @@ name and any arguments.
 
 BATCH & JAVASCRIPT PROGRAMS (also see separate section for perl programs)
 
-0. runR.bat
+0. Rtools.bat
 1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, JGR.bat
 2. #Rscript.bat
 3. RguiStart.bat
@@ -27,9 +27,8 @@ BATCH & JAVASCRIPT PROGRAMS (also see separate section for perl programs)
 6. Rversions.bat
 
 
-0. runR.bat.  If this file is copied to myfile.bat then running 
-myfile (possibly with arguments) will run myfile.R with those same
-arguments.
+0. Rtools.bat.  Sets path to what Rcmd.bat and others use internally.
+This only sets the path for the current command shell instance.
 
 1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, Rscript.bat,
 JGR.bat - are front ends to  the corresponding .exe files.

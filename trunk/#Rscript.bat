@@ -1,5 +1,7 @@
 
 @echo off
+if /i "%1"==path (path %2) && goto:eof
+
 setlocal
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Placing this file in your path will allow rcmd to be run anywhere
@@ -21,9 +23,39 @@ rem if errorlevel 1 echo Warning: This script has only been tested on Windows XP
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
 if not defined R_HOME for /f "tokens=2*" %%a in (
- 'reg query hklm\software\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
+ 'reg query hklm\software\R-core\R /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_HOME=%%~b
 if not defined R_HOME echo "Error: R not found" & goto:eof
+
+:: add R_MIKTEX to PATH if defined.  Otherwise if its not 
+:: in the PATH already then check \Program Files\miktex* or \miktex* 
+:: and if found add that to PATH.
+
+:: if miktex found in PATH skip searching for it
+PATH | findstr /i miktex > nul
+if not errorlevel 1 goto:end_miktex
+
+:: check for presence of %ProgramFiles%\miktex* or \miktex*
+
+if not defined R_MIKTEX for /f "delims=" %%a in (
+    'dir /b /on "%ProgramFiles%"\miktex* 2^>NUL'
+) do set R_MIKTEX=%ProgramFiles%\%%a
+
+if not defined R_MIKTEX for /f "delims=" %%a in (
+    'dir /b /on %SystemDrive%:\miktex* 2^>NUL'
+) do set R_MIKTEX=%SystemDrive%:\miktex\%%a
+
+:end_miktex
+if defined R_MIKTEX PATH %R_MIKTEX%\miktex\bin;%PATH%
+
+if not defined R_TOOLS for /f "tokens=2*" %%a in (
+ 'reg query hklm\software\R-core\Rtools /v InstallPath 2^>NUL ^|
+findstr InstallPath'
+ ) do set R_TOOLS=%%~b
+
+if defined R_TOOLS (
+    PATH %R_TOOLS%\bin;%R_TOOLS%\perl\bin;%R_TOOLS%\MinGW\bin;%PATH%
+)
 
 set here=%CD%
 set args=%*
@@ -31,6 +63,8 @@ set args=%*
 :: get name by which this command was called
 :: this allows same file to be used for Rgui, Rterm, etc. by just renaming it
 for %%i in (%0) do set cmd=%%~ni.exe
+
+if /i %cmd%==rtools.exe (endlocal & set path=%path%) && goto:eof
 
 cd %R_HOME%\bin
 if /i not %cmd%==rguistart.exe goto:notRguiStart
@@ -73,6 +107,3 @@ goto:eof
 
 
 endlocal
-
-
-

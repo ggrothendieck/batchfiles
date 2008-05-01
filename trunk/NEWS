@@ -7,6 +7,12 @@ Changes in version 0.4-1
     then it will find MiKTeX too.  New optional environment variables 
     R_TOOLS and R_MIKTEX are available to force specified paths to be used.
 
+  o new Rtools.bat command that sets the path for the current cmd instance
+    to the one that R*.bat files use internally.  That is, rtools/bin,
+    rtools/perl/bin, rtools/MinGW/bin and MiKTeX .../miktex/bin are added 
+    to the path.  This is not needed to run or install R programs but only
+    if you want to access the rtools for other purposes.
+
 Changes in version 0.4-0
 
   o as of 0.4-0 batchfiles is being developed and tested on Vista.
