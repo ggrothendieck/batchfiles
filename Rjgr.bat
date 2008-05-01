@@ -1,5 +1,7 @@
 
 @echo off
+if /i "%1"==path (path %2) && goto:eof
+
 setlocal
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Placing this file in your path will allow rcmd to be run anywhere
@@ -62,6 +64,8 @@ set args=%*
 :: this allows same file to be used for Rgui, Rterm, etc. by just renaming it
 for %%i in (%0) do set cmd=%%~ni.exe
 
+if /i %cmd%==rtools.exe (endlocal & set path=%path%) && goto:eof
+
 cd %R_HOME%\bin
 if /i not %cmd%==rguistart.exe goto:notRguiStart
   set cmd=rgui.exe
@@ -103,6 +107,3 @@ goto:eof
 
 
 endlocal
-
-
-
