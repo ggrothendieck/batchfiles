@@ -44,6 +44,7 @@ what name it was called by and acts accordingly.
 
 Their main advantages are:
 - you don't have to modify your path just to use R.
+- you don't have to modify your path to build R packages.
 - when you upgrade R they automatically work without change
   since they will pick up the new version from the registry
   automatically.
