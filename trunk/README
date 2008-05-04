@@ -5,14 +5,11 @@ NEWS.  See NEWS file.
 INSTALLATION
 
 To install these utilities, note that all these commands have
-no dependencies so just copy all the .bat and .hta (or just the ones
-you want) to any directory in your PATH.  The Windows console 
-command
-
-   path
-
-after which you will be able to run them by just issuing their
-name and any arguments.
+no dependencies so just copy the .bat and .hta files (or just 
+the ones you want) to any directory in your PATH.  (The Windows
+console command PATH show you your path.) Then you will be 
+able to run them by just issuing their name and any arguments 
+in the Windows console.
 
 BATCH & JAVASCRIPT PROGRAMS (also see separate section for perl programs)
 
@@ -30,38 +27,49 @@ BATCH & JAVASCRIPT PROGRAMS (also see separate section for perl programs)
 0. Rtools.bat.  Sets path to what Rcmd.bat and others use internally.
 This only sets the path for the current command shell instance.
 
-1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, Rscript.bat,
-JGR.bat - are front ends to  the corresponding .exe files.
-They locate R in the registry (and also look in a few other
-places if not found there) and then run the found R.exe,
-Rcmd.exe, Rscript.exe, Rgui.exe or JGR.exe with the same
-arguments.    They are actually all the same file just
-renamed.  (RguiStart.bat described separately is also the
-same file and all the code from this file is also at the end
-of sweave.bat, also described separately.)  The file checks
+1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, Rscript.bat, JGR.bat - are front
+ends to  the corresponding .exe files.  They locate R in the registry (and also
+look in a few other places if not found there).  Then they look for Rtools and
+MiKTeX and if found they add them temporarily to the path.  (Rtools and MiKTeX
+are needed when building R packages from source but are not needed for just
+running R nor are they need to download and install binary packages from CRAN.)
+Then they run R.exe, Rcmd.exe, Rscript.exe, Rgui.exe or JGR.exe with the same
+arguments.    They are actually all the same file just renamed.  (RguiStart.bat
+described separately is also the same file and all the code from this file is
+also at the end of sweave.bat, also described separately.)  The file checks
 what name it was called by and acts accordingly.
 
 Their main advantages are:
-- you don't have to modify your path just to use R.
-- you don't have to modify your path to build R packages.
+- you don't have to modify your path just to run R.
+- you don't have to modify your path to build R packages from source.
 - when you upgrade R they automatically work without change
-  since they will pick up the new version from the registry
+  since they will pick up the new version of R from the registry
   automatically.
 
 You can put Rgui.bat on your desktop and associate a Windows
 ShortCut key (http://support.microsoft.com/kb/310417) with
-it such as R so that you can just press the Windows key and
+it so that you can just press the Windows key and
 R, say, to activate R.
 
-Here are some examples of using them from the command line:
+Here are some examples of using them from the command line.
+It assumes you have placed el.js, Rcmd.bat and Rgui.bat in
+your path.  el cmd spawns a command console with Administrator
+rights.  This is needed to build HTML help but you can omit
+the el command if you don't need that.
 
-	Rcmd INSTALL mypackage
-	Rcmd INSTALL mypackage -l library
+    el cmd
 	Rcmd check mypackage 
 	Rcmd build mypackage
 	Rcmd build mypackage --binary
+	Rcmd INSTALL mypackage_1.0-0.tar.gz
+	Rcmd INSTALL mypackage_1.0-0.tar.gz -l library
 	Rscript myprog.R < mydata.dat
 	Rgui
+
+(When installing packages on Vista it is recommended that
+you do this from within a console session that has Administrator
+rights.  It will typically work even without that; however, the
+HTML help will not be created.)
 
 Older version of the Rcmd BATCH command in R had problems
 with spaces in pathnames so be sure you use a sufficiently
@@ -156,6 +164,9 @@ Aside from using sweave from the command line, if you place
 sweave.bat in your SendTo folder as discussed under
 RguiStart.bat you can right click .Rnw files and choose
 SendTo > sweave to sweave them.
+
+You may need to copy Sweave.sty to the directory containing
+your .Rnw sweave file to use sweave.bat .
 
 5. Rversions.hta - This displays a GUI that lists all
 versions of R on your system  and allows you to choose one

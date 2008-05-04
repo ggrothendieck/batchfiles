@@ -13,6 +13,9 @@ Changes in version 0.4-1
     to the path.  This is not needed to run or install R programs but only
     if you want to access the rtools for other purposes.
 
+  o new el.js command which runs the command given as its argument elevated.
+    e.g. el cmd
+
 Changes in version 0.4-0
 
   o as of 0.4-0 batchfiles is being developed and tested on Vista.
