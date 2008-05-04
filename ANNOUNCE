@@ -1,4 +1,48 @@
 
+batchfiles 0.4-1 consists of a set of Windows Vista .bat and
+other scripts used as front ends to R CMD ... and for other
+purposes.
+
+Whereas Version 0.4-0 of batchfiles eliminated the need to
+set any paths when running R, version 0.4-1 now eliminates
+the need to set any paths when building and installing R
+packages.  It does this by using the registry to find R and
+rtools and uses a heuristic to find MiKTeX (since MiKTeX
+does not have a reliable registry key) and temporarily sets
+the path to include rtools and MiKTeX.
+
+Version 0.4-1 also includes an rtools.bat utility which will
+set the paths that would have otherwise had to be set in
+case you want to use rtools and MiKTeX with other programs
+-- this is not needed if you only want to use R or if you
+only want to build and install R packages.
+
+Also there is a new el utility (el.js) which runs the
+command given as its argument in elevated mode.  e.g.
+    el cmd
+spawns a cmd session which is elevated.
+
+The scripts Rcmd.bat, R.bat, Rterm.bat, Rscript.bat,
+#Rscript.bat, Rgui.bat, RguiStart.bat, Rjgr.bat are actually
+all the same script which query the name by which it was
+called to determine the appropriate action.  These scripts
+are each self containd single file scripts which do not
+depend on each other or on other software.  To install any
+of them just copy it to any place on your PATH and it can be
+immediately used.  Uninstall by deleting it.  Atlhough they
+query the registry they do not set the registry (except for
+Rversions.hta which calls RSetReg.exe, a program that comes
+bundled with R, that in turn sets the registry.)
+
+Version 0.4-0 of these utilities and later have only been
+tested on Vista.  Version 0.3-2 and earlier have only been
+tested on XP.
+
+More information is available on the home page:
+http://batchfiles.googlecode.com
+
+---
+
 batchfiles 0.4-0 consists of a set of Windows Vista .bat, .hta and .pl
 files.
 
