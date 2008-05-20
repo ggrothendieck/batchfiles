@@ -2,6 +2,15 @@
 setlocal
 rem rem ver | findstr XP >NUL
 
+set scriptdir_=%~dp0
+set lookin=.;%userprofile%;%scriptdir_%
+if not defined R_BATCHFILES_RC (
+	for %%f in ("rbatchfilesrc.bat") do set "R_BATCHFILES_RC=%%~$lookin:f"
+)
+if defined R_BATCHFILES_RC (
+	if exist "%R_BATCHFILES_RC%" call %R_BATCHFILES_RC%
+)
+
 if "%1"=="" goto:help
 if "%1"=="-h" goto:help
 if "%1"=="--help" goto:help

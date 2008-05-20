@@ -1,5 +1,6 @@
 
 @echo off
+if /i "%1"==path (path %2) && goto:eof
 
 setlocal
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -13,6 +14,15 @@ rem at one tine this script had only been tested on XP
 rem recent tests have only been on Vista
 rem ver | findstr XP >NUL
 rem if errorlevel 1 echo Warning: This script has only been tested on Windows XP.
+
+set scriptdir_=%~dp0
+set lookin=.;%userprofile%;%scriptdir_%
+if not defined R_BATCHFILES_RC (
+	for %%f in ("rbatchfilesrc.bat") do set "R_BATCHFILES_RC=%%~$lookin:f"
+)
+if defined R_BATCHFILES_RC (
+	if exist "%R_BATCHFILES_RC%" call %R_BATCHFILES_RC%
+)
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: use environment variable R_HOME if defined
