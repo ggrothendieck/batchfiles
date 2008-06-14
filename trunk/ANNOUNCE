@@ -1,134 +1,55 @@
 
-batchfiles 0.4-1 consists of a set of Windows Vista .bat and
-other scripts used as front ends to R CMD ... and for other
-purposes.
+New Vesion of Windows Batchfiles for R
 
-Whereas Version 0.4-0 of batchfiles eliminated the need to
-set any paths when running R, version 0.4-1 now eliminates
-the need to set any paths when building and installing R
-packages.  It does this by using the registry to find R and
-rtools and uses a heuristic to find MiKTeX (since MiKTeX
-does not have a reliable registry key) and temporarily sets
-the path to include rtools and MiKTeX.
+batchfiles 0.4-2 consists of a set of Windows .bat utilities and other
+scripts that run R and associated programs by finding R in the
+registry so that no paths need be set -- a major source of error
+during installation.  Also it implies that paths which might otherwise
+need to be updated when you upgrade R do not need to be.  The tools
+automatically find the new registry entry.
 
-Version 0.4-1 also includes an rtools.bat utility which will
-set the paths that would have otherwise had to be set in
-case you want to use rtools and MiKTeX with other programs
--- this is not needed if you only want to use R or if you
-only want to build and install R packages.
+The utilities are are each one Windows batch files or javascript file
+without dependencies.  Just place those you want or all of them
+anywhere in your path and they instantly become available to Windows
+console sessions.  No setting of paths or other formal installation is
+required.
 
-Also there is a new el utility (el.js) which runs the
-command given as its argument in elevated mode.  e.g.
-    el cmd
-spawns a cmd session which is elevated.
+This version of batchfiles has only been tested on Windows Vista but
+most of the utilities may work on earlier versions as well.  Version
+0.3-2 was only tested on Windows XP.
 
-The scripts Rcmd.bat, R.bat, Rterm.bat, Rscript.bat,
-#Rscript.bat, Rgui.bat, RguiStart.bat, Rjgr.bat are actually
-all the same script which query the name by which it was
-called to determine the appropriate action.  These scripts
-are each self containd single file scripts which do not
-depend on each other or on other software.  To install any
-of them just copy it to any place on your PATH and it can be
-immediately used.  Uninstall by deleting it.  Atlhough they
-query the registry they do not set the registry (except for
-Rversions.hta which calls RSetReg.exe, a program that comes
-bundled with R, that in turn sets the registry.)
+NEW
 
-Version 0.4-0 of these utilities and later have only been
-tested on Vista.  Version 0.3-2 and earlier have only been
-tested on XP.
+A new command Stangle.bat is now available that is similar to
+Sweave.bat except it runs Stangle.  Like Sweave.bat, it ca be run
+without arguments for help.  Sweave.bat and Stangle.bat are actually
+the same file.  Each queries the name by which it was called in order
+to determine what to do.  Note that like Sweave.bat, Stangle.bat does
+not depend on rtools.
 
-More information is available on the home page:
-http://batchfiles.googlecode.com
+Also new to this version is an optional second facility for those
+situations where the registry is not available.   It can also be used
+to override the registry values and heuristics or to have different
+versions of R automatically used by different projects.
 
----
+For those users who do not have access to the registry one can either
+define environment variables, as before, or new to this version one
+can place rbatchfilesrc.bat in the current directory or %userprofile%
+directory or the same directory as the batchfiles and they will get
+their definitions from there instead of looking in the registry.  A
+typical rbatchfilesrc.bat might be 3 lines long and look like this:
 
-batchfiles 0.4-0 consists of a set of Windows Vista .bat, .hta and .pl
-files.
+		set R_HOME=C:\Program Files\R\R-2.7.0
+		set R_TOOLS=C:\Rtools
+		set R_MIKTEX=C:\Program Files\MiKTeX 2.7\miktex\bin
 
-More information is available on the home page:
-http://batchfiles.googlecode.com
+Most people will not need this facility and will instead use the
+automatic registry lookup which completely avoids the need to specify
+path names but for situations as described this facility may be of
+use.
 
-CHANGES
+The batchfiles are available on CRAN in the contributed extras area.
+For more information see the home page of batchfiles at:
 
-- now tested with Vista exclusively (use 0.3-2 instead on XP)
-
-- sweave.bat now has no dependencies on the other batch
-  files.  With this change all .bat and .hta files now 
-  have no dependencies except possibly for R.
-
-- RguiStart.bat is like Rgui.bat but takes a single argument
-  which may be an .Rdata file or a folder.  It can be 
-  placed in your SendTo folder in which case you can 
-  right click in Windows Explorer choosing 
-   SendTo | RguiStart.bat
-
-- Rversions.hta now elevates RSetReg automatically (but
-  you will still be prompted for confirmation)
-
-- new toggleDoc.pl perl program from Dieter Menne which
-  unclutters 00Index.html Help files in packages.  See
-  sample output at:
-  http://www.menne-biomed.de/download/toggleDoc/00Index.html
-  and try toggling the Show All checkbox to see what it does.
-
-- Rversions.bat, Rfind.bat, makepkg.bat and withgs.bat 
-  are no longer part of the package but are still available
-  in version 0.3-2.
-
-PACKAGE DESCRIPTION
-
-batchfiles is a collection of .bat, .hta and .pl scripts
-that are useful when using R or developing R software.
-
-The .bat and .hta files are easy to install as they have no
-dependencies other than R and they automatically look up R
-in the registry so no paths have to be set.  Just place them
-all or just those you want anywhere in your path.  There are
-utilities for running R, creating packages, switching the
-current R version, R scripting and runing sweave as well as 
-others.  
-
-- Rcmd.bat, R.bat and Rgui.bat are all the same file which
-query what name it was called by and acts in a similar way
-to the R .exe files of the same name except that they first
-attempt to find R by checking the registry and common
-locations so to use them all you do is put them anywhere in
-your path.  
-
-- RguiStart.bat is the same as Rgui.bat except it accepts
-a single argument that is an R directory or .Rdata file
-so if you place it in your SendTo folder and right click
-any folder in Windows Explorer choosing SendTo | RguiStart.bat 
-it will start up R in that folder.  If an .Rdata file is
-right clicked then R starts up loading that file.
-
-- sweave.bat will run sweave and the pdflatex and then display
-the pdf file (or some subset of those depending on switches).
-It has builtin makefile functionality so it will not proceed
-to the next step if the prior step has failed.  It also
-creates and displays a backup copy of the pdf with a unique
-name so two versions of the same pdf file can be simultaneously
-displayed.
-
-- #Rscript.bat can be used as the first line of an R script to
-make it callable as a batch file.  Rscript.bat is a variation
-of it used differently.
-
-- Rtidy.bat reformats R programs.  Its primarily included as
-a simple example of #Rscript.bat .
-
-- Rversions.hta - if there are multiple versions of R installed
-this program locates all versions in the registry and
-provides a GUI interface with a drop down menu to choose 
-which one you wish to make current.  
-
-- copydir.bat/movedir.bat copy or move packages from one library 
-to another such as would be done when upgrading R.  They will
-create new copies but will never overwrite any files that are
-already there so they should be safe to use.
-
-- toggleDoc.pl is a perl program which unclutters HTML help
-files contributed by Dieter Menne.  For an example see:
-http://www.menne-biomed.de/download/toggleDoc/00Index.html
+	http://batchfiles.googlecode.com
 

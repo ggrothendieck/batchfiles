@@ -4,12 +4,16 @@ NEWS.  See NEWS file.
 
 INSTALLATION
 
-To install these utilities, note that all these commands have
-no dependencies so just copy the .bat and .hta files (or just 
-the ones you want) to any directory in your PATH.  (The Windows
-console command PATH show you your path.) Then you will be 
-able to run them by just issuing their name and any arguments 
-in the Windows console.
+To use any of these utilities just make sure that they are either
+in the current directory you are using or else are anywhere in your
+PATH.  No installation is necessary.  The utilities are all 
+written in Windows batch or javascript as HTA files and have
+no dependencies.
+
+Note that R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, JGR.bat and RguiStart.bat
+are actually all the same file.  When any of them are run they check what
+name is was called by to determine what to do.  Similarly Sweave.bat and
+Stangle.bat are the same file.
 
 BATCH & JAVASCRIPT PROGRAMS (also see separate section for perl programs)
 
@@ -17,7 +21,7 @@ BATCH & JAVASCRIPT PROGRAMS (also see separate section for perl programs)
 1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, JGR.bat
 2. #Rscript.bat
 3. RguiStart.bat
-4. sweave.bat
+4. Sweave.bat and Stangle.bat
 5. Rversions.hta
 6. copydir.bat
 7. movedir.bat
@@ -36,7 +40,7 @@ running R nor are they need to download and install binary packages from CRAN.)
 Then they run R.exe, Rcmd.exe, Rscript.exe, Rgui.exe or JGR.exe with the same
 arguments.    They are actually all the same file just renamed.  (RguiStart.bat
 described separately is also the same file and all the code from this file is
-also at the end of sweave.bat, also described separately.)  The file checks
+also at the end of Sweave.bat, also described separately.)  The file checks
 what name it was called by and acts accordingly.
 
 Their main advantages are:
@@ -45,6 +49,8 @@ Their main advantages are:
 - when you upgrade R they automatically work without change
   since they will pick up the new version of R from the registry
   automatically.
+- Sweave.bat and Stangle.bat, unlike, Rcmd Sweave and Rcmd Stangle
+  do not depend on rtools.
 
 You can put Rgui.bat on your desktop and associate a Windows
 ShortCut key (http://support.microsoft.com/kb/310417) with
@@ -132,17 +138,20 @@ Explorer and choose Open Command Window Here and then when the command
 window opens enter Rgui assuming you have placed Rgui.bat somewhere in
 your path.
 
-4. sweave.bat - will run sweave, then pdflatex and then
-display latex file.  Requires Rterm.bat .  e.g.
+4. Sweave.bat and Stangle.bat - will run Sweave, then pdflatex and then
+display latex file.  Stangle.bat will run Stangle producing an R file.
+Unlike Rcmd Sweave and Rcmd Stangle these do not depend on rtools.
+Sweave.bat and Stangle.bat are actually the same file.  The file determines
+what to do by looking at the name by which it was called.
 
-      sweave mydoc.Rnw
+      Sweave mydoc.Rnw
    or
-      sweave mydoc 
+      Sweave mydoc 
 
-The script runs sweave, pdflatex and then displays the pdf
+The script runs Sweave, pdflatex and then displays the pdf
 file (assuming the user has .pdf extension associated with a
-pdf viewer).  If there is an error in sweave or the .tex
-file is not newer than the sweaved file the script stops.
+pdf viewer).  If there is an error in Sweave or the .tex
+file is not newer than the Sweave'd file the script stops.
 Similarly if there is an error in pdflatex or the .pdf is
 not newer than the .tex file then the script stops.  Note
 that _two_ .pdf files are generated.  They are identical
