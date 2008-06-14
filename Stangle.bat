@@ -2,8 +2,13 @@
 setlocal
 rem rem ver | findstr XP >NUL
 
+for %%i in (%0) do set cmd=%%~ni
+if /i "%cmd%"=="Stangle" set cmd=Stangle
+if /i "%cmd%"=="Sweave" set cmd=Sweave
+
 set scriptdir_=%~dp0
 set lookin=.;%userprofile%;%scriptdir_%
+
 if not defined R_BATCHFILES_RC (
 	for %%f in ("rbatchfilesrc.bat") do set "R_BATCHFILES_RC=%%~$lookin:f"
 )
@@ -32,8 +37,9 @@ if "%1"==":Rterm" (
 )
 goto:continue
 :help
-echo Usage: stangle abc.Rnw
-echo    or  stangle abc
+echo Usage: %0 abc.Rnw
+echo    or  %0 abc
+if /i "%cmd%"=="stangle" goto:eof
 echo switches:
 echo    -t or --tex or     produce tex file and exit
 echo    -p or --pdf or     produce pdf file and exit
@@ -76,20 +82,44 @@ goto:eof
     goto:loop
     :cont
 
+if errorlevel 1 echo Warning: This script has only been tested on Windows XP.
 if exist "%file%.Rtex" set infile="%file%.Rtex"
 if exist "%file%.Snw" set infile="%file%.Snw"
 if exist "%file%.Rnw" set infile="%file%.Rnw"
 if exist "%file%" set infile="%file%" 
 set infilslsh=%infile:\=/%
+:: call sweave
+echo library('utils'); %cmd%(%infilslsh%) | %cmd%.bat :Rterm --no-restore --slave
+if /i "%cmd%"=="stangle" goto:eof
+:: echo on
+if errorlevel 1 goto:eof
+if /i "%switch%"=="t" goto:eof
 
-:: get filename without extension
-:: and back it .R file if it exists
-:: For now we comment this out and it works the same as Stangle
-:: for %%i in (%file%) do set stem=%%~ni
-:: if exist "%stem%.R" move /y "%stem%.R" "%stem%.R.bck" 
-:: call stangle
-echo library('utils'); Stangle(%infilslsh%) | stangle.bat :Rterm --no-restore --slave
+:: echo %cd%
+for %%a in ("%file%") do set base=%%~sdpna
+if not exist "%base%.tex" goto:eof
+for /f "delims=" %%a in ('dir %infile% "%base%.tex" /od/b ^| more +1'
+) do set ext=%%~xa
+if "%ext%"==".tex" (pdflatex "%base%.tex") else goto:eof
+if errorlevel 1 goto:eof
+if /i "%switch%"=="p" goto:eof
+
+if not exist "%base%.pdf" goto:eof
+for /f "delims=" %%a in ('dir "%base%.pdf" "%base%.tex" /od/b ^| more +1'
+) do set ext=%%~xa
+if not "%ext%"==".pdf" goto:eof
+set pdffile=%base%.pdf
+if /i "%switch%"=="n" start "" "%pdffile%" && goto:eof
+set tmpfile=%date%-%time%
+set tmpfile=%tmpfile: =-%
+set tmpfile=%tmpfile::=.%
+set tmpfile=%tmpfile:/=.%
+set tmpfile=%base%-%tmpfile%.bck.pdf
+copy "%pdffile%" "%tmpfile%"
+start "" "%tmpfile%"
+echo *** delete *.bck.pdf files when done ***
 goto:eof
+
 
 
 @echo off
@@ -149,7 +179,7 @@ set args=%*
 
 :: get name by which this command was called
 :: this allows same file to be used for Rgui, Rterm, etc. by just renaming it
-for %%i in (%0) do set cmd=%%~ni.exe
+for %%i in (%0) do set cmd=%%~ni 
 
 goto %cmd%
 goto:eof

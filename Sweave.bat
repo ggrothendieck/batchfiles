@@ -2,8 +2,13 @@
 setlocal
 rem rem ver | findstr XP >NUL
 
+for %%i in (%0) do set cmd=%%~ni
+if /i "%cmd%"=="Stangle" set cmd=Stangle
+if /i "%cmd%"=="Sweave" set cmd=Sweave
+
 set scriptdir_=%~dp0
 set lookin=.;%userprofile%;%scriptdir_%
+
 if not defined R_BATCHFILES_RC (
 	for %%f in ("rbatchfilesrc.bat") do set "R_BATCHFILES_RC=%%~$lookin:f"
 )
@@ -32,8 +37,9 @@ if "%1"==":Rterm" (
 )
 goto:continue
 :help
-echo Usage: sweave abc.Rnw
-echo    or  sweave abc
+echo Usage: %0 abc.Rnw
+echo    or  %0 abc
+if /i "%cmd%"=="stangle" goto:eof
 echo switches:
 echo    -t or --tex or     produce tex file and exit
 echo    -p or --pdf or     produce pdf file and exit
@@ -83,7 +89,8 @@ if exist "%file%.Rnw" set infile="%file%.Rnw"
 if exist "%file%" set infile="%file%" 
 set infilslsh=%infile:\=/%
 :: call sweave
-echo library('utils'); Sweave(%infilslsh%) | sweave.bat :Rterm --no-restore --slave
+echo library('utils'); %cmd%(%infilslsh%) | %cmd%.bat :Rterm --no-restore --slave
+if /i "%cmd%"=="stangle" goto:eof
 :: echo on
 if errorlevel 1 goto:eof
 if /i "%switch%"=="t" goto:eof
@@ -172,7 +179,7 @@ set args=%*
 
 :: get name by which this command was called
 :: this allows same file to be used for Rgui, Rterm, etc. by just renaming it
-for %%i in (%0) do set cmd=%%~ni.exe
+for %%i in (%0) do set cmd=%%~ni 
 
 goto %cmd%
 goto:eof
