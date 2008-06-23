@@ -1,7 +1,11 @@
 WISHLIST
 
-o toogleDoc
-  - eliminate perl dependence (turn it into an R package?)
-  - make it standalone
-  - simplify installation so that it can be placed anywhere in path
+o Sweave.bat
+  - output file name
+  - commandArgs
+  - brew
 
+o clean up documentation
+
+o test latest version of XP (recent versions were tested only on Vista;
+  versions up to 0.3-2 tested only on XP)

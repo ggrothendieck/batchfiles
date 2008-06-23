@@ -318,55 +318,31 @@ example.  Comments under copydir.bat apply here too.  I
 mostly use movedir.bat myself instead of copydir.bat since
 its so much faster.
 
-PERL PROGRAMS
-
-There is one perl program, toggleDoc.pl, provided in this collection.
-
-The perl program is independent of all other programs in this
-collection.  It does not depend on any other program here
-and no other program here depends on it.
-
-Unlike the other programs in this collection, this program 
-requires perl to run and has a dependency on toggleDoc.js.  
-
-toggleDoc.pl - Modifies the 00Index.html file of every
-package in .../library adding a "Show All" toggle box to
-each 00Index.html file.  When this box is unchecked it will
-collapse and reduce similar lines into a single line.  Look at:
-
- http://www.menne-biomed.de/download/toggleDoc/00Index.html
-
-The web page displayed is an example of the web pages output
-from toggleDoc.pl.  Try checking and unchecking the Show all
-box to get a better idea of what it does.  toggleDoc.txt has
-additional documentation.  To run this program requires that
-you install perl.  After that place toggleDoc.pl and
-toggleDoc.js in your R .../library folder, change directory
-to the .../library folder and run toggleDoc.pl without
-arguments: 
-
-perl toggleDoc.pl 
-
-toggleDoc was contributed by Dieter Menne 
-<dieter.menne@menne-biomed.de>
-
 DEPRECATED AND CHANGED
+
+- There was previously one perl program, toggleDoc.pl,
+  provided in the collection which is no longer distributed
+  but is still available with older distributions of
+  batchfiles.  It adds a "Show All" toggle box to the
+  00Index.html file of each package.
+
 
 - Rfind.bat, makepkg.bat and Rversions.bat are no longer
   distributed in the batchfiles collection but are still
   available in version 0.2-3 of batchfiles if you want them.
   It is unknown whether they work with Vista and recent
-  versions of R.  (I have not used them in some time so
-  am no longer maintaining them.)  If you used Rversions.bat
-  before you can still use Rversions.hta, the GUI version
-  of the program -- that one is still part of the collection.
+  versions of R.  (I have not used them in some time so am
+  no longer maintaining them.)  If you used Rversions.bat
+  before you can still use Rversions.hta, the GUI version of
+  the program -- that one is still part of the collection.
 
 ADDITIONAL FILES
 
-1. RESOURCES - additional information on writing Windows XP batch files.
+1. RESOURCES - additional information on writing Windows XP
+batch files.
 
-2. COPYRIGHT and COPYING - this is free software subject to the GPL license 
-   as described.
+2. COPYRIGHT and COPYING - this is free software subject to
+   the GPL license as described.
 
 3. THANKS - acknowledgments.
 
