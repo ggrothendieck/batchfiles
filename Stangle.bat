@@ -13,6 +13,7 @@ if not defined R_BATCHFILES_RC (
 	for %%f in ("rbatchfilesrc.bat") do set "R_BATCHFILES_RC=%%~$lookin:f"
 )
 if defined R_BATCHFILES_RC (
+	set R_BATCHFILES_RC
 	if exist "%R_BATCHFILES_RC%" call %R_BATCHFILES_RC%
 )
 
@@ -100,6 +101,28 @@ for %%a in ("%file%") do set base=%%~sdpna
 if not exist "%base%.tex" goto:eof
 for /f "delims=" %%a in ('dir %infile% "%base%.tex" /od/b ^| more +1'
 ) do set ext=%%~xa
+
+:: add R_MIKTEX to PATH if defined.  Otherwise if its not 
+:: in the PATH already then check \Program Files\miktex* or \miktex* 
+:: and if found add that to PATH.
+
+:: if miktex found in PATH skip searching for it
+PATH | findstr /i miktex > nul
+if not errorlevel 1 goto:end_miktex
+
+:: check for presence of %ProgramFiles%\miktex* or \miktex*
+
+if not defined R_MIKTEX for /f "delims=" %%a in (
+    'dir /b /on "%ProgramFiles%"\miktex* 2^>NUL'
+) do set R_MIKTEX=%ProgramFiles%\%%a
+
+if not defined R_MIKTEX for /f "delims=" %%a in (
+    'dir /b /on %SystemDrive%:\miktex* 2^>NUL'
+) do set R_MIKTEX=%SystemDrive%:\miktex\%%a
+
+:end_miktex
+if defined R_MIKTEX PATH %R_MIKTEX%\miktex\bin;%PATH%
+
 if "%ext%"==".tex" (pdflatex "%base%.tex") else goto:eof
 if errorlevel 1 goto:eof
 if /i "%switch%"=="p" goto:eof
