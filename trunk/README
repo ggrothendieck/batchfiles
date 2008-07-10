@@ -1,5 +1,7 @@
 batchfiles contains batch and GUI files for installing and maintaing R.  
 
+License.  GPL-2.  See COPYING file.
+
 NEWS.  See NEWS file.
 
 INSTALLATION
@@ -317,6 +319,10 @@ movedir too.  Just replace copydir with movedir in that
 example.  Comments under copydir.bat apply here too.  I
 mostly use movedir.bat myself instead of copydir.bat since
 its so much faster.
+
+8. show-svn-info.hta - Just run this from any Tortoise SVN folder
+and it will display some information about it.  Requires version 1.5
+or higher of Tortoise SVN.
 
 DEPRECATED AND CHANGED
 
