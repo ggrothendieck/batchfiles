@@ -1,0 +1,36 @@
+<head>
+<STYLE TYPE="text/css">
+.highlight {background:#ff00ff}
+.text {color:#ff00ff}
+.both {color:white;background:black}
+</STYLE> 
+</head>
+<body>
+<h1>Tortoise SubVersion</h1>
+<script type="text/jscript">
+
+// testCOM.js - javascript file
+// test script for the SubWCRev COM/Automation-object
+
+filesystem = new ActiveXObject("Scripting.FileSystemObject");
+
+SubWCRev1 = new ActiveXObject("SubWCRev.object");
+SubWCRev2 = new ActiveXObject("SubWCRev.object");
+SubWCRev3 = new ActiveXObject("SubWCRev.object");
+
+SubWCRev1.GetWCInfo(filesystem.GetAbsolutePathName("."), 0, 0);
+SubWCRev2.GetWCInfo(filesystem.GetAbsolutePathName(".."), 1, 1);
+SubWCRev3.GetWCInfo(filesystem.GetAbsolutePathName("SubWCRev.cpp"), 
+                    0, 0);
+
+sInfo1 = "Revision = " + SubWCRev1.Revision + "<br>" +
+         "\nMin Revision = " + SubWCRev1.MinRev + "<br>" +
+         "\nMax Revision = " + SubWCRev1.MaxRev + "<br>" +
+         "\nDate = " + SubWCRev1.Date + "<br>" +
+         "\nURL = " + SubWCRev1.Url + "<br>" +
+         "\nAuthor = " + SubWCRev1.Author + "<br>" +
+         "\nHasMods = " + SubWCRev1.HasModifications;
+document.write(sInfo1);
+</script>
+</body>
+</html>
