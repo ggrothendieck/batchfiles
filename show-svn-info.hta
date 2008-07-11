@@ -32,12 +32,12 @@ SubWCRev3.GetWCInfo(filesystem.GetAbsolutePathName("SubWCRev.cpp"),
                     0, 0);
 
 sInfo1 = "Revision = " + SubWCRev1.Revision + "<br>" +
-         "\nMin Revision = " + SubWCRev1.MinRev + "<br>" +
-         "\nMax Revision = " + SubWCRev1.MaxRev + "<br>" +
-         "\nDate = " + SubWCRev1.Date + "<br>" +
-         "\nURL = " + SubWCRev1.Url + "<br>" +
-         "\nAuthor = " + SubWCRev1.Author + "<br>" +
-         "\nHasMods = " + SubWCRev1.HasModifications;
+      "\nMin Revision = " + SubWCRev1.MinRev + "<br>" +
+      "\nMax Revision = " + SubWCRev1.MaxRev + "<br>" +
+      "\nDate = " + SubWCRev1.Date + "<br>" +
+      '\nURL = <a href="' + SubWCRev1.Url + '">' + SubWCRev1.Url + "</a><br>" +
+      "\nAuthor = " + SubWCRev1.Author + "<br>" +
+      "\nHasMods = " + SubWCRev1.HasModifications;
 document.write(sInfo1);
 </script>
 </body>

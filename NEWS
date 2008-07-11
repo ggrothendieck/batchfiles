@@ -1,3 +1,9 @@
+Changes in version 0.4-4
+
+  o new command show-svn-info.hta when run from a Tortoise SVN checkout
+    folder shows some info about it.  Requires Tortoise SVN version 1.5
+    or higher.
+
 Changes in version 0.4-3
 
   o Sweave.bat and Stangle.bat were not automatically finding MiKTeX.  
