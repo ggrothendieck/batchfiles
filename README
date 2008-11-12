@@ -27,7 +27,7 @@ BATCH & JAVASCRIPT PROGRAMS (also see separate section for perl programs)
 5. Rversions.hta
 6. copydir.bat
 7. movedir.bat
-6. Rversions.bat
+8. find-miktex.hta
 
 
 0. Rtools.bat.  Sets path to what Rcmd.bat and others use internally.
@@ -323,6 +323,10 @@ its so much faster.
 8. show-svn-info.hta - Just run this from any Tortoise SVN folder
 and it will display some information about it.  Requires version 1.5
 or higher of Tortoise SVN.
+
+9. find-miktex.hta - displays the path to the MiKTeX bin directory.
+Just enter find-miktex.hta at the Windows command line (no arguments 
+are needed) or double click it from Windows Explorer.  
 
 DEPRECATED AND CHANGED
 
