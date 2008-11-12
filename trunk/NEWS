@@ -4,6 +4,10 @@ Changes in version 0.4-4
     folder shows some info about it.  Requires Tortoise SVN version 1.5
     or higher.
 
+  o new command find-miktex.hta can be run without arguments from the
+    Windows command line or double clicked it from Windows Explorer 
+    and it will show the path to the MiKTeX bin directory.
+
 Changes in version 0.4-3
 
   o Sweave.bat and Stangle.bat were not automatically finding MiKTeX.  
