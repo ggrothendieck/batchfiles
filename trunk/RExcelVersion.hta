@@ -58,10 +58,10 @@ function SetRVersion5(menu) {
        menuo = menu.options[menu.selectedIndex];
        // this worked on XP:
        WshShell.CurrentDirectory = menuo.value;
-       WshShell.Run("bin\\RSetReg.exe", 0);
-       WshShell.Run("bin\\Rscript.exe -e \"library(rcom);comRegisterRegistry()\"",0);
+       // WshShell.Run("bin\\RSetReg.exe", 0);
+       // WshShell.Run("bin\\Rscript.exe -e \"library(rcom);comRegisterRegistry()\"",0);
        WshShell.Run("cmd.exe /c ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\"",0);
-       WshShell.CurrentDirectory = menuo.value;
+    WshShell.Run("cmd.exe /c (bin\\RSetReg.exe) & (bin\\Rscript.exe -e \"library(rcom);comRegisterRegistry()\") & (ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\")", "", "runas");
        alert("Current R Version Set to\n" + menuo.value);
        close();
 }
@@ -72,9 +72,9 @@ function SetRVersion6(menu) {
 	// execute at elevated privledge
 	// only tested on Vista
 	Shell = new ActiveXObject("Shell.Application");
-	Shell.ShellExecute("bin\\RSetReg.exe", "", "", "runas");
-	Shell.ShellExecute("bin\\Rscript.exe", "-e \"library(rcom);comRegisterRegistry()\"", "", "runas");
-    Shell.ShellExecute("cmd.exe", "/c ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\"", "", "runas");
+	// Shell.ShellExecute("bin\\RSetReg.exe", "", "", "runas");
+	// Shell.ShellExecute("bin\\Rscript.exe", "-e \"library(rcom);comRegisterRegistry()\"", "", "runas");
+    Shell.ShellExecute("cmd.exe", "/c (bin\\RSetReg.exe) & (bin\\Rscript.exe -e \"library(rcom);comRegisterRegistry()\") & (ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\")", "", "runas");
 	alert("Current R Version Set to\n" + menuo.value);
 	close();
 }
