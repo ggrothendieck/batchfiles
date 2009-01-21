@@ -8,6 +8,13 @@ Changes in version 0.4-4
     Windows command line or double clicked it from Windows Explorer 
     and it will show the path to the MiKTeX bin directory.
 
+  o Rversions.hta now also changes the .RData association and has
+    been verified to work on both XP and Vista.
+
+  o new RExcelversion.hta (also distributed with RExcel) that is like
+    Rversions.hta but also sets the version for Rexcel at the same time
+    and has been verified to work on both XP and Vista.
+
 Changes in version 0.4-3
 
   o Sweave.bat and Stangle.bat were not automatically finding MiKTeX.  
