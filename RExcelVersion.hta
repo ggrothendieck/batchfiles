@@ -6,10 +6,10 @@
 .text {color:#ff00ff}
 .both {color:white;background:black}
 </STYLE> 
-<title>Rversion</title>
+<title>RExcelVersion</title>
 </head>
-<body onLoad="window.resizeTo(650,250);">
-<h1>Change R Version</h1>
+<body onLoad="window.resizeTo(650,300);">
+<h1>Change R Version and also version of R that RExcel uses</h1>
 The drop down menu lists all R versions on the current system that
 were found.  The current version, if any, is the one
 highlighted in purple and initially displayed.
@@ -59,6 +59,7 @@ function SetRVersion5(menu) {
        // this worked on XP:
        WshShell.CurrentDirectory = menuo.value;
        WshShell.Run("bin\\RSetReg.exe", 0);
+       WshShell.Run("bin\\Rscript.exe -e \"library(rcom);comRegisterRegistry()\"",0);
        WshShell.Run("cmd.exe /c ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\"",0);
        WshShell.CurrentDirectory = menuo.value;
        alert("Current R Version Set to\n" + menuo.value);
@@ -72,6 +73,7 @@ function SetRVersion6(menu) {
 	// only tested on Vista
 	Shell = new ActiveXObject("Shell.Application");
 	Shell.ShellExecute("bin\\RSetReg.exe", "", "", "runas");
+	Shell.ShellExecute("bin\\Rscript.exe", "-e \"library(rcom);comRegisterRegistry()\"", "", "runas");
     Shell.ShellExecute("cmd.exe", "/c ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\"", "", "runas");
 	alert("Current R Version Set to\n" + menuo.value);
 	close();
