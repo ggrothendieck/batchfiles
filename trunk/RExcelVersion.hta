@@ -1,22 +1,107 @@
-
 <html>
 <head>
+<script language="jscript">
+function getOS() { 
+	var wbemFlagReturnImmediately = 0x10;
+	var wbemFlagForwardOnly = 0x20;
+	var objWMIService = GetObject("winmgmts:\\\\.\\root\\CIMV2");
+	var colItems = objWMIService.ExecQuery("SELECT * FROM Win32_OperatingSystem", "WQL", wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+	var enumItems = new Enumerator(colItems);
+	var objItem = enumItems.item();
+	// return objItem.Caption;
+	return objItem.Version.split(".")[0];
+}
+</script>
+
+<script Language="VBScript">
+function screenwidth()
+	strComputer = "."
+	Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
+	Set colItems = objWMIService.ExecQuery("Select * From Win32_DesktopMonitor")
+	For Each objItem in colItems
+		intHorizontal = objItem.ScreenWidth
+		intVertical = objItem.ScreenHeight
+	Next
+	screenwidth=intHorizontal
+end function
+
+function screenheight()
+	strComputer = "."
+	Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
+	Set colItems = objWMIService.ExecQuery("Select * From Win32_DesktopMonitor")
+	minWidth=10000
+	minheight=10000
+	For Each objItem in colItems
+		intHorizontal = objItem.ScreenWidth
+		intVertical = objItem.ScreenHeight
+		if (intHorizontal < minwidth) then minwidth = intHorizontal
+		if (intVertical < minHeight) then minHeight = intVertical
+	Next
+	screenheight=minHeight
+end function
+
+function screenwidth()
+	strComputer = "."
+	Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
+	Set colItems = objWMIService.ExecQuery("Select * From Win32_DesktopMonitor")
+	minWidth=10000
+	minheight=10000
+	For Each objItem in colItems
+		intHorizontal = objItem.ScreenWidth
+		intVertical = objItem.ScreenHeight
+		if (intHorizontal < minwidth) then minwidth = intHorizontal
+		if (intVertical < minHeight) then minHeight = intVertical
+	Next
+	screenwidth=minWidth
+end function
+</script>
+
+
+<script language="jscript">
+
+myWidth=500
+myHeight=320
+
+// the next line could be commented out to test for Vista
+if (getOS() == 5 ) {
+window.resizeTo(myWidth,myHeight);
+window.moveTo((screenwidth()-myWidth)/2,(screenheight()-myHeight)/2);
+// the next line could be commented out to test for Vista
+}
+
+
+</script>
+
+
+
 <STYLE TYPE="text/css">
 .highlight {background:#ff00ff}
 .text {color:#ff00ff}
 .both {color:white;background:black}
 </STYLE> 
-<title>RExcelVersion</title>
+<title>Configure R for RExcel</title>
 </head>
-<body onLoad="window.resizeTo(650,300);">
-<h1>Change R Version and also version of R that RExcel uses</h1>
+<script type="text/jscript">
+// the next line could be commented out to test for Vista
+if (getOS() == 5) {
+document.write("<body>")
+// the next 3 lines could be commented out to test for Vista
+} else {
+document.write("<body onLoad=\"window.resizeTo(550,300);\">")
+}
+</script>
+
+<h3>Change R Version and also version of R that RExcel uses</h3>
 The drop down menu lists all R versions on the current system that
 were found.  The current version, if any, is the one
 highlighted in purple and initially displayed.
 To change the current version as well as which version RExcel will use, select
 the desired one and press Apply.
 <form name="RVersionForm">
-<select name="dropdown">
+
+
+<select name="dropdown" style="width:450px">
 <script type="text/jscript">
 
 function MSDOS(DOSCmd, Stream) {
@@ -36,7 +121,8 @@ function MSDOS(DOSCmd, Stream) {
 }
 
 
-function getOS() { // 5 = XP, 6 = Vista
+
+function getOSCaption() {
 	var wbemFlagReturnImmediately = 0x10;
 	var wbemFlagForwardOnly = 0x20;
 	var objWMIService = GetObject("winmgmts:\\\\.\\root\\CIMV2");
@@ -44,10 +130,19 @@ function getOS() { // 5 = XP, 6 = Vista
 
 	var enumItems = new Enumerator(colItems);
 	var objItem = enumItems.item();
-	// return objItem.Caption;
-	return objItem.Version.split(".")[0];
+	return objItem.Caption;
 }
 
+function getOSVersion() { // 5 = XP, 6 = Vista
+	var wbemFlagReturnImmediately = 0x10;
+	var wbemFlagForwardOnly = 0x20;
+	var objWMIService = GetObject("winmgmts:\\\\.\\root\\CIMV2");
+	var colItems = objWMIService.ExecQuery("SELECT * FROM Win32_OperatingSystem", "WQL", wbemFlagReturnImmediately | wbemFlagForwardOnly);
+
+	var enumItems = new Enumerator(colItems);
+	var objItem = enumItems.item();
+	return objItem.Version
+}
 
 // SetRVersion5 works on XP and SetRVersion6 works on Vista
 function SetRVersion(menu) {
@@ -58,10 +153,10 @@ function SetRVersion5(menu) {
        menuo = menu.options[menu.selectedIndex];
        // this worked on XP:
        WshShell.CurrentDirectory = menuo.value;
-       // WshShell.Run("bin\\RSetReg.exe", 0);
-       // WshShell.Run("bin\\Rscript.exe -e \"library(rcom);comRegisterRegistry()\"",0);
+       WshShell.Run("bin\\RSetReg.exe", 0);
+//       WshShell.Run("bin\\Rscript.exe -e \"library(rcom);comRegisterRegistry()\"",0);
        WshShell.Run("cmd.exe /c ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\"",0);
-    WshShell.Run("cmd.exe /c (bin\\RSetReg.exe) & (bin\\Rscript.exe -e \"library(rcom);comRegisterRegistry()\") & (ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\")", "", "runas");
+       WshShell.CurrentDirectory = menuo.value;
        alert("Current R Version Set to\n" + menuo.value);
        close();
 }
@@ -72,9 +167,9 @@ function SetRVersion6(menu) {
 	// execute at elevated privledge
 	// only tested on Vista
 	Shell = new ActiveXObject("Shell.Application");
-	// Shell.ShellExecute("bin\\RSetReg.exe", "", "", "runas");
-	// Shell.ShellExecute("bin\\Rscript.exe", "-e \"library(rcom);comRegisterRegistry()\"", "", "runas");
-    Shell.ShellExecute("cmd.exe", "/c (bin\\RSetReg.exe) & (bin\\Rscript.exe -e \"library(rcom);comRegisterRegistry()\") & (ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\")", "", "runas");
+	Shell.ShellExecute("bin\\RSetReg.exe", "", "", "runas");
+//	Shell.ShellExecute("bin\\Rscript.exe", "-e \"library(rcom);comRegisterRegistry()\"", "", "runas");
+    Shell.ShellExecute("cmd.exe", "/c ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\"", "", "runas");
 	alert("Current R Version Set to\n" + menuo.value);
 	close();
 }
@@ -176,9 +271,19 @@ for(i in arr2) {
 }
 </script>
 </select>
-<input type="button" name="Submit" value="Apply" onClick="javascript:SetRVersion(document.RVersionForm.dropdown)">
-<input type="button" name="Cancel" value="Cancel" onClick="javascript:window.close()">
+
+<p></p>
+<center>
+<input type="button" name="Submit" style ="width:80px" value="Apply" onClick="javascript:SetRVersion(document.RVersionForm.dropdown)">
+<input type="button" name="Cancel" style ="width:80px" value="Cancel" onClick="javascript:window.close()">
+</center>
 </form>
+
+<center>
+<script language="VBScript">
+document.write(getOsCaption() & " " & getOSVersion()) 
+</script>
+</center>
 
 </body>
 </html>
