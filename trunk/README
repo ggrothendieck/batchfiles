@@ -135,7 +135,10 @@ easier to just double click the .Rdata file provided you have
 file type associations set up -- if you don't then the RguiStart.bat
 will provide an alternative).
 
-Another possibility is to just shift right click a folder in Windows
+A second possibility is to place RguiStart.bat on your desktop and
+then drag a folder to it to start R in that folder.
+
+A third possibility is to just shift right click a folder in Windows
 Explorer and choose Open Command Window Here and then when the command
 window opens enter Rgui assuming you have placed Rgui.bat somewhere in
 your path.
