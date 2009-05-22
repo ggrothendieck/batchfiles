@@ -34,6 +34,9 @@ if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
 if not defined R_HOME for /f "tokens=2*" %%a in (
  'reg query hklm\software\R-core\R /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_HOME=%%~b
+if not defined R_HOME for /f "tokens=2*" %%a in (
+ 'reg query hklm\software\wow6432Node\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
+  ) do set R_HOME=%%~b
 if not defined R_HOME echo "Error: R not found" & goto:eof
 
 :: add R_MIKTEX to PATH if defined.  Otherwise if its not 
@@ -61,6 +64,9 @@ if not defined R_TOOLS for /f "tokens=2*" %%a in (
  'reg query hklm\software\R-core\Rtools /v InstallPath 2^>NUL ^|
 findstr InstallPath'
  ) do set R_TOOLS=%%~b
+if not defined R_TOOLS for /f "tokens=2*" %%a in (
+ 'reg query hklm\software\wow6432Node\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
+  ) do set R_TOOLS=%%~b
 
 if defined R_TOOLS (
     PATH %R_TOOLS%\bin;%R_TOOLS%\perl\bin;%R_TOOLS%\MinGW\bin;%PATH%
