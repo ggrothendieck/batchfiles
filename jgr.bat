@@ -67,8 +67,16 @@ if not defined R_TOOLS for /f "tokens=2*" %%a in (
  'reg query hklm\software\wow6432Node\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_TOOLS=%%~b
 
+set PATHQ=%PATH%
+:WHILE
+    if "%PATHQ%"=="" goto WEND
+    for /F "delims=;" %%i in ("%PATHQ%") do set PATH2=%PATH2%;%%~sfi
+    for /F "delims=; tokens=1,*" %%i in ("%PATHQ%") do set PATHQ=%%j
+    goto WHILE 
+:WEND
+
 if defined R_TOOLS (
-    PATH %R_TOOLS%\bin;%R_TOOLS%\perl\bin;%R_TOOLS%\MinGW\bin;%PATH%
+    PATH %R_TOOLS%\bin;%R_TOOLS%\perl\bin;%R_TOOLS%\MinGW\bin;%PATH2%
 )
 
 set here=%CD%
