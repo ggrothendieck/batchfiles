@@ -61,8 +61,7 @@ if not defined R_MIKTEX for /f "delims=" %%a in (
 if defined R_MIKTEX PATH %R_MIKTEX%\miktex\bin;%PATH%
 
 if not defined R_TOOLS for /f "tokens=2*" %%a in (
- 'reg query hklm\software\R-core\Rtools /v InstallPath 2^>NUL ^|
-findstr InstallPath'
+ 'reg query hklm\software\R-core\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
  ) do set R_TOOLS=%%~b
 if not defined R_TOOLS for /f "tokens=2*" %%a in (
  'reg query hklm\software\wow6432Node\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
@@ -107,15 +106,29 @@ if /i %cmd%==rgui.exe set st=start
 if /i %cmd%==#rscript.exe set cmd=rscript.exe
 cd %here%
 set cmdpath=%R_HOME%\bin\%cmd%
+set cmd
 
 :: if called as jgr.bat locate the JGR package to find jgr.exe
-if /i %cmd%==jgr.exe (
+if /i not %cmd%==jgr.exe goto:notJGR
   set st=start
+  set st
   set cmdpath=jgr.exe
-  for /f "delims=" %%i in (JGR) do set jgrpkg=%%~$R_LIBS:i
-  if defined jgrpkg set cmdpath=%jgrpkg%\jgr.exe
-  if exist "%R_HOME%\library\JGR\jgr.exe" set cmdpath=%R_HOME%\library\JGR\jgr.exe
-) 
+  set cmdpath
+  if not defined JGR_LIBS set JGR_LIBS=%R_LIBS%
+  for %%a in ("%R_HOME%\bin\Rscript.exe") do set RSCRIPT=%%~sfa
+  if not defined JGR_LIBS for /f "usebackq delims=" %%a in (
+		`%RSCRIPT% -e "cat(.libPaths(),sep=';')"`
+  ) do set JGR_LIBS=%%~a
+  if not defined JGR_LIBS (
+	echo "Error: JGR package not found in R library" & goto:eof
+  )
+  for %%f in ("JGR") do set "jgrpkg=%%~$JGR_LIBS:f"
+  set JGR_LIB=%jgrpkg:~0,-4%
+  for %%a in ("%JGR_LIB%") do set JGR_LIB_SHORT=%%~sfa
+  for %%a in ("%R_HOME%") do set R_HOME_SHORT=%%~sfa
+  set args=--libpath=%JGR_LIB_SHORT% --rhome=%R_HOME_SHORT%
+
+:notJGR
 
 if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 goto:eof
