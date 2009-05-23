@@ -15,6 +15,12 @@ Changes in version 0.4-4
     Rversions.hta but also sets the version for Rexcel at the same time
     and has been verified to work on both XP and Vista.
 
+  o jgr.bat now passes the Windows library and R home to jgr.exe automatically
+
+  o now works on 64 bit Windows (thanks to Nicholas Hirschey)
+
+  o testing on Windows 7 (thanks to Nicholas Hirschey)
+
 Changes in version 0.4-3
 
   o Sweave.bat and Stangle.bat were not automatically finding MiKTeX.  

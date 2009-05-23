@@ -276,15 +276,6 @@ if /i %cmd%==rgui.exe set st=start
 cd %here%
 set cmdpath=%R_HOME%\bin\%cmd%
 
-:: if called as jgr.bat locate the JGR package to find jgr.exe
-if /i %cmd%==jgr.exe (
-  set st=start
-  set cmdpath=jgr.exe
-  for /f "delims=" %%i in (JGR) do set jgrpkg=%%~$R_LIBS:i
-  if defined jgrpkg set cmdpath=%jgrpkg%\jgr.exe
-  if exist "%R_HOME%\library\JGR\jgr.exe" set cmdpath=%R_HOME%\library\JGR\jgr.exe
-) 
-
 if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 goto:eof
 
