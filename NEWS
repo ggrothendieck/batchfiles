@@ -1,4 +1,4 @@
-Changes in version 0.4-4
+Changes in version 0.5-0
 
   o new command show-svn-info.hta when run from a Tortoise SVN checkout
     folder shows some info about it.  Requires Tortoise SVN version 1.5
@@ -17,9 +17,10 @@ Changes in version 0.4-4
 
   o jgr.bat now passes the Windows library and R home to jgr.exe automatically
 
-  o now works on 64 bit Windows (thanks to Nicholas Hirschey)
+  o added defensive code to allow code to work even in the presence of
+    certain bad PATH variables
 
-  o testing on Windows 7 (thanks to Nicholas Hirschey)
+  o testing on XP32, XPx64, Vista32, Win7x64 (thanks to Nicholas Hirschey)
 
 Changes in version 0.4-3
 

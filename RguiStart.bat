@@ -70,14 +70,18 @@ if not defined R_TOOLS for /f "tokens=2*" %%a in (
 set PATHQ=%PATH%
 :WHILE
     if "%PATHQ%"=="" goto WEND
-    for /F "delims=;" %%i in ("%PATHQ%") do set PATH2=%PATH2%;%%~sfi
+    for /F "delims=;" %%i in ("%PATHQ%") do if exist "%%~sfi" set PATH2=%PATH2%;%%~sfi
     for /F "delims=; tokens=1,*" %%i in ("%PATHQ%") do set PATHQ=%%j
     goto WHILE 
 :WEND
 
+set path2=%path2:~1%
+
 if defined R_TOOLS (
-    PATH %R_TOOLS%\bin;%R_TOOLS%\perl\bin;%R_TOOLS%\MinGW\bin;%PATH2%
+    set path2=%R_TOOLS%\bin;%R_TOOLS%\perl\bin;%R_TOOLS%\MinGW\bin;%PATH2%
 )
+
+path %path2%
 
 set here=%CD%
 set args=%*
@@ -86,7 +90,7 @@ set args=%*
 :: this allows same file to be used for Rgui, Rterm, etc. by just renaming it
 for %%i in (%0) do set cmd=%%~ni.exe
 
-if /i %cmd%==rtools.exe (endlocal & set path=%path%) && goto:eof
+if /i %cmd%==rtools.exe (endlocal & set path=%path2%) && goto:eof
 
 cd %R_HOME%\bin
 if /i not %cmd%==rguistart.exe goto:notRguiStart
@@ -114,7 +118,6 @@ if /i %cmd%==rgui.exe set st=start
 if /i %cmd%==#rscript.exe set cmd=rscript.exe
 cd %here%
 set cmdpath=%R_HOME%\bin\%cmd%
-set cmd
 
 :: if called as jgr.bat locate the JGR package to find jgr.exe
 if /i not %cmd%==jgr.exe goto:notJGR
