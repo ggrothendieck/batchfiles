@@ -1,61 +1,93 @@
 
-New Vesion of Windows Batchfiles for R
+Windows Batchfiles 0.5-0
 
-batchfiles 0.4-2 consists of a set of Windows .bat utilities and other
-scripts that run R and associated programs by finding R in the
-registry so that no paths need be set -- a major source of error
-during installation.  Also it implies that paths which might otherwise
-need to be updated when you upgrade R do not need to be.  The tools
-automatically find the new registry entry.
+This is a set of Windows batch and javascript 
+utilities for use with R. 
 
-The utilities are Windows batch files or javascript files without
-dependencies.  Just place those you want or all of them anywhere in
-your path and they instantly become available to Windows console
-sessions.  No setting of paths or other formal installation is
-required.
+They run R and perform associated tasks involving
+R by finding R in the registry and then calling
+the appropraite utility so that no paths need be
+set -- an otherwise significant source of
+potential error when using R.  Also  the R
+installer inserts a key into the registry each
+each time R is upgraded and these utilities detect
+that and run accordingly simplifying upgrades
+by eliminating the need to reset paths.
 
-This version of batchfiles has only been tested on Windows Vista but
-most of the utilities may work on earlier versions as well.  Version
-0.3-2 was only tested on Windows XP.
+The following utilities are provided.  They are
+each mutually independent so any can be used
+without the others.  Installation consists only of
+copying whichever file or files is desired to any
+folder in the Windows PATH.  
 
-NEW
+Legend:
+h = no args gives help
+0 = common usage is to enter command name without arguments
 
-1. Stangle.bat
+#Rscript.bat - put at top of R file to make it a batch file (h)
+copydir.bat - copy a library from one version of R to another (h)
+el.js - run elevated - Vista and up, e.g. el Rgui  runs R elevated
+find-miktex.hta - GUI to find MiKTeX (0)
+jgr.bat - like jgr.exe but finds R from registry as well as JGR library (0)
+kopy.bat - copy Rcmd to other batch files (h)
+movedir.bat - move library from one version of R to another (h)
+R.bat - like R.exe but finds R from registry (0)
+Rcmd.bat - like Rcmd.exe but finds R from registry (h)
+RExcelVersion.hta - like Rversions.hta but also sets .RData association (0)
+Rgui.bat - like Rgui.exe but finds R from registry (0)
+RguiStart.bat - like Rgui.bat but arg1 defines folder to start R in
+Rscript.bat - run .R script (h)
+Rterm.bat - like rterm.exe but finds R from registry (h)
+Rtidy.bat - reformat a .R file, e.g. Rtidy myfile.R > outfile.R
+Rtools.bat - place Rtools on path for remainder of console session (0)
+Rversions.bat - list which versions of R are in registry (0)
+Rversions.hta - GUI interface to RSetReg.  List and set R version (0)
+show-svn-info.hta - show svn info if current folder is an svn checkout (0)
+Stangle.bat - run arg1 through Stangle (h)
+Sweave.bat - run arg1 through Sweave (h)
 
-A new command Stangle.bat is now available that is similar to
-Sweave.bat except it runs Stangle.  Like Sweave.bat, it can be run
-without arguments to get help.  Sweave.bat and Stangle.bat are
-actually the same file.  Each queries the name by which it was called
-in order to determine what to do.  Like Sweave.bat, Stangle.bat does
-not depend on rtools.
+Note that #Rscript.bat, R.bat, Rcmd.bat, Rgui.bat,
+RguiStart.bat, Rscript.bat, Rterm.bat, Rtools.bat
+and jgr.bat are all the same file but with
+different names.  The program checks what name it
+was called by and acts accordingly.  Similarly
+Sweave.bat and Stangle.bat are the same file with
+different names.
 
-2. rbatchfilesrc.bat
+The main new features in version 0.5-0 are:
 
-For those situations where use of the registry is not desirable the
-batchfiles have supported certain environment variables that can be
-set in its place.  New to this version is an optional second facility
-for those situations where the registry is not used.   As with the
-setting of environment variables it can be used to override the
-registry values and heuristics or it can be used to have different
-versions of R automatically used by different projects.
+  o testing on XP32, XPx64, Vista32, Win7x64.
+    Thanks to Nicholas Hirschey.
 
-For this new second facility the user can place rbatchfilesrc.bat in
-the current directory or %userprofile% directory or the same directory
-as the batchfiles and the various batchfiles will get their
-definitions from that file instead of looking in the registry.  A
-typical rbatchfilesrc.bat might be 3 lines long and look like this:
+  o added defensive code to batch files to work
+    even in the presence of certain bad components
+    in pre-existing PATH variables.
 
-		set R_HOME=C:\Program Files\R\R-2.7.0
-		set R_TOOLS=C:\Rtools
-		set R_MIKTEX=C:\Program Files\MiKTeX 2.7\miktex\bin
+  o new command show-svn-info.hta which when run 
+    from a Tortoise SVN checkout folder shows some 
+    info about it.  Requires Tortoise SVN version 
+    1.5 or higher.
 
-Most people will not need this facility and will instead use the
-automatic registry lookup which completely avoids the need to specify
-path names but for situations as described this facility may be of
-use.
+  o new command find-miktex.hta can be run without
+	arguments from the Windows command line (or
+	double clicked from Windows Explorer).  It
+	will show the path to the MiKTeX bin folder.
 
-The batchfiles are available on CRAN in the contributed extras area.
-For more information see the batchfiles home page at:
+  o Rversions.hta now also changes the .RData
+    association and has been verified to work on
+    both XP and Vista.
+
+  o new RExcelversion.hta (also distributed with
+    RExcel) that is like Rversions.hta but also sets
+    the version for Rexcel at the same time.  Thanks 
+    to Erich Neumann.
+
+  o jgr.bat now passes the Windows library
+    directory name and R home directory name to
+    jgr.exe automatically
+
+More info and pointers to download site on CRAN
+can be found on the home page:
 
 	http://batchfiles.googlecode.com
 

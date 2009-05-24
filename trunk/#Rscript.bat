@@ -1,5 +1,6 @@
 
 @echo off
+if /i "%1"==path (path %2) && goto:eof
 
 setlocal
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -14,6 +15,15 @@ rem recent tests have only been on Vista
 rem ver | findstr XP >NUL
 rem if errorlevel 1 echo Warning: This script has only been tested on Windows XP.
 
+set scriptdir_=%~dp0
+set lookin=.;%userprofile%;%scriptdir_%
+if not defined R_BATCHFILES_RC (
+	for %%f in ("rbatchfilesrc.bat") do set "R_BATCHFILES_RC=%%~$lookin:f"
+)
+if defined R_BATCHFILES_RC (
+	if exist "%R_BATCHFILES_RC%" call %R_BATCHFILES_RC%
+)
+
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: use environment variable R_HOME if defined
 :: else current folder if bin\rcmd.exe exists 
@@ -23,6 +33,9 @@ rem if errorlevel 1 echo Warning: This script has only been tested on Windows XP
 if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
 if not defined R_HOME for /f "tokens=2*" %%a in (
  'reg query hklm\software\R-core\R /v InstallPath 2^>NUL ^| findstr InstallPath'
+  ) do set R_HOME=%%~b
+if not defined R_HOME for /f "tokens=2*" %%a in (
+ 'reg query hklm\software\wow6432Node\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_HOME=%%~b
 if not defined R_HOME echo "Error: R not found" & goto:eof
 
@@ -48,13 +61,27 @@ if not defined R_MIKTEX for /f "delims=" %%a in (
 if defined R_MIKTEX PATH %R_MIKTEX%\miktex\bin;%PATH%
 
 if not defined R_TOOLS for /f "tokens=2*" %%a in (
- 'reg query hklm\software\R-core\Rtools /v InstallPath 2^>NUL ^|
-findstr InstallPath'
+ 'reg query hklm\software\R-core\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
  ) do set R_TOOLS=%%~b
+if not defined R_TOOLS for /f "tokens=2*" %%a in (
+ 'reg query hklm\software\wow6432Node\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
+  ) do set R_TOOLS=%%~b
+
+set PATHQ=%PATH%
+:WHILE
+    if "%PATHQ%"=="" goto WEND
+    for /F "delims=;" %%i in ("%PATHQ%") do if exist "%%~sfi" set PATH2=%PATH2%;%%~sfi
+    for /F "delims=; tokens=1,*" %%i in ("%PATHQ%") do set PATHQ=%%j
+    goto WHILE 
+:WEND
+
+set path2=%path2:~1%
 
 if defined R_TOOLS (
-    PATH %R_TOOLS%\bin;%R_TOOLS%\perl\bin;%R_TOOLS%\MinGW\bin;%PATH%
+    set path2=%R_TOOLS%\bin;%R_TOOLS%\perl\bin;%R_TOOLS%\MinGW\bin;%PATH2%
 )
+
+path %path2%
 
 set here=%CD%
 set args=%*
@@ -63,7 +90,7 @@ set args=%*
 :: this allows same file to be used for Rgui, Rterm, etc. by just renaming it
 for %%i in (%0) do set cmd=%%~ni.exe
 
-if /i %cmd%==rtools.exe (endlocal & set path=%path%) && goto:eof
+if /i %cmd%==rtools.exe (endlocal & set path=%path2%) && goto:eof
 
 cd %R_HOME%\bin
 if /i not %cmd%==rguistart.exe goto:notRguiStart
@@ -93,13 +120,26 @@ cd %here%
 set cmdpath=%R_HOME%\bin\%cmd%
 
 :: if called as jgr.bat locate the JGR package to find jgr.exe
-if /i %cmd%==jgr.exe (
+if /i not %cmd%==jgr.exe goto:notJGR
   set st=start
+  set st
   set cmdpath=jgr.exe
-  for /f "delims=" %%i in (JGR) do set jgrpkg=%%~$R_LIBS:i
-  if defined jgrpkg set cmdpath=%jgrpkg%\jgr.exe
-  if exist "%R_HOME%\library\JGR\jgr.exe" set cmdpath=%R_HOME%\library\JGR\jgr.exe
-) 
+  set cmdpath
+  if not defined JGR_LIBS set JGR_LIBS=%R_LIBS%
+  for %%a in ("%R_HOME%\bin\Rscript.exe") do set RSCRIPT=%%~sfa
+  if not defined JGR_LIBS for /f "usebackq delims=" %%a in (
+		`%RSCRIPT% -e "cat(.libPaths(),sep=';')"`
+  ) do set JGR_LIBS=%%~a
+  if not defined JGR_LIBS (
+	echo "Error: JGR package not found in R library" & goto:eof
+  )
+  for %%f in ("JGR") do set "jgrpkg=%%~$JGR_LIBS:f"
+  set JGR_LIB=%jgrpkg:~0,-4%
+  for %%a in ("%JGR_LIB%") do set JGR_LIB_SHORT=%%~sfa
+  for %%a in ("%R_HOME%") do set R_HOME_SHORT=%%~sfa
+  set args=--libpath=%JGR_LIB_SHORT% --rhome=%R_HOME_SHORT%
+
+:notJGR
 
 if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 goto:eof
