@@ -61,7 +61,8 @@ function SetRVersion5(menu) {
        // WshShell.Run("bin\\RSetReg.exe", 0);
        // WshShell.Run("bin\\Rscript.exe -e \"library(rcom);comRegisterRegistry()\"",0);
        WshShell.Run("cmd.exe /c ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\"",0);
-    WshShell.Run("cmd.exe /c (bin\\RSetReg.exe) & (ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\")", "", "runas");
+    // WshShell.Run("cmd.exe /c (bin\\RSetReg.exe) & (ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\")", "", "runas");
+    WshShell.Run("cmd.exe /c (bin\\RSetReg.exe) & (ftype RWorkspace=\"" + menuo.value + "\\bin\\Rgui.exe\" \"%1\")", 0);
        alert("Current R Version Set to\n" + menuo.value);
        close();
 }
