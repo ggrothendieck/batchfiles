@@ -4,15 +4,13 @@ Windows Batchfiles 0.5-0
 This is a set of Windows batch and javascript 
 utilities for use with R. 
 
-They run R and perform associated tasks involving
-R by finding R in the registry and then calling
-the appropraite utility so that no paths need be
-set -- an otherwise significant source of
-potential error when using R.  Also  the R
-installer inserts a key into the registry each
-each time R is upgraded and these utilities detect
-that and run accordingly simplifying upgrades
-by eliminating the need to reset paths.
+The main utilities include the batch files
+Rgui.bat, Rgui.bat and others which are like, and
+in fact call, the corresponding .exe files that
+come with R but ease setup by automatically
+locating R each time they are run.  As a result no
+paths need be setup to use them either initially
+nor each time you upgrade R.  
 
 The following utilities are provided.  They are
 each mutually independent so any can be used
@@ -57,6 +55,9 @@ different names.
 The main new features in version 0.5-0 are:
 
   o testing on XP32, XPx64, Vista32, Win7x64.
+    (Previously it was necessary to use different
+    versions on different systems but now they
+    have all been consolidated into a single set.
     Thanks to Nicholas Hirschey.
 
   o added defensive code to batch files to work
@@ -75,7 +76,7 @@ The main new features in version 0.5-0 are:
 
   o Rversions.hta now also changes the .RData
     association and has been verified to work on
-    both XP and Vista.
+    both XP and Vista 32 bit.
 
   o new RExcelversion.hta (also distributed with
     RExcel) that is like Rversions.hta but also sets

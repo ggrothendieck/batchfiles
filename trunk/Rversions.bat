@@ -20,6 +20,9 @@ if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
 if not defined R_HOME for /f "tokens=2*" %%a in (
  'reg query hklm\software\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_HOME=%%~b
+if not defined R_HOME for /f "tokens=2*" %%a in (
+ 'reg query hklm\software\wow6432Node\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
+  ) do set R_HOME=%%~b
 if not defined R_HOME echo "Error: R not found" & goto:eof
 
 cd %R_HOME%
