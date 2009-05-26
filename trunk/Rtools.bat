@@ -1,6 +1,6 @@
 
 @echo off
-if /i "%1"==path (path %2) && goto:eof
+rem if /i "%1"==path (path %2) && goto:eof
 
 setlocal
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -115,7 +115,23 @@ if /i not %cmd%==rguistart.exe goto:notRguiStart
 
 set st=
 if /i %cmd%==rgui.exe set st=start
-if /i %cmd%==#rscript.exe set cmd=rscript.exe
+
+if /i not %cmd%==#Rscript.exe goto:not#Rscript
+set cmd=Rscript.exe
+call :rsarg1 %*
+goto:not#Rscript
+:rsarg1
+set args=%*
+set arg1=%~1
+set arg1=%arg1:.bat.bat=.bat%
+set last4=%arg1:~-4%
+if /i not "%last4%"==".bat" set arg1=%arg1%.bat
+for %%a in ("%R_HOME%\bin\Rscript.exe") do set RSCRIPT=%%~sfa
+call set args=%%args:%1="%arg1%"%%
+rem call set args=%%args:%1=%%
+goto:eof
+:not#Rscript
+
 cd %here%
 set cmdpath=%R_HOME%\bin\%cmd%
 
