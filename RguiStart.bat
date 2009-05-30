@@ -118,6 +118,7 @@ if /i %cmd%==rgui.exe set st=start
 
 if /i not %cmd%==#Rscript.exe goto:not#Rscript
 set cmd=Rscript.exe
+if [%1]==[] goto:help#Rscript
 call :rsarg1 %*
 goto:not#Rscript
 :rsarg1
@@ -138,9 +139,7 @@ set cmdpath=%R_HOME%\bin\%cmd%
 :: if called as jgr.bat locate the JGR package to find jgr.exe
 if /i not %cmd%==jgr.exe goto:notJGR
   set st=start
-  set st
   set cmdpath=jgr.exe
-  set cmdpath
   if not defined JGR_LIBS set JGR_LIBS=%R_LIBS%
   for %%a in ("%R_HOME%\bin\Rscript.exe") do set RSCRIPT=%%~sfa
   if not defined JGR_LIBS for /f "usebackq delims=" %%a in (
@@ -159,6 +158,14 @@ if /i not %cmd%==jgr.exe goto:notJGR
 
 if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 goto:eof
+
+:help#Rscript
+echo Usage: #Rscript %%0 %%*
+echo If the above is the first line in a file 
+echo containing only R code and the file is 
+echo given a .bat extension then it can be 
+echo run as a batch file.
+
 
 
 endlocal
