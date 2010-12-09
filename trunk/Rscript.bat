@@ -30,7 +30,8 @@ if defined R_BATCHFILES_RC (
 :: else most current R as determined by registry entry
 :: else error
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
+
+if not defined R_HOME if exist bin\r.exe set R_HOME=%CD%
 if not defined R_HOME for /f "tokens=2*" %%a in (
  'reg query hklm\software\R-core\R /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_HOME=%%~b
@@ -38,6 +39,23 @@ if not defined R_HOME for /f "tokens=2*" %%a in (
  'reg query hklm\software\wow6432Node\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_HOME=%%~b
 if not defined R_HOME echo "Error: R not found" & goto:eof
+
+:: look for architecture in these places in this order:
+:: - environment variable R_ARCH
+:: - first arg if its --arch
+:: - check if R_HOME\bin\i386 exists
+:: - if R_HOME\bin\x64 exists
+:: - if none of the above then use i386
+
+if not defined R_ARCH if /i "%1"=="--arch=x64" set R_ARCH=x64
+if not defined R_ARCH if /i "%1"=="--arch=64" set R_ARCH=x64
+if not defined R_ARCH if /i "%1"=="--arch=i386" set R_ARCH=i386
+if not defined R_ARCH if /i "%1"=="--arch=32" set R_ARCH=i386
+if defined R_ARCH goto:archdefined
+if exist %R_HOME%\bin\i386 (set R_ARCH=i386) & goto:arch_defined
+if exist %R_HOME%\bin\x64 (set R_ARCH=x64) & goto:arch_defined
+set R_ARCH=i386
+:arch_defined
 
 :: add R_MIKTEX to PATH if defined.  Otherwise if its not 
 :: in the PATH already then check \Program Files\miktex* or \miktex* 
@@ -134,7 +152,14 @@ goto:eof
 :not#Rscript
 
 cd %here%
+
+:: Look in architecture specific subdirectory of bin. If not there look in bin.
+set cmdpath=%R_HOME%\bin\%R_ARCH%\%cmd%
+if exist "%cmdpath%" goto:cmdpathfound
 set cmdpath=%R_HOME%\bin\%cmd%
+if exist "%cmdpath%" goto:cmdpathfound
+echo "Error: %cmd% not found" & goto:eof
+:cmdpathfound
 
 :: if called as jgr.bat locate the JGR package to find jgr.exe
 if /i not %cmd%==jgr.exe goto:notJGR

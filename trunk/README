@@ -126,6 +126,10 @@ place it in your SendTo folder.  On Vista do this:
 
   copy RguiStart.bat %APPDATA%\Microsoft\Windows\SendTo
 
+(or to locate locate the SendTo folder in Windows Explorer on Vista
+enter shell:sendto into the Windows Explorer address bar and copy
+your RguiStart.bat file there.)
+
 Then, on Vista, when you are in Windows Explorer you can right click 
 on any folder in your user area and choose SendTo.  From the SendTo
 menu choose RGuiStart.bat to start up R in that folder.  If you 
@@ -207,6 +211,7 @@ different versions of R.  Then run
 -- run without args to list versions available; run with any of
    the listed versions to set that as the new version
 -- both forms work on XP; to run arg form on Vista run it elevated
+   e.g. el cmd /c Rversions.bat R-2.10.0
 
 Examples:
 
@@ -230,15 +235,14 @@ upgrade R to a new version
 
   :: Example is for upgrading from R-2.4.1 to R-2.5.0
 
-  :: first, download and install R-2.5.0, say
+  :: first, download and install R-2.11.0
   :: now perform the next two commands at the Windows console
-  cd \Program Files\R
-  copydir R-2.4.1\library R-2.5.0\library
 
-  :: next command only needed if you have *.site files
-  copy R-2.4.0\etc\*.site R-2.5.0\etc
-
-  :: ... now startup new version of R (R 2.5.0 in this example)
+  cd %userprofile%\Documents\R\win-library
+  :: you can use movedir instead of copydir if you prefer to move them
+  copydir 2.10\library 2.11\library
+  
+  :: ... now startup new version of R (R 2.11.0 in this example)
   # issue this command in R 2.5.0
   update.packages(checkBuilt = TRUE, ask = "graphics")
   # or (see note below)
