@@ -23,6 +23,10 @@ if "%1"=="--help" goto:help
 if "%1"=="/?" goto:help
 if "%1"==":Rterm" (
 
+	if not defined R_ARCH if /i "%1"=="--arch=x64" set R_ARCH=x64
+	if not defined R_ARCH if /i "%1"=="--arch=64" set R_ARCH=x64
+	if not defined R_ARCH set R_ARCH=i386
+
 	if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
 	if not defined R_HOME for /f "tokens=2*" %%a in (
 	 'reg query hklm\software\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
@@ -83,6 +87,7 @@ goto:eof
     :: remove dashes from switch and get first char
     set switch=%arg:-=%
     set switch=%switch:~0,1%
+	if /i "%switch%"=="a" (set R_ARCH=%1) & shift
     goto:loop
     :cont
 
@@ -163,6 +168,10 @@ setlocal
 :: else most current R as determined by registry entry
 :: else error
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+if not defined R_ARCH if /i "%1"=="--arch=x64" set R_ARCH=x64
+if not defined R_ARCH if /i "%1"=="--arch=64" set R_ARCH=x64
+if not defined R_ARCH set R_ARCH=i386
+
 if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
 if not defined R_HOME for /f "tokens=2*" %%a in (
  'reg query hklm\software\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
@@ -285,7 +294,14 @@ set st=
 if /i %cmd%==rgui.exe set st=start
 :: if /i %cmd%==#rscript.exe set cmd=rscript.exe
 cd %here%
+
+:: Look in architecture specific subdirectory of bin. If not there look in bin.
+set cmdpath=%R_HOME%\bin\%R_ARCH%\%cmd%
+if exist "%cmdpath%" goto:cmdpathfound
 set cmdpath=%R_HOME%\bin\%cmd%
+if exist "%cmdpath%" goto:cmdpathfound
+echo "Error: %cmd% not found" & goto:eof
+:cmdpathfound
 
 if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 goto:eof
