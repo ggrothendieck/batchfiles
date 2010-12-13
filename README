@@ -1,39 +1,69 @@
-batchfiles contains batch and GUI files for installing and maintaing R.  
 
-License.  GPL-2.  See COPYING file.
+batchfiles contains GPL-2 batch files for installing and maintaining R.  
 
-NEWS.  See NEWS file.
+Each is self contained, independent of the others and need no installation. 
+Just place it anywhere on your path.
 
-INSTALLATION
+---
 
-To use any of these utilities just make sure that they are either
-in the current directory you are using or else are anywhere in your
-PATH.  No installation is necessary.  The utilities are all 
-written in Windows batch or javascript as HTA files and have
-no dependencies.
+PROGRAM LIST
 
-Note that R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, JGR.bat and RguiStart.bat
-are actually all the same file.  When any of them are run they check what
-name is was called by to determine what to do.  Similarly Sweave.bat and
-Stangle.bat are the same file.
+Legend:
+h = no args gives help
+0 = common usage is to enter command name without arguments
+d = in development
+2.11 = only works with R 2.11
+* = all files marked with one star are the same.  Program checks name by which its called to determine action.
+** = all files marked with two stars are the same.  Program checks name by which its called to determine action.
 
-BATCH & JAVASCRIPT PROGRAMS (also see separate section for perl programs)
+#Rscript.bat - put at top of R file to make it a batch file (h) (*)
+clip2r.js - pastes clipboard into Rgui.  See comments in file for use from vim. (0)(d)
+copydir.bat - copy a library from one version of R to another (h)
+el.js - run elevated - Vista and up, e.g. el Rgui  runs R elevated
+find-miktex.hta - GUI to find MiKTeX (0)
+kopy.bat - copy Rcmd to other batch files (h)(d)
+movedir.bat - move library from one version of R to another (h) 
+R.bat - like R.exe but finds R from registry (0) (*)
+Rcmd.bat - like Rcmd.exe but finds R from registry (h) (*)
+RExcelVersion.hta - like Rversions.hta but also sets .RData association (0)
+Rgui.bat - like Rgui.exe but finds R from registry (0) (*)
+RguiStart.bat - like Rgui.bat but arg1 defines folder to start R in (*)
+Rscript.bat - run .R script (h) (*)
+Rterm.bat - like rterm.exe but finds R from registry (h) (*)
+Rtidy.bat - reformat a .R file, e.g. Rtidy myfile.R > outfile.R (d)
+Rtools.bat - place Rtools on path for remainder of console session (0) (*)
+Rversions.bat - list R and set R version in registry, e.g. on Vista: el cmd/c Rversions R-2.10.1 (0)
+Rversions.hta - GUI interface to RSetReg.  List and set R version, e.g. on Vista: el cmd /c Rversions.hta (0)(2.11)
+show-svn-info.hta - show svn info if current folder is an svn checkout (0)
+Stangle.bat - run arg1 through Stangle (h) (**)
+Sweave.bat - run arg1 through Sweave (h) (**)
+
+---
+
+DESCRIPTIONS
+
+R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, and RguiStart.bat are all the same
+file.  They query the name by which they were called to determine what they do.
+Similarly Sweave.bat and Stangle.bat are the same file.
+
+The home page and NEWS file provide more info.
+
+BATCH PROGRAMS
 
 0. Rtools.bat
-1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, JGR.bat
+1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat
 2. #Rscript.bat
 3. RguiStart.bat
 4. Sweave.bat and Stangle.bat
-5. Rversions.hta
-6. copydir.bat
-7. movedir.bat
-8. find-miktex.hta
+5. copydir.bat
+6. movedir.bat
+7. find-miktex.hta
 
 
 0. Rtools.bat.  Sets path to what Rcmd.bat and others use internally.
 This only sets the path for the current command shell instance.
 
-1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, Rscript.bat, JGR.bat - are front
+1. R.bat, Rcmd.bat, Rscript.bat, Rgui.bat, Rscript.bat - are front
 ends to  the corresponding .exe files.  They locate R in the registry (and also
 look in a few other places if not found there).  Then they look for Rtools and
 MiKTeX and if found they add them temporarily to the path.  (Rtools and MiKTeX
@@ -186,25 +216,6 @@ SendTo > sweave to sweave them.
 You may need to copy Sweave.sty to the directory containing
 your .Rnw sweave file to use sweave.bat .
 
-5. Rversions.hta - This displays a GUI that lists all
-versions of R on your system  and allows you to choose one
-as your default, setting the  registry appropriately.  Just
-run without arguments, .e.g.  
-
-	Rversions.hta 
-
-For example, suppose we want to check a package using two
-different versions of R.  Then run 
-
-	Rcmd check mypkg
-
-	:: in next command set different version of R
-	Rversions.hta 
-	Rcmd check mypkg
-
-	:: in next command reset to original version of R
-	Rversions.hta 
-
 5. Rversions.bat - similar to Rversions.hta but 
 -- its batch whereas Rversions.hta is GUI
 -- uses slightly different heuristic to find R versions
@@ -335,24 +346,6 @@ or higher of Tortoise SVN.
 Just enter find-miktex.hta at the Windows command line (no arguments 
 are needed) or double click it from Windows Explorer.  
 
-DEPRECATED AND CHANGED
-
-- There was previously one perl program, toggleDoc.pl,
-  provided in the collection which is no longer distributed
-  but is still available with older distributions of
-  batchfiles.  It adds a "Show All" toggle box to the
-  00Index.html file of each package.
-
-
-- Rfind.bat, makepkg.bat and Rversions.bat are no longer
-  distributed in the batchfiles collection but are still
-  available in version 0.2-3 of batchfiles if you want them.
-  It is unknown whether they work with Vista and recent
-  versions of R.  (I have not used them in some time so am
-  no longer maintaining them.)  If you used Rversions.bat
-  before you can still use Rversions.hta, the GUI version of
-  the program -- that one is still part of the collection.
-
 ADDITIONAL FILES
 
 1. RESOURCES - additional information on writing Windows XP
@@ -363,3 +356,13 @@ batch files.
 
 3. THANKS - acknowledgments.
 
+DEPRECATED AND CHANGED
+
+- Rfind.bat
+- makepkg.bat
+- Rversions.hta
+- toggerDoc.pl
+
+These are no longer distributed but can be found in older distributions of this
+package.  It is unknown whether they work with recent versions of R.  (I found
+I was not using these so am no longer maintaining them.)
