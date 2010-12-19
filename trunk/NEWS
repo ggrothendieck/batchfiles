@@ -1,3 +1,10 @@
+Changes in version 0.6-1
+
+  o fixed bugs
+
+  o R_ARCH and --arch can consistently be any of 32, i386, 64, x64, /i386 or /64
+    (vs R itself which otherwise uses different values for R_ARCH and --arch)
+
 Changes in version 0.6
 
   o enhancements to handle architecture specific directory structure in R 2.12.0
