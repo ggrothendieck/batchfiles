@@ -40,22 +40,7 @@ if not defined R_HOME for /f "tokens=2*" %%a in (
   ) do set R_HOME=%%~b
 if not defined R_HOME echo "Error: R not found" & goto:eof
 
-:: look for architecture in these places in this order:
-:: - environment variable R_ARCH
-:: - first arg if its --arch
-:: - check if R_HOME\bin\i386 exists
-:: - if R_HOME\bin\x64 exists
-:: - if none of the above then use i386
-
-if not defined R_ARCH if /i "%1"=="--arch=x64" set R_ARCH=x64
-if not defined R_ARCH if /i "%1"=="--arch=64" set R_ARCH=x64
-if not defined R_ARCH if /i "%1"=="--arch=i386" set R_ARCH=i386
-if not defined R_ARCH if /i "%1"=="--arch=32" set R_ARCH=i386
-if defined R_ARCH goto:archdefined
-if exist %R_HOME%\bin\i386 (set R_ARCH=i386) & goto:arch_defined
-if exist %R_HOME%\bin\x64 (set R_ARCH=x64) & goto:arch_defined
-set R_ARCH=i386
-:arch_defined
+call :process_arch %*
 
 :: add R_MIKTEX to PATH if defined.  Otherwise if its not 
 :: in the PATH already then check \Program Files\miktex* or \miktex* 
@@ -154,7 +139,7 @@ goto:eof
 cd %here%
 
 :: Look in architecture specific subdirectory of bin. If not there look in bin.
-set cmdpath=%R_HOME%\bin\%R_ARCH%\%cmd%
+set cmdpath=%R_HOME%\bin\%R_ARCH0%\%cmd%
 if exist "%cmdpath%" goto:cmdpathfound
 set cmdpath=%R_HOME%\bin\%cmd%
 if exist "%cmdpath%" goto:cmdpathfound
@@ -181,6 +166,13 @@ if /i not %cmd%==jgr.exe goto:notJGR
 
 :notJGR
 
+set R_ARCH
+set R_ARCH0
+set cmdpath
+if defined st set st
+set args
+
+set cygwin=nodosfilewarning
 if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 goto:eof
 
@@ -190,7 +182,49 @@ echo If the above is the first line in a file
 echo containing only R code and the file is 
 echo given a .bat extension then it can be 
 echo run as a batch file.
+goto:eof
 
 
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: processing of --arch= where value can be 32, 64, i386, x64, /i386, /x64
+
+:: Call it like this: call :process_arch %*
+:: On return R_ARCH will be set from --arch or R_ARCH or default
+:: and R_ARCH0 will be R_ARCH without the / prefix
+:: It will look for the architecture in these places in this order:
+:: - first arg if its --arch
+:: - environment variable R_ARCH
+:: - check if R_HOME\bin\i386 exists
+:: - if R_HOME\bin\x64 exists
+:: - if none of the above then use R_ARCH=/i386
+:: Note that R_HOME should be defined before calling this routine
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:process_arch
+	if defined R_ARCH goto:process_arch_cont
+	:: The loop searches for --arch and sets R_ARCH to the next argument
+    :process_arch_loop 
+    (set arg=%~1) 
+    shift 
+    if not defined arg goto :process_arch_cont 
+	if "%arg%"=="--arch" (set R_ARCH=%1) & goto:process_arch_cont
+	goto:process_arch_loop
+    :process_arch_cont
+	if defined process_arg_arch goto:process_arch_defined
+	if exist %R_HOME%\bin\i386 (set R_ARCH=/i386) & goto:process_arch_defined
+	if exist %R_HOME%\bin\x64 (set R_ARCH=/x64) & goto:process_arch_defined
+	(set R_ARCH=/i386)
+	:process_arch_defined
+	if "%R_ARCH%"=="32" (set R_ARCH=/i386)
+	if "%R_ARCH%"=="386" (set R_ARCH=/i386)
+	if "%R_ARCH%"=="i386" (set R_ARCH=/i386)
+	if "%R_ARCH%"=="64" (set R_ARCH=/x64)
+	if "%R_ARCH%"=="x64" (set R_ARCH=/x64)
+	:: if R_ARCH does not begin with a slash add one as a prefix
+	(set first_char=%R_ARCH:~0,1%)
+	if not "%first_char%" == "/" (set R_ARCH=/%R_ARCH%)
+	:: R_ARCH0 is like R_ARCH but without the beginning /
+	(set R_ARCH0=%R_ARCH:~1%)
+	goto:eof
 
 endlocal
