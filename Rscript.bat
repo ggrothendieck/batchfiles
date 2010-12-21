@@ -166,14 +166,18 @@ if /i not %cmd%==jgr.exe goto:notJGR
 
 :notJGR
 
-set R_ARCH
-set R_ARCH0
-set cmdpath
-if defined st set st
-set args
+rem set R_ARCH
+rem set R_ARCH0
+rem set cmdpath
+rem if defined st set st
+rem set args
 
 set cygwin=nodosfilewarning
+if not defined args goto:noargs
 if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
+goto:eof
+:noargs
+if defined st (start "" "%cmdpath%") else "%cmdpath%"
 goto:eof
 
 :help#Rscript
