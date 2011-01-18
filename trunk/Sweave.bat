@@ -21,7 +21,6 @@ if "%1"=="" goto:help
 if "%1"=="-h" goto:help
 if "%1"=="--help" goto:help
 if "%1"=="/?" goto:help
-if "%1"==":Rterm" (
 
 	if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
 	if not defined R_HOME for /f "tokens=2*" %%a in (
@@ -32,6 +31,8 @@ if "%1"==":Rterm" (
 	  ) do set R_HOME=%%~b
 	if not defined R_HOME echo "Error: R not found" & goto:eof
 
+if not "%1"==":Rterm" goto:notRterm
+
 	set here=%CD%
 	set args=%2 %3 %4 %5 %6 %7 %8 %9
 
@@ -39,6 +40,7 @@ if "%1"==":Rterm" (
 
 	goto:Rterm
 )
+:notRterm
 goto:continue
 :help
 echo Usage: %0 abc.Rnw
@@ -290,6 +292,7 @@ set cmdpath=%R_HOME%\bin\%cmd%
 if exist "%cmdpath%" goto:cmdpathfound
 echo "Error: %cmd% not found" & goto:eof
 :cmdpathfound
+rem set cmdpath
 
 if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
 goto:eof
@@ -313,6 +316,7 @@ endlocal
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :process_arch
+	rem set R_HOME
 	if defined R_ARCH goto:process_arch_cont
 	:: The loop searches for --arch and sets R_ARCH to the next argument
     :process_arch_loop 
