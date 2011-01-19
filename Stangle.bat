@@ -80,8 +80,15 @@ call :process_arch %*
     shift 
     if not defined arg goto :cont 
     (set prefix1=%arg:~0,1%) 
-    if "%prefix1%"=="-" goto:loop
+    if "%prefix1%"=="-" goto:switch
     set file=%arg%
+    goto:loop
+	:switch
+	set switch0=%arg:-=%
+	set switch0=%switch0:~0,1%
+	rem architecture switch was previously handled so skip over it here
+	if "%switch0%"=="a" goto:loop
+	set switch=%switch0%
     goto:loop
     :cont
 
