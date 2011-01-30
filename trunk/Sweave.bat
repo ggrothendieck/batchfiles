@@ -2,9 +2,9 @@
 setlocal
 rem rem ver | findstr XP >NUL
 
-for %%i in (%0) do set cmd=%%~ni
-if /i "%cmd%"=="Stangle" set cmd=Stangle
-if /i "%cmd%"=="Sweave" set cmd=Sweave
+for %%i in (%0) do set cmd0=%%~ni
+set cmd=Sweave
+if /i "%cmd0%"=="Stangle" set cmd=Stangle
 
 set scriptdir_=%~dp0
 set lookin=.;%userprofile%;%scriptdir_%
@@ -22,13 +22,24 @@ if "%1"=="-h" goto:help
 if "%1"=="--help" goto:help
 if "%1"=="/?" goto:help
 
-	if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
-	if not defined R_HOME for /f "tokens=2*" %%a in (
-	 'reg query hklm\software\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
-	  ) do set R_HOME=%%~b
-	if not defined R_HOME for /f "tokens=2*" %%a in (
-	 'reg query hklm\software\wow6432Node\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
-	  ) do set R_HOME=%%~b
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: use environment variable R_HOME if defined
+:: else check for .\bin\R.exe
+:: else check registry
+:: else check for existence of bin\R.exe in:
+::   %ProgramFiles%\R\R\R-*
+:: where more recently dated R-* directories would be matched over older ones
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+if not defined R_HOME if exist bin\R.exe set R_HOME=%CD%
+if not defined R_HOME for /f "tokens=2*" %%a in (
+ 'reg query hklm\software\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
+  ) do set R_HOME=%%~b
+if not defined R_HOME for /f "tokens=2*" %%a in (
+ 'reg query hklm\software\wow6432Node\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
+  ) do set R_HOME=%%~b
+
+if not defined R_HOME echo "Error: R not found" & goto:eof
+
 	if not defined R_HOME echo "Error: R not found" & goto:eof
 
 if not "%1"==":Rterm" goto:notRterm
@@ -99,7 +110,7 @@ if exist "%file%.Rnw" set infile="%file%.Rnw"
 if exist "%file%" set infile="%file%" 
 set infilslsh=%infile:\=/%
 :: call sweave
-echo library('utils'); %cmd%(%infilslsh%) | %cmd%.bat :Rterm --no-restore --slave
+echo library('utils'); %cmd%(%infilslsh%) | %cmd0%.bat :Rterm --no-restore --slave
 if /i "%cmd%"=="stangle" goto:eof
 :: echo on
 if errorlevel 1 goto:eof
@@ -165,17 +176,25 @@ setlocal
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: use environment variable R_HOME if defined
-:: else current folder if bin\rcmd.exe exists 
-:: else most current R as determined by registry entry
-:: else error
+:: else check for .\bin\R.exe
+:: else check registry
+:: else check for existence of bin\R.exe in each of the following:
+::   %ProgramFiles%\R\R\R-*
+:: where more recently created R-* directories would be matched over
+:: older ones.
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-if not defined R_HOME if exist bin\rcmd.exe set R_HOME=%CD%
+if not defined R_HOME if exist bin\R.exe set R_HOME=%CD%
 if not defined R_HOME for /f "tokens=2*" %%a in (
  'reg query hklm\software\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_HOME=%%~b
 if not defined R_HOME for /f "tokens=2*" %%a in (
  'reg query hklm\software\wow6432Node\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_HOME=%%~b
+
+if not defined R_HOME for /f "delims=" %%a in (
+	'dir/b/od "%ProgramFiles%"\R\R-* 2^>NUL'
+) do if exist "%ProgramFiles%\R\%%a\bin\R.exe" (set R_HOME=%ProgramFiles%\R\%%a)
+
 if not defined R_HOME echo "Error: R not found" & goto:eof
 
 
