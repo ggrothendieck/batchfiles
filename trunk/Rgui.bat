@@ -63,6 +63,10 @@ if not defined R_MIKTEX for /f "delims=" %%a in (
 :end_miktex
 if defined R_MIKTEX PATH %R_MIKTEX%\miktex\bin;%PATH%
 
+if not defined MYSQL_HOME for /f "delims=" %%a in (
+    'dir /b /on "%ProgramFiles%"\MySQL\* 2^>NUL'
+) do set MYSQL_HOME=%ProgramFiles%\MySQL\%%a
+
 if not defined R_TOOLS for /f "tokens=2*" %%a in (
  'reg query hklm\software\R-core\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
  ) do set R_TOOLS=%%~b
