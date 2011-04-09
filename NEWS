@@ -1,3 +1,14 @@
+Changes in version 0.6-5
+
+  o if MYSQL_HOME has not already been set then it set it to the last file
+    among these, if any:
+
+		%ProgramFiles%\MySQL\*
+
+    This allows one to install and run RMySQL without setting any environment 
+    variables.  (Note that MySQL should be installed from the mysql site.
+    xampp and wamp do not include the header files needed by RMySQL.)
+
 Changes in version 0.6-4
 
   o fixed bugs
