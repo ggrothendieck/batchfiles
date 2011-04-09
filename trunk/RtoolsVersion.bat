@@ -1,12 +1,7 @@
-
-
 @echo off
 
 setlocal
-@echo off
 rem if /i "%1"==path (path %2) && goto:eof
-
-setlocal
 
 if not defined R_TOOLS for /f "tokens=2*" %%a in (
  'reg query hklm\software\R-core\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
@@ -14,8 +9,17 @@ if not defined R_TOOLS for /f "tokens=2*" %%a in (
 if not defined R_TOOLS for /f "tokens=2*" %%a in (
  'reg query hklm\software\wow6432Node\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_TOOLS=%%~b
+if defined R_TOOLS goto:continue
+if exist "C:\Rtools" set R_TOOLS=C:\Rtools
+:continue
 
-if defined R_TOOLS type %R_TOOLS%\VERSION.txt
+if not defined R_TOOLS goto:eof
+if not exist "%R_TOOLS%\VERSION.txt" goto:msg
+type %R_TOOLS%\VERSION.txt
+goto:eof
+
+:msg
+echo RtoolsVersion.bat: VERSION.txt not found in %R_TOOLS%
 
 endlocal
 
