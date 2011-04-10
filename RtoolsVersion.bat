@@ -10,6 +10,7 @@ if not defined R_TOOLS for /f "tokens=2*" %%a in (
  'reg query hklm\software\wow6432Node\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_TOOLS=%%~b
 if defined R_TOOLS goto:continue
+echo "Warning: Rtools not found in registry"
 if exist "C:\Rtools" set R_TOOLS=C:\Rtools
 :continue
 
