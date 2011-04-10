@@ -15,12 +15,13 @@ if exist "C:\Rtools" set R_TOOLS=C:\Rtools
 :continue
 
 if not defined R_TOOLS goto:eof
+echo RtoolsVersion.bat: Rtools found at: %R_TOOLS%
 if not exist "%R_TOOLS%\VERSION.txt" goto:msg
 type %R_TOOLS%\VERSION.txt
 goto:eof
 
 :msg
-echo RtoolsVersion.bat: No VERSION.txt found in %R_TOOLS%. Must be Rtools 2.12 or earlier. 
+echo RtoolsVersion.bat: Rtools 2.12 (or earlier)
 
 endlocal
 
