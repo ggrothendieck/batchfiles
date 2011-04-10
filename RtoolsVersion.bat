@@ -19,7 +19,7 @@ type %R_TOOLS%\VERSION.txt
 goto:eof
 
 :msg
-echo RtoolsVersion.bat: VERSION.txt not found in %R_TOOLS%
+echo RtoolsVersion.bat: No VERSION.txt found in %R_TOOLS%. Must be Rtools 2.12 or earlier. 
 
 endlocal
 
