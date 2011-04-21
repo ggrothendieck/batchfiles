@@ -6,6 +6,8 @@ for %%i in (%0) do set cmd0=%%~ni
 set cmd=Sweave
 if /i "%cmd0%"=="Stangle" set cmd=Stangle
 
+if not defined SWEAVE_STYLEPATH_DEFAULT set SWEAVE_STYLEPATH_DEFAULT=TRUE
+
 set scriptdir_=%~dp0
 set lookin=.;%userprofile%;%scriptdir_%
 
