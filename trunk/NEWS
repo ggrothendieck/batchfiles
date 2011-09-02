@@ -1,3 +1,7 @@
+Changes in version 0.6-6
+
+  o bug fixes
+
 Changes in version 0.6-5
 
   o if MYSQL_HOME has not already been set then it set it to the last file

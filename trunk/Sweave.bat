@@ -354,7 +354,7 @@ endlocal
 	if "%arg%"=="--arch" (set R_ARCH=%1) & goto:process_arch_cont
 	goto:process_arch_loop
     :process_arch_cont
-	if defined process_arg_arch goto:process_arch_defined
+	if defined R_ARCH goto:process_arch_defined
 	if exist %R_HOME%\bin\i386 (set R_ARCH=/i386) & goto:process_arch_defined
 	if exist %R_HOME%\bin\x64 (set R_ARCH=/x64) & goto:process_arch_defined
 	(set R_ARCH=/i386)
