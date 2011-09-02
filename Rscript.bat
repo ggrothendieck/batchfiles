@@ -212,10 +212,11 @@ goto:eof
 	if defined R_ARCH goto:process_arch_cont
 	:: The loop searches for --arch and sets R_ARCH to the next argument
     :process_arch_loop 
-    (set arg=%~1) 
+    set arg=%~1
     shift 
     if not defined arg goto :process_arch_cont 
-	if "%arg%"=="--arch" (set R_ARCH=%1) & goto:process_arch_cont
+	if "%arg%"=="--arch" set R_ARCH=%1
+	if defined R_ARCH goto:process_arch_cont
 	goto:process_arch_loop
     :process_arch_cont
 	if defined process_arg_arch goto:process_arch_defined
