@@ -33,7 +33,7 @@ if not defined R_HOME echo "Error: R not found" & goto:eof
 :: - if none of the above then use i386
 
 call :process_arch %*
-set R
+rem set R
 
 cd %R_HOME%
 cd ..
