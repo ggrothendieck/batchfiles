@@ -84,9 +84,15 @@ set PATHQ=%PATH%
 
 set path2=%path2:~1%
 
-if defined R_TOOLS (
-    set path2=%R_TOOLS%\bin;%R_TOOLS%\perl\bin;%R_TOOLS%\MinGW\bin;%PATH2%
-)
+if not defined R_TOOLS goto NO_RTOOLS
+
+for /f "delims=" %%a in (
+    'dir /b /on %R_TOOLS%\gcc* 2^>NUL'
+) do set R_GCC=%%a
+
+set path2=%R_TOOLS%\bin;%R_TOOLS%\%R_GCC%;%R_TOOLS%\MinGW\bin;%PATH2%
+
+:NO_RTOOLS
 
 path %path2%
 
