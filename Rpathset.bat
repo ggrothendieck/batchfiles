@@ -36,11 +36,12 @@ set R_TOOLS=C:\Rtools
 :: If in future Rtools itself changes then change accordingly
 set R_TOOLS_PATH=%R_TOOLS%\bin;%R_TOOLS%\gcc-4.6.3\bin
 
-:: Your personal library (win-library) will be placed in this directory
-:: Usually best to use R's default which is the one shown below.
-:: This is also where you place your .Rprofile file (if you have one)
-:: This is also needed by some of the Cygwin tools.
-set HOME=%userprofile%\Documents\R
+:: From within R the HOME directory is the ~ directory:
+::    normalizePath("~")
+:: It contains your .Rprofile, if any, and unless set otherwise 
+:: %R_HOME%\R\win-library contains your personal R library of packages 
+:: (from CRAN and elsewhere), if any.  This is also used by some Cygwin tools.
+set HOME=%userprofile%\Documents
 
 :: This is needed for some of the Cygwin tools
 set cygwin=nodosfilewarning
