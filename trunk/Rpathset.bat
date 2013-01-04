@@ -19,7 +19,7 @@
 
 :: Go into R and issue this command: normalizePath(R.home())
 :: and use its output as the value here
-set R_HOME=C:\Program Files\R\R-2.15
+set R_HOME=C:\Program Files\R\R-2.15.2patched
 
 :: 32 or 64 bit version of R.  
 :: (If you wish to use both versions of R make two versions of this file.)
