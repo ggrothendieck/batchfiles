@@ -8,9 +8,9 @@
 :: Install: Modify set statements appropriately for your installation.
 :: and then place this batch script anywhre on your existing path.
 :: (The Windows commandline command PATH shows the current PATH.)
-:: Normally only R_HOME (and possibly R_ARCH) need be set (as per comments).
-:: If you upgrade R then R_HOME must be changed accordingly.
-:: If in future Rtools changes path it uses then R_TOOLS_PATH must be changed.
+:: 
+:: In many cases no changes are needed at all in this file.
+:: R_HOME and R_ARCH are the most likely that may need to be changed.
 ::
 :: Report bugs to:
 :: ggrothendieck at gmail.com
@@ -36,19 +36,39 @@ set R_TOOLS=C:\Rtools
 :: If in future Rtools itself changes then change accordingly
 set R_TOOLS_PATH=%R_TOOLS%\bin;%R_TOOLS%\gcc-4.6.3\bin
 
-:: From within R, the R_USER directory is: 
+:: From within R, the R_USER directory path can be viewed like this:
 ::    cat(normalizePath("~"), "\n")
-:: It contains your .Rprofile, if any, and unless set otherwise 
+:: It contains your personal .Rprofile, if any, and unless set otherwise 
 :: %R_USER%\R\win-library contains your personal R library of packages 
 :: (from CRAN and elsewhere).
 set R_USER=%userprofile%\Documents
 
-:: This is needed for some of the Cygwin tools
+:: This reduces the verbosity of certain Cygwin tools
+:: (It it seems to have no effect on some systems.)
 set cygwin=nodosfilewarning
 
 :: Displays Rtools version in use
 type %R_TOOLS%\version.txt
 
-:: add Rtools and R to PATH for remainder of current cmd line session
-path %R_TOOLS_PATH%;%R_PATH%;%PATH%
+:: MiKTeX path.  Used to build R packages from source.
+:: This is the directory containing pdflatex.exe
+set R_MIKTEX_PATH=C:\Program Files (x86)\MiKTeX 2.9\miktex\bin
 
+:: This is only needed when building RMySQL package from source
+:: It is not needed to run RMySQL once its built.
+:: set MYSQL_HOME=C:\Program Files\MySQL\MySQL Server 5.1
+
+:: This is needed to run JGR and Deducer.
+:: R_LIBS is the system library.
+:: If you have installed at least one package (at which point R will ask to 
+::  set up a personal library -- which you should allow) then R_LIBS_USER
+::  is similar to output of .libPaths() with first comnponent being your
+::  personal library and second compnent being R_LIBS .
+:: set R_LIBS=%R_USER%\R\win-library\2.15
+:: set R_LIBS_USER=%R_LIBS%;%R_HOME%\library
+
+:: add Rtools and R to PATH for remainder of current cmd line session
+path %R_TOOLS_PATH%;%R_PATH%;%R_MIKTEX_PATH%;%PATH%
+
+if "%1"=="" goto:eof
+%*
