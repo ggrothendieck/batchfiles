@@ -144,7 +144,22 @@ adds `R_PATH`, `R_MIKTEX_PATH` and `R_TOOLS` to the Windows path for the
 current `cmd` line session.  No other `cmd` line sessions are affected and
 there are no permanent changes to the system.  Once this is run 
 the R binaries will be on the path so they can be accessed directly without
-`R.bat` .
+`R.bat` .   
+
+This mode of operation has the advantage that startup will be slightly faster
+since the `R.bat` will not have to run when starting `R`.  (On a 1.9 GHz 
+Windows 8 machine `R.bat show` runs in 0.75 seconds.)
+
+Note that if both `R.bat` and `R.exe` exist on the Windows path then the first
+on the path will be called if one uses:
+
+	R ...arguments...
+
+thus one may wish to use `R.bat` or `R.exe` for clarity. 
+
+Alternately, rename `R.bat` to `Rpath.bat` in which case the command `R path`
+becomes just `Rpath` and `R` becomes unambiguous.
+
 (An alternative `R path` is the
 `Rpathset.bat` utility which will be desribed later.)
 
