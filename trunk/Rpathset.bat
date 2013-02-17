@@ -1,3 +1,6 @@
+:: Software and documentation is (c) 2013 GKX Associates Inc. and 
+:: licensed under [GPL 2.0](http://www.gnu.org/licenses/gpl-2.0.html).
+
 :: Purpose: setup path to use R, Rtools and other utilities from cmd line.
 ::
 :: Makes no permanent system changes.  Does not read or write registry.
@@ -82,7 +85,7 @@ set R_MIKTEX_PATH=C:\Program Files (x86)\MiKTeX 2.9\miktex\bin
 :: set R_LIBS_USER=%R_LIBS%;%R_HOME%\library
 
 :: adds directory to path for the remainder of current cmd line session
-path %R_TOOLS_PATH%;%R_PATH%;%R_MIKTEX_PATH%;%PATH%
+path %R_TOOLS_PATH%;%R_MIKTEX_PATH%;%PATH%;%R_PATH%
 
 :: if there are no arguments we are done; else run the argument
 if "%1"=="" goto:eof

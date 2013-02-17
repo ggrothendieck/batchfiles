@@ -1,71 +1,220 @@
+@Echo OFF 
 
-@echo off
-rem if /i "%1"==path (path %2) && goto:eof
+:: Software and documentation is (c) 2013 GKX Associates Inc. and 
+:: licensed under [GPL 2.0](http://www.gnu.org/licenses/gpl-2.0.html).
 
-setlocal
+:: Help is at bottom of script or just run script with single argument: help
+
+:: can optionally uncomment and change these to force certain values. This
+:: is normally unnecessary. Rather one can usually rely on the heuristics to
+:: set them.
+:: set R_CMD=R
+:: set R_HOME=%ProgramFiles%\R\R-2.14.0
+:: set R_ARCH=64
+:: set R_MIKTEX_PATH=%ProgramFiles%\MiKTeX 2.9\miktex\bin
+:: set R_TOOLS=C:\Rtools
+:: set MYSQL_HOME=%ProgramFiles%\MySQL\MysQL Server 5.1
+
+:: 1 means read registry and 0 means ignore registry
+if not defined R_REGISTRY set R_REGISTRY=1
+
+SetLocal EnableExtensions EnableDelayedExpansion 
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: R_CMD
+:: 1. if 1st arg is CMD then set R_CMD to R
+:: 2. else if 1st arg is Rshow, Rpath, Rgui, Rcmd, R or Rscript set R_CMD to it
+::    and remove it from args
+:: 3. else use R_CMD if set
+:: 4. else use %0
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+set args=%*
+set cmd=
+if /i "%~1"=="cd" set cmd=Rcd
+if /i "%~1"=="CMD" set cmd=Rcmd
+if /i "%~1"=="dir" set cmd=Rdir
+if /i "%~1"=="gui" set cmd=Rgui
+if /i "%~1"=="help" goto:Rhelp
+if /i "%~1"=="path" set cmd=Rpath
+if /i "%~1"=="R" set cmd=R
+if /i "%~1"=="script" set cmd=Rscript
+if /i "%~1"=="show" set cmd=RShow
+if /i "%~1"=="SetReg" set cmd=RSetReg
+if /i "%~1"=="tools" set cmd=Rtools
+if /i "%~1"=="touch" set cmd=Rtouch
+
+if "cmd"=="" goto:R_CMD_cont
+if "%2"=="" (set args=) && goto:R_CMD_cont
+set args=xxx%*
+call set args=%%args:xxx%1=%%
+:R_CMD_cont
+if defined cmd set R_CMD=%cmd%
+if not defined R_CMD set R_CMD=%0
+rem echo R_CMD:%R_CMD% args=[%args%]
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: 1. If .\R.exe exist use implied R_PATH and skip remaining points.
+:: 2. If .\{x64,i386}\R.exe or .\bin\{x64,i386}\R.exe exists use implied R_HOME.
+:: 3. if R_HOME defined then derive any of R_ROOT and R_VER that 
+::    are not already defined.
+:: 4. if R_PATH defined then derive any of R_ROOT, R_HOME, R_VER and R_ARCH that
+::    are not already defined.
+:: 4a. If R_REGISTRY=1 and R found in registry derive any of R_HOME, R_ROOT and 
+::     R_VER that are not already defined.
+:: 5. If R_ROOT not defined try %ProgramFiles%\R\*, %ProgramFiles(x86)%\R\*
+::    and then %SystemRoot%\R else error
+:: 6. If R_VER not defined use last directory in cd %R_ROOT% & dir /od
+:: 7. if R_ARCH not defined try %R_ROOT%\%R_VER%\bin\x64\R.exe and then
+::    %R_ROOT%\%R_VER%\bin\i386\R.exe
+:: 8. If R_ROOT, R_VER and R_ARCH defined skip remaining points.
+:: 9. If R.exe found on PATH use implied R_PATH.
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Placing this file in your path will allow rcmd to be run anywhere
-:: without changing your path environment variable.  See comments
-:: below on how it finds where R is.  Your path can be listed by
-:: the Windows console command:  path
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-rem at one tine this script had only been tested on XP
-rem recent tests have only been on Vista
-rem ver | findstr XP >NUL
-rem if errorlevel 1 echo Warning: This script has only been tested on Windows XP.
-
-set scriptdir_=%~dp0
-set lookin=.;%userprofile%;%scriptdir_%
-if not defined R_BATCHFILES_RC (
-	for %%f in ("rbatchfilesrc.bat") do set "R_BATCHFILES_RC=%%~$lookin:f"
+:: 1
+if exist R.exe (
+    pushd ..\..
+    set R_HOME=!CD!
+    popd
+   goto:R_exe_end
 )
-if defined R_BATCHFILES_RC (
-	if exist "%R_BATCHFILES_RC%" call %R_BATCHFILES_RC%
+
+:: 2
+if exist x64\R.exe (
+    pushd ..
+    set R_PATH=!CD!\bin\x64
+    popd
+    goto:R_exe_end
+)
+if exist i386\R.exe (
+    pushd ..
+    set R_PATH=!CD!\bin\i386
+    popd
+    goto:R_exe_end
+)
+if exist bin\x64\R.exe set R_PATH=%CD%\bin\x64 & goto:R_exe_end
+if exist bin\i386\R.exe set R_PATH=%CD%\bin\i386
+:R_exe_end
+
+:: 3
+if defined R_HOME (
+    pushd
+    cd %R_HOME%
+    if not defined R_VER for /f "delims=" %%a in ("!CD!") do set R_VER=%%~na
+    cd ..
+    if not defined R_ROOT set R_ROOT=!CD!
+    popd
 )
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: use environment variable R_HOME if defined
-:: else current folder if bin\rcmd.exe exists 
-:: else most current R as determined by registry entry
-:: else error
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: 4
+if defined R_PATH (
+    pushd
+    cd %R_PATH%
+    if not defined R_ARCH for /f "delims=" %%a in ("!CD!") do set R_ARCH=%%~na
+    cd ..\..
+    if not defined R_HOME set R_HOME=!CD!
+    if not defined R_VER for /f "delims=" %%a in ("!CD!") do set R_VER=%%~na
+    cd ..
+    if not defined R_ROOT set R_ROOT=!CD!
+    popd
+)
 
-if not defined R_HOME if exist bin\r.exe set R_HOME=%CD%
+
+:: 4a
+
 if not defined R_HOME for /f "tokens=2*" %%a in (
- 'reg query hklm\software\R-core\R /v InstallPath 2^>NUL ^| findstr InstallPath'
-  ) do set R_HOME=%%~b
+    'reg query hklm\software\wow6432Node\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
+    ) do set R_HOME=%%~b
+
 if not defined R_HOME for /f "tokens=2*" %%a in (
- 'reg query hklm\software\wow6432Node\r-core\r /v InstallPath 2^>NUL ^| findstr InstallPath'
-  ) do set R_HOME=%%~b
-if not defined R_HOME echo "Error: R not found" & goto:eof
+    'reg query hklm\software\R-core\R /v InstallPath 2^>NUL ^| findstr InstallPath'
+    ) do set R_HOME=%%~b
 
-call :process_arch %*
+if defined R_HOME (
+    if not defined R_ROOT (
+	pushd
+	cd %R_HOME%
+	cd ..
+	set R_ROOT=!CD!
+        popd
+    )
+    if not defined R_VER (
+        for /f "delims=" %%a in ("%R_HOME%") do set R_VER=%%~nxa
+    )
+)
 
-:: add R_MIKTEX to PATH if defined.  Otherwise if its not 
-:: in the PATH already then check \Program Files\miktex* or \miktex* 
-:: and if found add that to PATH.
+	
+:: 5
+if defined R_ROOT goto:R_ROOT_end
+if exist "%ProgramFiles%\R" set R_ROOT=%ProgramFiles%\R
+if defined R_ROOT goto:R_ROOT_end
+if exist %SystemDrive%\R set R_ROOT=%SystemDrive%\R
+:R_ROOT_end
 
-:: if miktex found in PATH skip searching for it
-PATH | findstr /i miktex > nul
-if not errorlevel 1 goto:end_miktex
+:: 6
+if defined R_VER goto:R_VER_end
+for /f "delims=" %%a in (
+    'dir /b /od /ad "%R_ROOT%" 2^>NUL'
+) do set R_VER=%%a
+:R_VER_end
 
-:: check for presence of %ProgramFiles%\miktex* or \miktex*
+:: do we need this?
+if defined R_ROOT if defined R_VER set R_HOME=%R_ROOT%\%R_VER%
 
-if not defined R_MIKTEX for /f "delims=" %%a in (
-    'dir /b /on "%ProgramFiles%"\miktex* 2^>NUL'
-) do set R_MIKTEX=%ProgramFiles%\%%a
+:: 7
+if defined R_ARCH goto:R_ARCH_cont
+set R_ARCH=i386
+if exist "%R_HOME%\bin\x64" set R_ARCH=x64
+if exist "%R_ROOT%\%R_VER%\bin\x64" set R_ARCH=x64
+:R_ARCH_cont
+if "%R_ARCH%"=="64" set R_ARCH=x64
+if "%R_ARCH%"=="32" set R_ARCH=i386
+if "%R_ARCH%"=="386" set R_ARCH=i386
 
-if not defined R_MIKTEX for /f "delims=" %%a in (
-    'dir /b /on %SystemDrive%:\miktex* 2^>NUL'
-) do set R_MIKTEX=%SystemDrive%:\miktex\%%a
+:: 8
+if not defined R_ROOT goto:where
+if not defined R_VER goto:where
+if not defined R_ARCH goto:where
+set R_PATH=%R_ROOT%\%R_VER%\bin\%R_ARCH%
+goto:path_end
 
-:end_miktex
-if defined R_MIKTEX PATH %R_MIKTEX%\miktex\bin;%PATH%
+echo "R not found" & exit /b 1
 
-if not defined MYSQL_HOME for /f "delims=" %%a in (
-    'dir /b /on "%ProgramFiles%"\MySQL\* 2^>NUL'
-) do set MYSQL_HOME=%ProgramFiles%\MySQL\%%a
+:: 9
+:where
+where Rgui.exe 1>NUL 2>NUL
+if not errorlevel 1 for /f "delims=" %%a in ('where Rgui.exe') do set R_PATH=%%~pa
+
+:path_end
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: R_TOOLS
+:: 1. use R_TOOLS if defined. If not
+:: 2. check if ls.exe, rsync.exe and gcc.exe are on PATH. If not
+:: 3. check if Rtools found in registry. If not
+:: 4. check if C:\Rtools exists. If not
+:: 5. R_TOOLS not found.
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+if defined R_TOOLS goto:RtoolsEnd
+
+where ls.exe 1> NUL 2> NUL
+if errorlevel 1 goto:RtoolsNotOnPATH
+
+where rsync.exe 1> NUL 2> NUL
+if errorlevel 1 goto:RtoolsNotOnPATH
+
+where gcc.exe 1> NUL 2> NUL
+if errorlevel 1 goto:RtoolsNotOnPATH
+
+for /f "delims=" %%a in ('where rsync.exe') do set R_TOOLS=%%~pa
+pushd %R_TOOLS%
+cd ..
+set R_TOOLS=%CD%
+popd
+goto:RtoolsEnd
+
+:RtoolsNotOnPATH
 
 if not defined R_TOOLS for /f "tokens=2*" %%a in (
  'reg query hklm\software\R-core\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
@@ -74,172 +223,324 @@ if not defined R_TOOLS for /f "tokens=2*" %%a in (
  'reg query hklm\software\wow6432Node\Rtools /v InstallPath 2^>NUL ^| findstr InstallPath'
   ) do set R_TOOLS=%%~b
 
-set PATHQ=%PATH%
-:WHILE
-    if "%PATHQ%"=="" goto WEND
-    for /F "delims=;" %%i in ("%PATHQ%") do if exist "%%~sfi" set PATH2=%PATH2%;%%~sfi
-    for /F "delims=; tokens=1,*" %%i in ("%PATHQ%") do set PATHQ=%%j
-    goto WHILE 
-:WEND
+if exist "C:\Rtools" set R_TOOLS=C:\Rtools
 
-set path2=%path2:~1%
+:RToolsEnd
 
-if not defined R_TOOLS goto NO_RTOOLS
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: R_TOOLS_PATH
+:: Extract path from: %R_TOOLS%\unins000.dat
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-for /f "delims=" %%a in (
-    'dir /b /on %R_TOOLS%\gcc* 2^>NUL'
-) do set R_GCC=%%a
+if defined R_TOOLS call :extract_string {app} %R_TOOLS%\unins000.dat
+call set R_TOOLS_PATH=%%final:{app}=%R_TOOLS%%%
+if defined R_TOOLS for /f "tokens=3" %%a in (%R_TOOLS%\Version.txt) do set R_TOOLS_VERSION=%%a
 
-set path2=%R_TOOLS%\bin;%R_TOOLS%\%R_GCC%;%R_TOOLS%\MinGW\bin;%PATH2%
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: R_MIKTEX
+:: If R_MIKTEX defined use that
+:: else if pdflatex.exe on PATH use that else
+:: check %ProgramFiles%\miktex* else
+:: check %ProgramFiles(x86)%\miktex* else
+:: check %SystemDrive%\miktex*
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:NO_RTOOLS
+if defined R_MIKTEX_PATH goto:miktex_end
 
-path %path2%
+:: if pdflatex.exe found in PATH use implied path
+where pdflatex.exe 1>NUL 2>NUL
+if errorlevel 1 goto:miktex_continue
+set MIKTEX_ALREADY_ON_PATH=1
+for /f "delims=" %%a in ('where pdflatex.exe') do set R_MIKTEX_PATH=%%~pa
+:: remove trailing \, if any
+IF "%R_MIKTEX_PATH:~-1%"=="\" SET R_MIKTEX_PATH=%R_MIKTEX_PATH:~0,-1%
 
-set here=%CD%
-set args=%*
+goto:miktex_end
 
-:: get name by which this command was called
-:: this allows same file to be used for Rgui, Rterm, etc. by just renaming it
-for %%i in (%0) do set cmd=%%~ni.exe
+:miktex_continue
+if not defined R_MIKTEX_PATH for /f "delims=" %%a in (
+    'dir /b /on "%ProgramFiles%"\miktex* 2^>NUL'
+) do set R_MIKTEX_PATH=%ProgramFiles%\%%a\miktex\bin
 
-if /i %cmd%==rtools.exe (endlocal & set path=%path2%) && goto:eof
+if not defined R_MIKTEX_PATH for /f "delims=" %%a in (
+    'dir /b /on "%ProgramFiles(x86)%"\miktex* 2^>NUL'
+) do set R_MIKTEX_PATH=%ProgramFiles%\%%a\miktex\bin
 
-cd %R_HOME%\bin
-if /i not %cmd%==rguistart.exe goto:notRguiStart
-  set cmd=rgui.exe
-  set firstArgument=%1
-  if defined firstArgument (
-    dir %1 | findstr "<DIR>" > nul
-    if errorlevel 1 goto:notRguiStart
-    set here=%~1
-    set firstArgument=
-  )
-  set args=
-  shift
-  :startloop
-  set firstArgument=%1
-  if defined firstArgument (
-     set args=%args% "%~1" 
-     shift
-     goto:startloop
-  )
-:notRguiStart
+if not defined R_MIKTEX_PATH for /f "delims=" %%a in (
+    'dir /b /on %SystemDrive%:\miktex* 2^>NUL'
+) do set R_MIKTEX_PATH=%SystemDrive%:\%%a\mixtex\bin
 
-set st=
-if /i %cmd%==rgui.exe set st=start
+:miktex_end
 
-if /i not %cmd%==#Rscript.exe goto:not#Rscript
-set cmd=Rscript.exe
-if [%1]==[] goto:help#Rscript
-call :rsarg1 %*
-goto:not#Rscript
-:rsarg1
-set args=%*
-set arg1=%~1
-set arg1=%arg1:.bat.bat=.bat%
-set last4=%arg1:~-4%
-if /i not "%last4%"==".bat" set arg1=%arg1%.bat
-for %%a in ("%R_HOME%\bin\Rscript.exe") do set RSCRIPT=%%~sfa
-call set args=%%args:%1="%arg1%"%%
-rem call set args=%%args:%1=%%
-goto:eof
-:not#Rscript
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: MySQL
+:: If MYSQL_HOME defined use that else
+:: check %ProgramFiles%\MySQL\* else
+:: check %SystemDrive%:\MySQL\*
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-cd %here%
+:: if not defined MYSQL_HOME for /f "delims=" %%a in (
+::    'dir /b /on "%ProgramFiles%"\MySQL\* 2^>NUL'
+:: ) do set MYSQL_HOME=%ProgramFiles%\MySQL\%%a
+::
+:: if not defined MYSQL_HOME for /f "delims=" %%a in (
+::    'dir /b /on %SystemDrive%:\MySQL* 2^>NUL'
+:: ) do set R_MIKTEX=%SystemDrive%:\MySQL\%%a
 
-:: Look in architecture specific subdirectory of bin. If not there look in bin.
-set cmdpath=%R_HOME%\bin\%R_ARCH0%\%cmd%
-if exist "%cmdpath%" goto:cmdpathfound
-set cmdpath=%R_HOME%\bin\%cmd%
-if exist "%cmdpath%" goto:cmdpathfound
-echo "Error: %cmd% not found" & goto:eof
-:cmdpathfound
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: get name by which program was called - $0
+:: or use R_CMD environment variable if that was defined (mainly for testing)
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:: if called as jgr.bat locate the JGR package to find jgr.exe
-if /i not %cmd%==jgr.exe goto:notJGR
-  set st=start
-  set cmdpath=jgr.exe
-  if not defined JGR_LIBS set JGR_LIBS=%R_LIBS%
-  for %%a in ("%R_HOME%\bin\Rscript.exe") do set RSCRIPT=%%~sfa
-  if not defined JGR_LIBS for /f "usebackq delims=" %%a in (
-		`%RSCRIPT% -e "cat(.libPaths(),sep=';')"`
-  ) do set JGR_LIBS=%%~a
-  if not defined JGR_LIBS (
-	echo "Error: JGR package not found in R library" & goto:eof
-  )
-  for %%f in ("JGR") do set "jgrpkg=%%~$JGR_LIBS:f"
-  set JGR_LIB=%jgrpkg:~0,-4%
-  for %%a in ("%JGR_LIB%") do set JGR_LIB_SHORT=%%~sfa
-  for %%a in ("%R_HOME%") do set R_HOME_SHORT=%%~sfa
-  set args=--libpath=%JGR_LIB_SHORT% --rhome=%R_HOME_SHORT%
+if not defined R_CMD (set R_CMD=%0)
+for %%i in (%R_CMD%) do set R_CMD=%%~ni
 
-:notJGR
+if /i "%R_CMD%"=="dir" goto:Rdir
+if /i "%R_CMD%"=="cd" goto:Rcd
+if /i "%R_CMD%"=="touch" goto:Rtouch
+if /i "%R_CMD%"=="Rversions" goto:RSetReg
 
-rem set R_ARCH
-rem set R_ARCH0
-rem set cmdpath
-rem if defined st set st
-rem set args
+:: add MiKTeX to PATH if not already on it
+if not defined R_MIKTEX_PATH goto :miktex_add_path_end
+echo %PATH% | findstr /i miktex 1>NUL 2>NUL
+if errorlevel 1 path %R_MIKTEX_PATH%;%PATH%
+:miktex_add_path_end
 
-set cygwin=nodosfilewarning
-if not defined args goto:noargs
-if defined st (start "" "%cmdpath%" %args%) else "%cmdpath%" %args%
-goto:eof
-:noargs
-if defined st (start "" "%cmdpath%") else "%cmdpath%"
+:: add Rtools paths to PATH if not already on it
+if not defined R_TOOLS_PATH goto :Rtools_add_path_end
+echo %PATH% | findstr /i Rtools 1>NUL 2>NUL
+if errorlevel 1 path %R_TOOLS_PATH%;%PATH%
+:Rtools_add_path_end
+
+if /i "%R_CMD%"=="Rpath" goto:Rpath
+if /i "%R_CMD%"=="Rtools" goto:Rtools
+if /i "%R_CMD%"=="Rcd" goto:Rcd
+if /i "%R_CMD%"=="Rdir" goto:Rdir
+if /i "%R_CMD%"=="Rshow" goto:Rshow
+if /i "%R_CMD%"=="Rtouch" goto:Rtouch
+if /i "%R_CMD%"=="RSetReg" goto:RSetReg
+
+
+if /i not "%R_CMD%"=="Rgui" goto:notRgui
+start "Rgui.exe" "%R_PATH%\Rgui.exe" %args%
 goto:eof
 
-:help#Rscript
-echo Usage: #Rscript %%0 %%*
-echo If the above is the first line in a file 
-echo containing only R code and the file is 
-echo given a .bat extension then it can be 
-echo run as a batch file.
+:notRgui
+"%R_PATH%\%R_CMD%.exe" %args%
+
+goto:eof
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: output the set statements
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:Rshow
+
+if defined R_PATH (
+    set old=%CD%
+    cd %R_PATH%
+    for /f "delims=" %%a in ("!CD!") do set R_ARCH=%%~nxa
+    cd ..\..
+    set R_HOME=!CD!
+    for /f "delims=" %%a in ("!CD!") do set R_VER=%%~nxa
+    cd ..
+    set R_ROOT=!CD!
+    cd !old!
+)
+
+:: echo set R_PATH=%R_PATH%
+:: echo set R_HOME=%R_HOME%
+:: echo set R_ROOT=%R_ROOT%
+:; echo set R_VER=%R_VER%
+:: echo set R_ARCH=%R_ARCH%
+:: echo set R_TOOLS=%R_TOOLS%
+:: echo set R_TOOLS_PATH=%R_TOOLS_PATH%
+:: :: echo set MYSQL_HOME=%MYSQL_HOME%
+::echo set R_MIKTEX_PATH=%R_MIKTEX_PATH%
+set R
+goto:eof
+
+:Rcd
+endlocal & cd %R_ROOT%
+goto:eof
+
+:Rdir
+dir/od "%R_ROOT%"
+goto:eof
+
+:RSetReg
+cd %R_PATH%
+RSetReg %args%
+goto:eof
+
+:Rtouch
+if not defined R_HOME set R_HOME=%R_ROOT%\%R_VER%
+pushd %R_HOME%
+echo > dummy.txt
+del dummy.txt"
+popd
 goto:eof
 
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: processing of --arch= where value can be 32, 64, i386, x64, /i386, /x64
 
-:: Call it like this: call :process_arch %*
-:: On return R_ARCH will be set from --arch or R_ARCH or default
-:: and R_ARCH0 will be R_ARCH without the / prefix
-:: It will look for the architecture in these places in this order:
-:: - first arg if its --arch
-:: - environment variable R_ARCH
-:: - check if R_HOME\bin\i386 exists
-:: - if R_HOME\bin\x64 exists
-:: - if none of the above then use R_ARCH=/i386
-:: Note that R_HOME should be defined before calling this routine
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: set path 
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:Rpath
+endlocal & PATH %PATH%;%R_PATH%
+goto:eof
 
-:process_arch
-	if defined R_ARCH goto:process_arch_cont
-	:: The loop searches for --arch and sets R_ARCH to the next argument
-    :process_arch_loop 
-    set arg=%~1
-    shift 
-    if not defined arg goto :process_arch_cont 
-	if "%arg%"=="--arch" set R_ARCH=%1
-	if defined R_ARCH goto:process_arch_cont
-	goto:process_arch_loop
-    :process_arch_cont
-	if defined process_arg_arch goto:process_arch_defined
-	if exist %R_HOME%\bin\i386 (set R_ARCH=/i386) & goto:process_arch_defined
-	if exist %R_HOME%\bin\x64 (set R_ARCH=/x64) & goto:process_arch_defined
-	(set R_ARCH=/i386)
-	:process_arch_defined
-	if "%R_ARCH%"=="32" (set R_ARCH=/i386)
-	if "%R_ARCH%"=="386" (set R_ARCH=/i386)
-	if "%R_ARCH%"=="i386" (set R_ARCH=/i386)
-	if "%R_ARCH%"=="64" (set R_ARCH=/x64)
-	if "%R_ARCH%"=="x64" (set R_ARCH=/x64)
-	:: if R_ARCH does not begin with a slash add one as a prefix
-	(set first_char=%R_ARCH:~0,1%)
-	if not "%first_char%" == "/" (set R_ARCH=/%R_ARCH%)
-	:: R_ARCH0 is like R_ARCH but without the beginning /
-	(set R_ARCH0=%R_ARCH:~1%)
-	goto:eof
+:Rtools
+endlocal & PATH %PATH%
+goto:eof
 
-endlocal
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: list R versions
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:Rversions
+if defined args goto:Rversions_cont
+pushd %R_HOME%
+cd ..
+echo R packages found. Most recent (last listed) is default:
+for /f "delims=" %%a in ('dir/b /od') do echo %%~fa
+popd
+goto:eof
+:Rversions_cont
+set args=###%args%
+set args=%args:### =%
+set args=%args:###=%
+pushd %R_HOME%
+cd ..
+(for /f "delims=" %%a in ('dir /b /od') do echo %%~fa) | findstr /L /C:"%args%" 1>NUL 2>NUL
+if errorlevel 1 echo %args% not found & goto:eof
+echo Run the following command (may need an elevated cmd window):
+for /f "delims=" %%a in ('dir /b /on ^| findstr /L /C:"%args%"') do @echo echo ^> "%%~fa\dummy.txt" /Y
+popd
+goto:eof
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: list registry entries
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:Rregistry
+reg query hklm\software\R-core\R /v InstallPath 2>NUL | findstr InstallPath
+reg query hklm\software\wow6432Node\r-core\r /v InstallPath 2>NUL | findstr InstallPath
+
+goto:eof
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::
+:: Extract text from file:
+::   %1 = input string that starts text
+::   %2 = input file
+::   final = output variable holding text from and including %1 until 
+::    binary data encountered
+::
+:: Needs: SetLocal EnableExtensions EnableDelayedExpansion 
+::
+:: Example:  
+::      call :extract_string {app} C:\Rtools\unins000.dat
+::      echo %final%
+::   where {app} is the string that starts extraction and 
+::         C:\Rtools\unins000.dat is the file
+::
+:: Based on code by Frank Westlake.
+::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+   :extract_string
+
+   setlocal
+
+   Set "string=%1" 
+   Set "file=%2"
+
+   For /F "delims=" %%a in ( 
+       'findstr /C:"%string%" "%file%"^|MORE' 
+     ) Do ( 
+     Set "$=%%~a" 
+     If /I "!$:~0,5!" EQU "%string%" ( 
+       Set $=!$:;=" "! 
+       For %%b in ("!$!") Do ( 
+         Set "#=%%~b" 
+         If "!#:~0,5!" EQU "%string%" ( 
+           CALL :work "!#!"
+         ) 
+       ) 
+     ) 
+   ) 
+   endlocal & set final=%final%
+   Goto :EOF 
+   :work 
+   set final=%final%!#!;
+   Goto :EOF 
+
+:Rhelp
+
+echo (c) 2013 G. Grothendieck 
+echo License: GPL 2.0 ( http://www.gnu.org/licenses/gpl-2.0.html )
+echo Launch script for R and associated functions.  
+echo Usage:  R.bat [subcommand] [arguments]
+echo Subcommands where (0) means takes no arguments; (A) means may need Admin priv
+echo   cd - cd to R_ROOT, typically to C:\Program Files\R (0)
+echo   cmd - Run Rcmd.exe
+echo   dir - dir/od of R_ROOT (0)
+echo   gui - Run Rgui.exe
+echo   help - help info (0)
+echo   path - add R_TOOLS, R_MIKTEX ^& R_PATH to path for current cmd line session (0)
+echo   R - Run R.exe (0)
+echo   script - Run Rscript.exe
+echo   show - show R_ variable values used. R_PATH, etc. (0)
+echo   SetReg - Run RSetReg; see 2.17 in R FAQ for Windows (A)
+echo   tools - add R_TOOLS and R_MIKTEX to path for current cmd line session (0)
+echo   touch - change date on R_HOME to now (0) (A)
+echo Examples
+echo   R     -- invoke R.exe                R gui -- invoke Rgui.exe
+echo   R dir -- show R versions             R show -- show R_ variables
+echo   R CMD build mypkg -- builds mypkg
+echo   cmd /c set R_VER=R-2.14.0 ^& R gui -- run indicated Rgui version
+echo   cmd /c set R_ARCH=32 ^& R gui -- run 32 bit Rgui
+echo   cmd /c R_VER=R-2.14.0 ^& R.bat setreg - make 2.14.0 current in registry
+echo   cmd /c R_VER=R-2.14.0 ^& R.bat touch - change date on R-2.14.0 dir to now
+goto:eof
+echo.
+echo Run Rgui using a different version of R.  R_HOME only affects R session
+echo but not cmd line session.
+echo   cmd /c set R_HOME=%ProgramFiles%\R\R-2.14.0 ^& R gui
+echo
+echo Launch a new cmd line window in which R_HOME is as set and launch R:
+echo   start set R_HOME=%ProgramFiles%\R\R-2.14.0 ^& R gui
+echo
+echo ==Customization by renaming==
+echo.
+echo If the optional first argument is missing then it uses the value of 
+echo the environment variable R_CMD or if that is not set it uses the name of 
+echo the script file as the default first argument.  The idea is one could have 
+echo multiple versions of the script called R.bat, Rgui.bat, etc. which invoke
+echo the corresponding functionality without having to specify first argument.
+echo.
+echo ==Customization by setting environment variables at top of script==
+echo.
+echo It can be customized by setting any of R_CMD, R_HOME, R_ARCH, 
+echo R_MIKTEX_PATH, R_TOOLS after the @echo off command at the top of the 
+echo script.  R_CMD will be used as the default first argument (instead of the 
+echo script name).  
+echo.
+echo e.g. use the following after @echo off to force 32-bit
+echo set R_ARCH=32
+echo.
+echo e.g.  use the following after @echo off to force a particular version of 
+echo R to be used
+echo set R_HOME=%ProgramFiles%\R\R-2.14.0
+echo.
+echo e.g. use the following after @echo off to change the default command to 
+echo Rgui even if the script is called myRgui.bat, say:
+echo set R_CMD=Rgui
+echo.
+echo ==Installation==
+echo. 
+echo The script is self contained so just place it anywhere on your Windows
+echo PATH.  (From the Windows cmd line the command PATH shows your current
+echo Windows path.)  You may optionally make copies of this script with names 
+echo like R.bat, Rscript.bat, Rcmd.bat so that each has a different default.
+echo.
+
