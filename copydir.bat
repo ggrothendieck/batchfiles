@@ -1,4 +1,6 @@
 @echo off
+:: Software and documentation is (c) 2013 GKX Associates Inc. and 
+:: licensed under [GPL 2.0](http://www.gnu.org/licenses/gpl-2.0.html).
 setlocal
 if not "%2"=="" goto:run
 echo Usage: copydir fromdir todir

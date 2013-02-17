@@ -1,4 +1,6 @@
 // elevate.js -- runs target command line elevated
+// Arguments should not have embedded spaces.
+// http://blogs.msdn.com/b/aaron_margosis/archive/2007/07/01/scripting-elevation-on-vista.aspx
 if (WScript.Arguments.Length >= 1) {
     Application = WScript.Arguments(0);
     Arguments = "";
