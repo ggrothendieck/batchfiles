@@ -368,15 +368,27 @@ dir/od "%R_ROOT%"
 goto:eof
 
 :RSetReg
+reg query "HKU\S-1-5-19" >NUL 2>&1 && ( goto RSetReg_next ) || ( 
+        echo Please run this as administrator. 
+        goto :eof 
+) 
+:RSetReg_next
+
 cd %R_PATH%
 RSetReg %args%
 goto:eof
 
 :Rtouch
+reg query "HKU\S-1-5-19" >NUL 2>&1 && ( goto Rtouch_next ) || ( 
+        echo Please run this as Administator.
+        goto :eof
+) 
+:Rtouch_next
+
 if not defined R_HOME set R_HOME=%R_ROOT%\%R_VER%
 pushd %R_HOME%
 echo > dummy.txt
-del dummy.txt"
+del dummy.txt
 popd
 goto:eof
 
