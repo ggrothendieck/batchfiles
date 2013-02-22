@@ -210,11 +210,11 @@ determined by which R install directory is the most recent.  To make a
 particular R install directory the most recent run the following in a `cmd`
 line session with Administrator privileges:
 
-	R show
+	R dir
 	el cmd /c set R_VER=R-2.14.0 ^& R touch
 
 The value of `R_VER` in this code must be one of the directories listed 
-by `R show`.
+by `R dir`.
 
 The `el.js` command used in the above code comes with these batch files 
 and provides one way to elevate commands to have Administrator 
