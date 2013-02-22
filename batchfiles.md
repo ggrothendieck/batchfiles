@@ -8,12 +8,13 @@ Software and documentation is (c) 2013 GKX Associates Inc. and licensed under [G
 
 This document describes a number of Windows batch, javascript and `.hta` files
 that may be used in conjunction with R.  Each is self contained and independent
-of the others.  Each requires no installation - just place it on the Windows
+of the others.  None requires installation - just place it on the Windows
 path.  (To display the Windows path enter `path` at the Windows `cmd` line.)
 
 `R.bat` and `Rpathset.bat` are alternatives to each other intended to
-facilitate the use of R without having to permanently modify the Windows
-system.  It uses heuristics to automatically locate `R`, `MiKTeX` and `Rtools`.
+facilitate the use of R without permanently modifying the Windows
+configuration.  
+It uses heuristics to automatically locate `R`, `MiKTeX` and `Rtools`.
 In contrast, `Rpathset.bat` takes a simpler approach of having the user
 manually edit the `set` statements in it to configure it.  `R.bat` does not
 require changes when you install a new version of R but `Rpathset.bat` does.
@@ -49,7 +50,7 @@ Typical usage to launch R gui is the following:
 
 	R gui
 
-If `R.exe` were not on the Windows path and is before `R.bat` then it would
+If `R.exe` were on the Windows path and before `R.bat` then it would
 have to be written as follows:
 
 	R.bat gui
@@ -101,9 +102,10 @@ There are also some support commands:
 `R cd` changes directory to the `R_ROOT` directory (typically 
 `C:\Program Files\R`).
 
-`R dir` displays the contents of that directory.  
+`R dir` displays the contents of that directory oldest first and most recent last.
 
-`R show` shows the values of the `R_` environment that `R.bat` uses.  Here
+`R show` shows the values of the `R_` environment variables
+used by `R.bat` .  Here
 is a list with typical values.  These values are determined by the script
 heuristically (or the user can set any before running `R.bat` or by customizing
 `R.bat` itself by setting any of them near top of the script).
@@ -121,11 +123,11 @@ heuristically (or the user can set any before running `R.bat` or by customizing
 	R_VER=R-2.15.2
 
 `R_PATH`, `R_MIKTEX_PATH` and `R_TOOLS_PATH` are the paths to the directories
-holding the `R`, `MiKTeX` and `Rtools` binaries.  
+holding the `R`, `MiKTeX` and `Rtools` binaries (i.e. `.exe` files).  
 
-`R_CMD` indicates the subcommand or if no subcommand specified then is derived
-from the name of the script.  For example if the script were renamed `Rgui.bat`
-then if no subcommand were specified it would default to `gui`.
+`R_CMD` indicates the subcommand or if no subcommand specified then it is
+derived from the name of the script.  For example if the script were renamed
+`Rgui.bat` then if no subcommand were specified it would default to `gui`.
 
 `R_ROOT` is the directory holding all the R installations. `R_HOME` is the
 directory of the particular R installation.  `R_HOME` is made up of `R_ROOT`
@@ -147,20 +149,20 @@ the R binaries will be on the path so they can be accessed directly without
 `R.bat` .   
 
 This mode of operation has the advantage that startup will be slightly faster
-since the `R.bat` will not have to run when starting `R`.  (On a 1.9 GHz 
-Windows 8 machine `R.bat show` runs in 0.75 seconds.)
+since the `R.bat` will not have to run each time that `R` is started.  (On a 
+1.9 GHz Windows 8 machine `R.bat show` runs in 0.75 seconds.)
 
 Note that if both `R.bat` and `R.exe` exist on the Windows path then the first
 on the path will be called if one uses:
 
 	R ...arguments...
 
-thus one may wish to use `R.bat` or `R.exe` for clarity. 
+thus one may wish to enter `R.bat` or `R.exe` rather than just `R` for clarity. 
 
 Alternately, rename `R.bat` to `Rpath.bat` in which case the command `R path`
 becomes just `Rpath` and `R` becomes unambiguous.
 
-(An alternative `R path` is the
+(An alternative to `R path` is the
 `Rpathset.bat` utility which will be desribed later.)
 
 The command
@@ -176,40 +178,47 @@ those utilities without R.
 
 For R installations using the standard locations and not specifying any of the
 R_ environment variables the registry will determine which version of R is used
-(assuming `R_REGISTRY` is not 0).  If R is not found in the registry the R
+(assuming `R_REGISTRY` is not `0`).  If R is not found in the registry or if
+`R_REGISTRY` is `0` then the R
 installation in `R_ROOT` which has the most recent date will be used.
 
-We can change which version of R is used like this:
+If we enter this at the `cmd` line:
 
 	set R_VER=R-2.14.0
 
-and now for the remainder of this `cmd` line session that version will be used.
-If one wants to use two different R versions at once we could spawn a new `cmd`
-line session with the new version:
+then for the remainder of this `cmd` line session that version will be used.
+If one wishes to use two different R versions at once we could spawn a new `cmd`
+line session:
 
 	start
 
 and then enter the same set command into the new window.  Now any use of R in
-the original window will use the default version and in the new version will
-use the specified version.
+the original window will use the default version and in the new `cmd` line
+session it will use the specified version.
 
 One can change the registry entry permanently to refer to a particlar version
 like this:
 
 	cmd /c set R_VER=R-2.14.0 ^& R SetReg
 
-This requires Administrator privileges so a window will pop up requesting
-permission to proceed.
+This requires Administrator privileges and if not already running as 
+Administrator a window will pop up requesting permission to proceed.
 
-If the registry is empty or `R_REGISTRY=0` then the default version is
+If the registry is empty or `R_REGISTRY=0` then the default version is not
+determined by the registry but is
 determined by which R install directory is the most recent.  To make a
 particular R install directory the most recent run the following in a `cmd`
 line session with Administrator privileges:
 
+	R show
 	el cmd /c set R_VER=R-2.14.0 ^& R touch
 
-The `el.js` command that comes with these batch files is one way to elevate
-the command to run with such privileges (as shown in the above example).  
+The value of `R_VER` in this code must be one of the directories listed 
+by `R show`.
+
+The `el.js` command used in the above code comes with these batch files 
+and provides one way to elevate commands to have Administrator 
+privileges.
 
 Note that `R SetReg` and `R touch` make permanent changes to the system
 (namely installing or uninstalling the R key and updating the date on a
@@ -296,3 +305,7 @@ This program displays a window showing where MiKTeX was found. It uses the
 MiKTeX API. This API is not used by `R.bat` .  It may be incorporated into
 `R.bat` in the future.
 
+## make-batchfiles-pdf.bat ##
+
+This batch file creates a pdf of this documentation from the markdown
+file `batchfiles.md` .  `pandoc` must be installed for this to run.

@@ -368,12 +368,6 @@ dir/od "%R_ROOT%"
 goto:eof
 
 :RSetReg
-reg query "HKU\S-1-5-19" >NUL 2>&1 && ( goto RSetReg_next ) || ( 
-        echo Please run this as administrator. 
-        goto :eof 
-) 
-:RSetReg_next
-
 cd %R_PATH%
 RSetReg %args%
 goto:eof
