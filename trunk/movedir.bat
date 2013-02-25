@@ -2,21 +2,14 @@
 :: Software and documentation is (c) 2013 GKX Associates Inc. and 
 :: licensed under [GPL 2.0](http://www.gnu.org/licenses/gpl-2.0.html).
 setlocal
-:: Usage:
-::   If arg1 and arg2 are the library subdirectories of two R distributions
-::   then all libraries in arg1 that are not already in arg2 are moved to 
-::   arg2.  Note that this is a fast way of upgrading to a new version of
-::   R but won't work if the versions of R have different library formats.
-:: Example:
-::   cd \Program Files\R
-::   movedir R-2.2.0\library R-2.2.0pat\library
-::
 if not "%2"=="" goto:run
-echo Usage: movedir fromdir todir
-echo All files/directories in fromdir that do not also exist in todir are moved.
+echo Usage: copydir fromdir todir
+echo All files/directories in fromdir that do not also exist in todir are 
+echo recurisvely copied.
 echo e.g. 
-echo      cd \Program Files\R
-echo      movedir R-2.2.0\library R-2.3.0\library
+echo      cd "%userprofile%\Documents\R\win-library"
+echo      movedir 2.14 2.15
+echo Now start up R 2.15.x and issue update.packages()
 goto:eof
 :run
 for /D  %%a in ("%~1\*") do if not exist %2\%%~na move "%%a" "%~2\%%~nxa"

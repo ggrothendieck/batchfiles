@@ -7,8 +7,9 @@ echo Usage: copydir fromdir todir
 echo All files/directories in fromdir that do not also exist in todir are 
 echo recurisvely copied.
 echo e.g. 
-echo      cd \Program Files\R
-echo      copydir R-2.2.0\library R-2.3.0\library
+echo      cd "%userprofile%\Documents\R\win-library"
+echo      copydir 2.14 2.15
+echo Now start up R 2.15.x and issue update.packages()
 goto:eof
 :run
 :: Notes on code:
