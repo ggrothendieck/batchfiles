@@ -162,8 +162,8 @@ thus one may wish to enter `R.bat` or `R.exe` rather than just `R` for clarity.
 Alternately, rename `R.bat` to `Rpath.bat` in which case the command `R path`
 becomes just `Rpath` and `R` becomes unambiguous.
 
-(An alternative to `R path` is the
-`Rpathset.bat` utility which will be desribed later.)
+(An alternative to `R path` is the `Rpathset.bat` utility which will be 
+described later.)
 
 The command
 
@@ -214,10 +214,8 @@ line session with Administrator privileges:
 	el cmd /c set R_VER=R-2.14.0 ^& R touch
 
 The value of `R_VER` in this code must be one of the directories listed 
-by `R dir`.
-
-The `el.js` command used in the above code comes with these batch files 
-and provides one way to elevate commands to have Administrator 
+by `R dir`.  The `el.js` command used in the above code comes with these batch 
+files and provides one way to elevate commands to have Administrator 
 privileges.
 
 Note that `R SetReg` and `R touch` make permanent changes to the system
