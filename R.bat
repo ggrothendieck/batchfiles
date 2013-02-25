@@ -372,7 +372,11 @@ cd %R_PATH%
 RSetReg %args%
 goto:eof
 
+:: if not XP then check if running with Admin privs. If not give msg and exit.
 :Rtouch
+ver | findstr XP >NUL
+if not errorlevel 1 goto:Rtouch_next
+if not exist "%ProgramFiles%\R" goto:Rtouch_next
 reg query "HKU\S-1-5-19" >NUL 2>&1 && ( goto Rtouch_next ) || ( 
         echo Please run this as Administator.
         goto :eof
