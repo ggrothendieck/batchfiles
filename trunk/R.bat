@@ -54,8 +54,8 @@ if not defined R_CMD set R_CMD=%0
 rem echo R_CMD:%R_CMD% args=[%args%]
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: 1. If .\R.exe exist use implied R_PATH and skip remaining points.
-:: 2. If .\{x64,i386}\R.exe or .\bin\{x64,i386}\R.exe exists use implied R_HOME.
+:: 1. If .\Rgui.exe exist use implied R_PATH and skip remaining points.
+:: 2. If .\{x64,i386}\Rgui.exe or .\bin\{x64,i386}\Rgui.exe exists use implied R_HOME.
 :: 3. if R_HOME defined then derive any of R_ROOT and R_VER that 
 ::    are not already defined.
 :: 4. if R_PATH defined then derive any of R_ROOT, R_HOME, R_VER and R_ARCH that
@@ -65,14 +65,14 @@ rem echo R_CMD:%R_CMD% args=[%args%]
 :: 5. If R_ROOT not defined try %ProgramFiles%\R\*, %ProgramFiles(x86)%\R\*
 ::    and then %SystemRoot%\R else error
 :: 6. If R_VER not defined use last directory in cd %R_ROOT% & dir /od
-:: 7. if R_ARCH not defined try %R_ROOT%\%R_VER%\bin\x64\R.exe and then
-::    %R_ROOT%\%R_VER%\bin\i386\R.exe
+:: 7. if R_ARCH not defined try %R_ROOT%\%R_VER%\bin\x64\Rgui.exe and then
+::    %R_ROOT%\%R_VER%\bin\i386\Rgui.exe
 :: 8. If R_ROOT, R_VER and R_ARCH defined skip remaining points.
-:: 9. If R.exe found on PATH use implied R_PATH.
+:: 9. If Rgui.exe found on PATH use implied R_PATH.
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :: 1
-if exist R.exe (
+if exist Rgui.exe (
     pushd ..\..
     set R_HOME=!CD!
     popd
@@ -80,20 +80,20 @@ if exist R.exe (
 )
 
 :: 2
-if exist x64\R.exe (
+if exist x64\Rgui.exe (
     pushd ..
     set R_PATH=!CD!\bin\x64
     popd
     goto:R_exe_end
 )
-if exist i386\R.exe (
+if exist i386\Rgui.exe (
     pushd ..
     set R_PATH=!CD!\bin\i386
     popd
     goto:R_exe_end
 )
-if exist bin\x64\R.exe set R_PATH=%CD%\bin\x64 & goto:R_exe_end
-if exist bin\i386\R.exe set R_PATH=%CD%\bin\i386
+if exist bin\x64\Rgui.exe set R_PATH=%CD%\bin\x64 & goto:R_exe_end
+if exist bin\i386\Rgui.exe set R_PATH=%CD%\bin\i386
 :R_exe_end
 
 :: 3

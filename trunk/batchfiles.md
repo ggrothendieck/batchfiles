@@ -224,9 +224,9 @@ particular R directory) but the other subcommands do not.
 
 ### Heuristic to Locate R ###
 
-1. If `.\R.exe` exists use implied `R_PATH` and skip remaining points.
+1. If `.\Rgui.exe` exists use implied `R_PATH` and skip remaining points.
 
-2. If `.\{x64,i386}\R.exe` or `.\bin\{x64,i386}\R.exe` exists use implied
+2. If `.\{x64,i386}\Rgui.exe` or `.\bin\{x64,i386}\Rgui.exe` exists use implied
 `R_HOME`.
 
 3. If `R_HOME` defined then derive any of `R_ROOT` and `R_VER` that are not
@@ -243,12 +243,12 @@ and `R_VER` that are not already defined.
 
 7. If `R_VER` not defined use last directory in `cd %R_ROOT% & dir /od`.
 
-8. if `R_ARCH` not defined try `%R_ROOT%\%R_VER%\bin\x64\R.exe` and then
-    `%R_ROOT%\%R_VER%\bin\i386\R.exe`
+8. if `R_ARCH` not defined try `%R_ROOT%\%R_VER%\bin\x64\Rgui.exe` and then
+    `%R_ROOT%\%R_VER%\bin\i386\Rgui.exe`
 
 9. If `R_ROOT`, `R_VER` and `R_ARCH` defined skip remaining points.
 
-10. If `R.exe` found on `PATH` use implied `R_PATH`.
+10. If `Rgui.exe` found on `PATH` use implied `R_PATH`.
 
 ## Rpathset.bat ##
 
