@@ -493,23 +493,23 @@ echo Usage:  R.bat [subcommand] [arguments]
 echo Subcommands where (0) means takes no arguments; (A) means may need Admin priv
 echo   cd - cd to R_ROOT, typically to C:\Program Files\R (0)
 echo   cmd - Run Rcmd.exe
-echo   dir - dir/od of R_ROOT (0)
+echo   dir - List contents of R_ROOT in chronological order showing R versions (0)
 echo   gui - Run Rgui.exe
-echo   help - help info (0)
-echo   path - add R_TOOLS, R_MIKTEX ^& R_PATH to path for this cmd line session (0)
+echo   help - Help info (0)
+echo   path - Add R_TOOLS, R_MIKTEX ^& R_PATH to path for this cmd line session (0)
 echo   R - Run R.exe (0)
 echo   script - Run Rscript.exe
-echo   show - show R_ variable values used. R_PATH, etc. (0)
+echo   show - Show R_ variable values used. R_PATH, etc. (0)
 echo   SetReg - Run RSetReg; see 2.17 in R FAQ for Windows (A)
-echo   tools - add R_TOOLS and R_MIKTEX to path for this cmd line session (0)
-echo   touch - change date on R_HOME to now (0) (A)
+echo   tools - Add R_TOOLS and R_MIKTEX to path for this cmd line session (0)
+echo   touch - Change date on R_HOME to now (0) (A)
 echo Examples
 echo   R     -- invoke R.exe                R gui -- invoke Rgui.exe
 echo   R dir -- show R versions             R show -- show R_ variables
 echo   R CMD build mypkg -- builds mypkg
 echo   cmd /c set R_VER=R-2.14.0 ^& R gui -- run indicated Rgui version
 echo   cmd /c set R_ARCH=32 ^^^& R gui -- run 32 bit Rgui
-echo   cmd /c R_VER=R-2.14.0 ^^^& R.bat setreg - make 2.14.0 current in registry
+echo   cmd /c R_VER=R-2.14.0 ^^^& R setreg - make 2.14.0 current in registry
 echo   cmd /c R_VER=R-2.14.0 ^^^& R.bat touch - change date on R-2.14.0 dir to now
 goto:eof
 echo.
