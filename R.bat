@@ -17,6 +17,7 @@
 
 :: 1 means read registry and 0 means ignore registry
 if not defined R_REGISTRY set R_REGISTRY=1
+set CYGWIN=nodosfilewarning
 
 SetLocal EnableExtensions EnableDelayedExpansion 
 
