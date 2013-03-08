@@ -1,3 +1,13 @@
+Change in version 0.7-0
+
+  o R.bat reworked. It now has a  with different interface and many prior 
+    batch files have been incorporated into it and removed
+
+  o new Rpathset.bat
+
+  o new documentation: batchfiles.md (and batchfiles.pdf produced from it
+    using make-batchfiles.pdf.bat
+
 Change in version 0.6-7
 
   o Rtools paths changed

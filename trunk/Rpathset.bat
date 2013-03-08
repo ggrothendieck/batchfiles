@@ -58,7 +58,7 @@ set R_USER=%userprofile%\Documents
 
 :: This reduces the verbosity of certain Cygwin tools
 :: (Unfortunately, it seems to have no effect on some Windows systems.)
-set cygwin=nodosfilewarning
+set CYGWIN=nodosfilewarning
 
 :: Displays Rtools version in use
 type %R_TOOLS%\version.txt

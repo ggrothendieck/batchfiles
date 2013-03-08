@@ -3,10 +3,10 @@ A new version of the Windows batchfiles is available.
 CHANGES
 
 Main change is the new R.bat utility which has a new interface and 
-extended functionality assuming many of the other utilities which have
+extended functionality covering many of the other prior utilities which have
 been removed as they are no longer needed.
 
-Also there is a new Rpathset.bat utility similar in purpuose to: R.bat path. 
+There is a new Rpathset.bat utility similar in purpuose to: R.bat path. 
 
 A new pdf document accompanies the utilties providing more detail.
 
@@ -15,7 +15,6 @@ OVERVIEW
 These are self contained independent no-install Windows batch, javascript and 
 .hta files.  Except for R.bat touch and R.bat SetReg they make no permanent
 changes to your system.
-
 
 R.bat
 
@@ -31,11 +30,12 @@ cd, cmd, dir, gui, help, path, R, script, show, SetReg, tools, touch.
 
 Some examples are:
 
+R -- run R.exe
 R gui -- run Rgui.exe
-R CMD build mypkg -- build mypkg
-R script myScript.R -- run Rscript.exe
+R CMD build mypkg -- run Rcmd.exe build mypkg
+R script myScript.R -- run Rscript.exe myScript.R
 
-R dir -- list directories with R installations
+R dir -- list directories in R_ROOT, typically those in C:\Program Files\R
 R help -- help info
 R show -- show R_ variable values used (R_ROOT, R_HOME, R_VER, R_ARCH, etc.)
 
@@ -60,5 +60,8 @@ a running R instance and find MiKTeX.
 More Info
 
 Home Page: http://batchfiles.googlecode.com
+Discuss: http://groups.google.com/group/sqldf 
+
 Download: http://cran.r-project.org/contrib/extra/batchfiles
-Discuss: 
+SVN: https://code.google.com/p/batchfiles/source
+
