@@ -35,6 +35,7 @@ set cmd=
 if /i "%~1"=="cd" set cmd=Rcd
 if /i "%~1"=="CMD" set cmd=Rcmd
 if /i "%~1"=="dir" set cmd=Rdir
+if /i "%~1"=="ls" set cmd=Rdir
 if /i "%~1"=="gui" set cmd=Rgui
 if /i "%~1"=="help" goto:Rhelp
 if /i "%~1"=="path" set cmd=Rpath
