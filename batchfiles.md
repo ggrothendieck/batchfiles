@@ -98,6 +98,7 @@ There are also some support commands:
 
 	R cd
 	R dir
+	R ls
 	R help
 	R show
 
@@ -105,7 +106,7 @@ There are also some support commands:
 `C:\Program Files\R`).
 
 `R dir` displays the contents of that directory in chronological order - oldest
-first and most recent last.
+first and most recent last.  `R ls` is sthe same as `R dir`.
 
 `R show` shows the values of the `R_` environment variables used by `R.bat` .
 Below is a list with typical values.  These values are determined by the script
