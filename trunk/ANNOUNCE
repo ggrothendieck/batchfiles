@@ -58,6 +58,10 @@ based on SET statements that the user can configure manually.  It is an
 alternative to R.bat that lacks R.bat's "no configuration" nature but may be 
 preferred in some situations due to its internal simplicity.
 
+Also Rpathset.bat is more likely to work on systems that have not been 
+tested given its simplicity.  (The utilities were tested on Windows Vista and
+Windows 8 systems.)
+
 Other
 
 Other commands which continue to be available are copydir.bat, movedir.bat, 

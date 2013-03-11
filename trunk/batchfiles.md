@@ -29,7 +29,7 @@ one library to another such as when R is upgraded to a new version.
 privileges).
 
 `clip2r.js` copies the current clipboard into a running R instance. It can be
-used with vim or other text editor.
+used with `vim` or other text editor.
 
 `find-miktex.hta` displays a popup window showing where it found MiKTeX. 
 
@@ -106,24 +106,24 @@ There are also some support commands:
 `C:\Program Files\R`).
 
 `R dir` displays the contents of that directory in chronological order - oldest
-first and most recent last.  `R ls` is sthe same as `R dir`.
+first and most recent last.  `R ls` is the same as `R dir`.
 
 `R show` shows the values of the `R_` environment variables used by `R.bat` .
 Below is a list with typical values.  These values are determined by the script
-heuristically (or the user can set any before running `R.bat` or by customizing
-`R.bat` itself by setting any of them near top of the script).
+heuristically (or the user can set any before running `R.bat` or 
+`R.bat` itself can be customized by setting any of them near top of the script).
 
 	R_ARCH=x64
 	R_CMD=RShow
-	R_HOME=C:\Program Files\R\R-2.15.2
+	R_HOME=C:\Program Files\R\R-2.15.3
 	R_MIKTEX_PATH=\Program Files (x86)\MiKTeX 2.9\miktex\bin
-	R_PATH=C:\Program Files\R\R-2.15.2\bin\x64
+	R_PATH=C:\Program Files\R\R-2.15.3\bin\x64
 	R_REGISTRY=1
 	R_ROOT=C:\Program Files\R
 	R_TOOLS=C:\Rtools
 	R_TOOLS_PATH=C:\Rtools\bin;C:\Rtools\gcc-4.6.3\bin;
 	R_TOOLS_VERSION=3.0.0.1927
-	R_VER=R-2.15.2
+	R_VER=R-2.15.3
 
 `R_PATH`, `R_MIKTEX_PATH` and `R_TOOLS_PATH` are the paths to the directories
 holding the `R`, `MiKTeX` and `Rtools` binaries (i.e. `.exe` files).  
@@ -256,17 +256,30 @@ and `R_VER` that are not already defined.
 
 ## Rpathset.bat ##
 
-An alternative to 
+
+The command 
+
+	Rpathset
+
+adds `R_PATH`, `R_MIKTEX_PATH` and `R_TOOLS` to the Windows path for the
+current `cmd` line session.  No other `cmd` line sessions are affected and
+there are no permanent changes to the system.  Once this is run 
+the R binaries will be on the path so they can be accessed directly without
+`R.bat` .   
+
+`Rpathset` is an alternative to 
 
 	R path 
 
-is `Rpathset.bat`.  Unlike `R.bat`, `Rpathset.bat` does not have any automatic
-heuristics but requires that the user manually set the relevant variables in
-its source.  Running `Rpathset.bat` then sets the path accordingly and from
-then on in the session one can access `Rgui.exe`, etc. on the path.  Although
+but unlike `R.bat`, `Rpathset.bat` does not have any automatic heuristics.
+Instead, it requires that the user manually set the relevant variables in its
+source.  Running `Rpathset.bat` then sets the path accordingly and from then on
+in the session one can access `Rgui.exe`, etc. on the path.  Although
 `Rpathset.bat` involves manual editing it does have the advantage that as a
 consequence it is very simple -- not much more than a collection of Windows
-batch set commands.
+batch set commands. This makes it easy to customize, less fragile to 
+changes in the install procedures of `R` itself and is also more liklely to
+work on untested Windows configurations.
 
 `Rpathset.bat` might be used like this:
 
@@ -300,13 +313,16 @@ overwrite such packages delete them from the target first using the Windows
 
 ## el.js ##
 
-`el.js` runs its arguments elevated (i.e. with Adminstrator privileges).  
+`el.js` runs its arguments elevated (i.e. with Adminstrator privileges).  For example,
 
+	el R touch
+
+The user will be prompted to allow elevation to proceed.
 
 ## clip2r.js ##
 
 This program writes the clipboard into the running R session.  It can be used
-with vim or other editor.  See the source for additional instructions.
+with `vim` or other editor.  See the source for additional instructions.
 
 ## find-mixtex.hta ##
 
@@ -317,7 +333,10 @@ in the future.)
 
 ## make-batchfiles-pdf.bat ##
 
-This batch file creates a pdf of this documentation from the markdown
-file `batchfiles.md` .  `pandoc` must be installed for this to run.
-`pandoc` can be found 
-here](https://code.google.com/p/pandoc/downloads/list).
+This batch file creates a pdf of this documentation from the markdown file
+`batchfiles.md` .  `pandoc` must be installed for this to run.  `pandoc` can be
+found [here](https://code.google.com/p/pandoc/downloads/list).  It is run
+without arguments:
+
+	make-batchfiles-pdf
+
