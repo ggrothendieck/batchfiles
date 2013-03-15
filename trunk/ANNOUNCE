@@ -16,21 +16,22 @@ A new pdf document accompanies the utilties providing more detail.
 OVERVIEW
 
 These are self contained independent no-install Windows batch, javascript and 
-.hta files.
+.hta files. Just place any that you wish to use on your Windows PATH.
 
 R.bat
 
 R.bat allows one to run R without setting any environment variables, registry
-keys or the Windows path.  Just download this utility, place it in your Windows
-path and then to launch Rgui.exe from the Windows cmd line via:
+keys or any modification of the Windows path.  Just download this utility,
+place it in your Windows path and then to launch Rgui.exe from the Windows cmd
+line do this:
 
    R gui
 
-R.bat locates R, MiKTeX, Rtools using the registry or heuristics and then runs 
-the subcommand indicated by the first argument.  
+R.bat locates R, MiKTeX and Rtools using the registry or heuristics and then
+runs the subcommand indicated by the first argument.  
 
-The following subcommands are available: cd, cmd, dir, gui, help, ls, path, R, 
-script, show, SetReg, tools, touch.
+In addition to the gui subcommand, the following subcommands are available: cd,
+cmd, dir, gui, help, ls, path, R, script, show, SetReg, tools, touch.
 
 Some examples are:
 
@@ -45,7 +46,7 @@ R help -- help info
 R show -- show R_ variable values used (R_ROOT, R_HOME, R_VER, R_ARCH, etc.)
 
 R path -- temporarily add R, MiKTeX and Rtools to the Windows path
-R tools -- same but only MiKTeX and Rtools
+R tools -- similar but only add MiKTeX and Rtools to the Windows path
 
 Except for R touch (which updates the date on your R_HOME directory) and 
 R SetReg (which calls RSetReg.exe to update the registry with your R version),
@@ -59,8 +60,8 @@ alternative to R.bat that lacks R.bat's "no configuration" nature but may be
 preferred in some situations due to its internal simplicity.
 
 Also Rpathset.bat is more likely to work on systems that have not been 
-tested given its simplicity.  (The utilities were tested on Windows Vista and
-Windows 8 systems.)
+tested given its simplicity.  (The utilities were tested on 32 bit Windows 
+Vista and 64 bit Windows 8 systems.)
 
 Other
 
