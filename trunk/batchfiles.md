@@ -303,7 +303,11 @@ assuming the default location for the user libraries:
 	copydir 2.15\library 3.0\library
 
 	R.bat gui 
-	... now enter update.packages() into R...
+	... now enter update.packages(checkBuilt=TRUE) into R...
+
+(The `checkBuilt=TRUE` argument forces a rebuild and is normally not required
+when upgrading to another version that differs only in the minor version
+number, e.g. from 2.15.2 to 2.15.3.)
 
 `movedir.bat` and `copydir.bat` will not overwrite any existing package in the 
 target library so they are particularly safe to use.  (If you do wish to 
