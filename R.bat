@@ -455,9 +455,9 @@ goto:eof
 ::      call :extract_string {app} C:\Rtools\unins000.dat
 ::      echo %final%
 ::   where {app} is the string that starts extraction and 
-::         C:\Rtools\unins000.dat is the file
+::         C:\Rtoolsiunins000.dat is the file
 ::
-:: Based on code by Frank Westlake.
+:: Based on code by Frank Westlake, https://github.com/FrankWestlake
 ::
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -488,57 +488,28 @@ goto:eof
    set final=%final%!#!;
    Goto :EOF 
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-::
-:: undup
-::   input is R_TOOLS_PATH_DUP
-::   output is R_TOOLS_PATH without duplicated entries
-::
-:: Based on code by billious
-::
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:undup
-   set x=%R_TOOLS_PATH_DUP%
-   SET "y=" 
-   :loop 
-   FOR /f "tokens=1*delims=;" %%i IN ("%x%") DO ( 
-    rem echo "i:" %%i "j:" %%j
-    IF DEFINED y ( 
-     ECHO %y%|FINDSTR /i ";%%i;" >NUL 
-     IF ERRORLEVEL 1 SET "y=%y%%%i;" 
-     ) ELSE ( 
-     SET "y=;%%i;" 
+ :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+  :trimPath:<variable to trim> [segment to add] 
+  :: Eliminates redundant path segments from the variable and 
+  :: optionally adds new segmants. 
+  :: Example: CALL :trimPath:PATH 
+  :: Example: CALL :trimPath:PATH "C:\A & B" C:\a\b\c 
+  :: 
+  :: Note that only a colon separates the subroutine name and 
+  :: the name of the variable to be edited. 
+  :: - Frank Westlake, https://github.com/FrankWestlake
+  SetLocal EnableExtensions EnableDelayedExpansion 
+  For /F "tokens=2 delims=:" %%a in ("%0") Do ( 
+    For %%a in (%* !%%a!) Do ( 
+      Set "#=%%~a" 
+      For %%b in (!new!) Do If /I "!#!" EQU "%%~b" Set "#=" 
+      If DEFINED # ( 
+        If DEFINED new (Set "new=!new!;!#!") Else ( Set "new=!#!") 
+      ) 
     ) 
-    SET "x=%%j" 
-    IF DEFINED x GOTO loop 
-   ) 
-   SET R_TOOLS_PATH=%y:~1,-1% 
-   goto:eof
-
-
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
-:trimPath:<variable to trim> [segment to add] 
-:: Eliminates redundant path segments from the variable and 
-:: optionally add new segmants. 
-:: Example: CALL :trimPath:PATH 
-:: Example: CALL :trimPath:PATH "C:\A&B" 
-:: 
-:: Note that only a colon separates the subroutine name and 
-:: the variable name to edit. 
-:: -Frank Westlake
-SetLocal EnableExtensions EnableDelayedExpansion 
-Set "$=" 
-For /F "tokens=2 delims=:" %%a in ("%0") Do Set "old=!%%a!" 
-For %%a in (%* !old!) Do ( 
-  Set "#=%%~a" 
-  For %%b in (!new!) Do ( 
-    If /I "!#!" EQU "%%~b" (Set "#=") 
   ) 
-  If DEFINED # (Set "new=!new!;!#!") 
-) 
-EndLocal & For /F "tokens=2 delims=:" %%a in ("%0") Do Set "%%a=%new%" 
-Goto :EOF 
+  EndLocal & For /F "tokens=2 delims=:" %%a in ("%0") Do Set "%%a=%new%" 
+  Goto :EOF 
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 
