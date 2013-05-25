@@ -46,13 +46,15 @@ if /i "%~1"=="SetReg" set cmd=RSetReg
 if /i "%~1"=="tools" set cmd=Rtools
 if /i "%~1"=="touch" set cmd=Rtouch
 
-if "cmd"=="" goto:R_CMD_cont
+if "%cmd%"=="" goto:R_CMD_cont
 if "%2"=="" (set args=) && goto:R_CMD_cont
 set args=xxx%*
 call set args=%%args:xxx%1=%%
 :R_CMD_cont
 if defined cmd set R_CMD=%cmd%
 if not defined R_CMD set R_CMD=%0
+set R_CMD=%R_CMD:.bat=%
+if /i "%R_CMD%"=="#Rscript" set R_CMD=Rscript
 rem echo R_CMD:%R_CMD% args=[%args%]
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
