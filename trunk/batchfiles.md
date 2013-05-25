@@ -20,7 +20,10 @@ manually edit the `set` statements in it.  `R.bat` does not
 require changes when you install a new version of R.  It will automatically 
 detect this; however, `Rpathset.bat` will require that the `set` statements
 be modified appropriately.
-`R.bat help` gives a quick overview and some examples.
+`R.bat help` gives a quick overview and some examples.  Another way to use
+`R.bat` is to copy it to `#Rscript.bat` in which case the new version
+can be placed in the first line of any R script to turn it into a Windows
+batch file as described later.
 
 `movedir.bat` and `copydir.bat` are used for moving or copying packages from
 one library to another such as when R is upgraded to a new version.
@@ -253,6 +256,34 @@ and `R_VER` that are not already defined.
 9. If `R_ROOT`, `R_VER` and `R_ARCH` defined skip remaining points.
 
 10. If `Rgui.exe` found on `PATH` use implied `R_PATH`.
+
+## #Rscript.bat ##
+
+This is not a separate batch file but is yet another way to call `R.bat`.
+
+1.  Copy `R.bat` to a file with the same contents but with the name `#Rscript.bat` like this (from the Windows cmd line):
+
+	copy R.bat #Rscript.bat
+
+2. Ensure that `#Rscript.bat` is on your windows path.  Then we can turn an
+R script into a `.bat` file by 
+(a) giving the script a `.bat` extension and (b) putting this line as the 
+first line in the script: `#Rscript %0 %*`
+
+This makes the script both a Windows batch file and an R script at the same
+time. When run as a batch file it will invoke `#Rscript.bat` which in turn
+will self call the script as an R script.  (It would also be possible to
+run the script directly as an R script.  In that case the #Rscript line would
+be ignored since it would be regarded as a comment by R.)
+
+For example, if we have a file `test.bat` with the following two lines:
+
+	#Rscript %0 %*
+	print(pi)
+
+then we can invoke it from the Windows cmd line like this:
+
+	test
 
 ## Rpathset.bat ##
 
