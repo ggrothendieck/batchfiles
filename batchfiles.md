@@ -259,15 +259,18 @@ and `R_VER` that are not already defined.
 
 ## #Rscript.bat ##
 
-This is not a separate batch file but is yet another way to call `R.bat`.
+This is not a separate batch file but is yet another way to call `R.bat`.  
+Its purpose is to turn an R script into a Windows batch file.  
 
-1.  Copy `R.bat` to a file with the same contents but with the name `#Rscript.bat` like this (from the Windows cmd line):
+1.  Copy `R.bat` to a file with the name `#Rscript.bat` like this 
+(from the Windows cmd line):
 
 	copy R.bat #Rscript.bat
 
 2. Ensure that `#Rscript.bat` is on your windows path.  Then we can turn an
 R script into a `.bat` file by 
-(a) giving the script a `.bat` extension and (b) putting this line as the 
+(a) giving the R script a `.bat` extension and 
+(b) putting this line as the 
 first line in the script: `#Rscript %0 %*`
 
 This makes the script both a Windows batch file and an R script at the same
