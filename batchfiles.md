@@ -8,22 +8,24 @@ Software and documentation is (c) 2013 GKX Associates Inc. and licensed under [G
 
 This document describes a number of Windows batch, javascript and `.hta` files
 that may be used in conjunction with R.  Each is self contained and independent
-of the others.  None requires installation - just place on the Windows
-path.  (To display the Windows path enter `path` at the Windows `cmd` line.)
+of the others.  None requires installation - just place on the Windows path or
+in current directory.  ^[To display the Windows path enter `path` without
+arguments at the Windows `cmd` line.  To display the path to the current
+directory enter `cd` without arguments at the Windows `cmd` line.]
 
 `R.bat` and `Rpathset.bat` are alternatives to each other intended to
 facilitate the use of R without permanently modifying the Windows
-configuration.  
-`R.bat` uses heuristics to automatically locate `R`, `MiKTeX` and `Rtools`.
-In contrast, `Rpathset.bat` takes a simpler approach of having the user
-manually edit the `set` statements in it.  `R.bat` does not
-require changes when you install a new version of R.  It will automatically 
-detect this; however, `Rpathset.bat` will require that the `set` statements
-be modified appropriately.
-`R.bat help` gives a quick overview and some examples.  Another way to use
-`R.bat` is to copy it to `#Rscript.bat` in which case the new version
-can be placed in the first line of any R script to turn it into a Windows
-batch file as described later.
+configuration.   They can also be useful on systems where permissions have
+restricted access to the registry as they can be used without such access.
+`R.bat` uses heuristics to automatically locate `R`, `MiKTeX` and `Rtools`.  In
+contrast, `Rpathset.bat` takes a simpler approach of having the user manually
+edit the `set` statements in it.  `R.bat` does not require changes when you
+install a new version of R.  It will automatically detect this; however,
+`Rpathset.bat` will require that the `set` statements be modified
+appropriately.  `R.bat help` gives a quick overview and some examples.  Another
+way to use `R.bat` is to copy it to `#Rscript.bat` in which case the new
+version can be placed in the first line of any R script to turn it into a
+Windows batch file (as described later).
 
 `movedir.bat` and `copydir.bat` are used for moving or copying packages from
 one library to another such as when R is upgraded to a new version.
@@ -40,28 +42,35 @@ used with `vim` or other text editor.
 
 ### Purpose ###
 
-The purpose of R.bat is to facilitiate the use of R from the Windows `cmd` line
-by eliminating the need to make any system changes.  There is no need to
+The purpose of `R.bat` is to facilitiate the use of R from the Windows `cmd` 
+line by eliminating the need to make any system changes.  There is no need to
 modify the Windows path or to set any environment variables for standard
 configurations of R.  It will automatically locate R (and Rtools and
 MiKTeX if installed) and then run `R.exe`, `Rgui.exe` or other command.
 
-Like all the other utilities here, it is a self contained no-install script
-with no dependencies so just place it anywhere on your Windows path.  
+Another scenario for which it is useful is when there are only restricted
+permissions available such as no ability to write to the registry.
+Windows supports 4 sets of environment variables (system, user, volatile,
+process) and the first three are stored in the registry but the last
+is stored only in the local process.
+`R.bat` can work with process environment variables so it can be used in
+such situations where there are minimal permissions.
+
+Like all the other utilities here, `R.bat` is a self contained no-install script
+with no dependencies so just place it anywhere on your Windows path or in the 
+current directory.
 
 ### Typical Usage ###
 
-Typical usage to launch R gui is the following:
+Typical usage of `R.bat` to launch R gui is the following ^[
+If `R.exe` were on the Windows path and before `R.bat` then it would
+have to be written as follows: `R.bat gui`]:
 
 	R gui
 
-If `R.exe` were on the Windows path and before `R.bat` then it would
-have to be written as follows:
 
-	R.bat gui
-
-Either of these commands runs `Rgui.exe` along with further arguments, if any.
-For example,
+This runs `Rgui.exe`.  If further arguments are specified they are passed on to
+`Rgui.exe`.  For example,
 
 	R gui --help
 
@@ -155,8 +164,8 @@ the R binaries will be on the path so they can be accessed directly without
 `R.bat` .   
 
 This mode of operation has the advantage that startup will be slightly faster
-since the `R.bat` will not have to run each time that `R` is started.  (On a 
-1.9 GHz Windows 8 machine `R.bat show` runs in 0.75 seconds.)
+since  `R.bat` will not have to run each time that `R` is started. ^[On a 
+1.9 GHz Windows 8 machine `R.bat show` runs in 0.75 seconds.]
 
 Note that if both `R.bat` and `R.exe` exist on the Windows path then the first
 on the path will be called if one uses:
