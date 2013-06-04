@@ -15,15 +15,16 @@ directory enter `cd` without arguments at the Windows `cmd` line.]
 
 `R.bat` and `Rpathset.bat` are alternatives to each other intended to
 facilitate the use of R without permanently modifying the Windows
-configuration.   They can also be useful on systems where permissions have
-restricted access to the registry as they can be used without such access.
+configuration.   They can also be useful on systems with
+restricted access to the registry.
 `R.bat` uses heuristics to automatically locate `R`, `MiKTeX` and `Rtools`.  In
 contrast, `Rpathset.bat` takes a simpler approach of having the user manually
 edit the `set` statements in it.  `R.bat` does not require changes when you
 install a new version of R.  It will automatically detect this; however,
 `Rpathset.bat` will require that the `set` statements be modified
 appropriately.  `R.bat help` gives a quick overview and some examples.  Another
-way to use `R.bat` is to copy it to `#Rscript.bat` in which case the new
+way to use `R.bat` is to copy it to `#Rscript.bat` in which case a call to
+the new
 version can be placed in the first line of any R script to turn it into a
 Windows batch file (as described later).
 
@@ -149,7 +150,8 @@ directory of the particular R installation.  `R_HOME` is made up of `R_ROOT`
 and `R_VER` so that `R_VER` represents the directory that holds the particular
 R version used.  `R_ARCH` is `i386` or `x64` for 32 bit or 64 bit R
 respectively.  It can also be specified as `32` or `64` in which case it will
-be translated automatically.
+be translated automatically.  See the `R show` output above for examples of
+values for these variables.
 
 ### Path Setting Subcommands ###
 
@@ -161,7 +163,7 @@ adds `R_PATH`, `R_MIKTEX_PATH` and `R_TOOLS` to the Windows path for the
 current `cmd` line session.  No other `cmd` line sessions are affected and
 there are no permanent changes to the system.  Once this is run 
 the R binaries will be on the path so they can be accessed directly without
-`R.bat` .   
+`R.bat` within the same Windows cmd line session.
 
 This mode of operation has the advantage that startup will be slightly faster
 since  `R.bat` will not have to run each time that `R` is started. ^[On a 
