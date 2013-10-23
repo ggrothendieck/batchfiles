@@ -21,7 +21,7 @@ setlocal
 :: like this (adding arguments if any):
 ::  test.bat 
 
-set R_HOME=C:\Program Files\R\R-3.0
+set R_HOME=C:\Program Files\R\R-3.0.2
 
 :: 32 or 64 bit version of R.  
 :: (If you wish to use both versions of R make two versions of this file.)
