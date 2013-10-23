@@ -299,8 +299,23 @@ then we can invoke it from the Windows cmd line like this:
 
 	test
 
-## Rpathset.bat ##
+## #Rscript2.bat ##
 
+This batch file is used in exactly the same manner as #Rscript.bat .  The only
+difference is that unlike #Rscript.bat which automatically finds R with this
+script the user must edit it to indicate where R is located.  Although this
+involves an extra installation step in return the script is very simple so
+its less likely to go wrong and if something does go wrong then its relatively
+simple to fix since the script itself is simple.
+
+If you have a 64 bit system then the only part that needs to be changed is
+changing the definition of R_HOME to point to your version of R.  If you
+have a 32 bit system then you will also have to modify the definition of
+R_ARCH on the appropriate line.  
+
+There is more information on this in the comments at the top of the script.
+
+## Rpathset.bat ##
 
 The command 
 
