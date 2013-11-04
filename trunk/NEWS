@@ -1,3 +1,9 @@
+Changes in version 0.7-2
+
+  o new command #Rscript2.bat is a simpler version of #Rscript.bat
+
+  o bug fix in clip2r.js
+
 Changes in version 0.7-1
 
   o remove duplicates from R_TOOLS_PATH
