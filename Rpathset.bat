@@ -27,7 +27,7 @@
 :: and use its output as the value here.  If you upgrade R to another
 :: version R_HOME will change.
 :: R is available from: http://www.r-project.org
-set R_HOME=C:\Program Files\R\R-2.15.3
+set R_HOME=C:\Program Files\R\R-3.1.0
 
 :: 32 or 64 bit version of R.  
 :: (If you wish to use both versions of R make two versions of this file.)
