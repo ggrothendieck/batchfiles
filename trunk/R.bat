@@ -32,6 +32,7 @@ SetLocal EnableExtensions EnableDelayedExpansion
 
 set args=%*
 set cmd=
+if /i "%~1"=="registry" goto:Rregistry
 if /i "%~1"=="cd" set cmd=Rcd
 if /i "%~1"=="CMD" set cmd=Rcmd
 if /i "%~1"=="dir" set cmd=Rdir
@@ -101,6 +102,7 @@ if exist bin\i386\Rgui.exe set R_PATH=%CD%\bin\i386
 :R_exe_end
 
 :: 3
+
 if defined R_HOME (
     pushd
     cd %R_HOME%
@@ -136,8 +138,7 @@ if not defined R_HOME for /f "tokens=2*" %%a in (
 
 if defined R_HOME (
     if not defined R_ROOT (
-	pushd
-	cd %R_HOME%
+	pushd %R_HOME%
 	cd ..
 	set R_ROOT=!CD!
         popd
@@ -149,6 +150,7 @@ if defined R_HOME (
 
 	
 :: 5
+
 if defined R_ROOT goto:R_ROOT_end
 if exist "%ProgramFiles%\R" set R_ROOT=%ProgramFiles%\R
 if defined R_ROOT goto:R_ROOT_end
@@ -465,7 +467,7 @@ goto:eof
 
    :extract_string
 
-   setlocal
+   SetLocal EnableExtensions EnableDelayedExpansion 
 
    Set "string=%1" 
    Set "file=%2"
