@@ -54,7 +54,7 @@ call set args=%%args:xxx%1=%%
 :R_CMD_cont
 if defined cmd set R_CMD=%cmd%
 if not defined R_CMD set R_CMD=%0
-set R_CMD=%R_CMD:.bat=%
+set R_CMD="%R_CMD:.bat=%"
 if /i "%R_CMD%"=="#Rscript" set R_CMD=Rscript
 rem echo R_CMD:%R_CMD% args=[%args%]
 
