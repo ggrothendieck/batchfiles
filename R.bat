@@ -54,7 +54,8 @@ call set args=%%args:xxx%1=%%
 :R_CMD_cont
 if defined cmd set R_CMD=%cmd%
 if not defined R_CMD set R_CMD=%0
-set R_CMD="%R_CMD:.bat=%"
+:: set "R_CMD=%R_CMD:.bat=%"
+for /f %%i in ("%R_CMD%") do set R_CMD=%%~ni
 if /i "%R_CMD%"=="#Rscript" set R_CMD=Rscript
 rem echo R_CMD:%R_CMD% args=[%args%]
 
@@ -301,8 +302,7 @@ if not defined R_MIKTEX_PATH for /f "delims=" %%a in (
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 if not defined R_CMD (set R_CMD=%0)
-for %%i in (%R_CMD%) do set R_CMD=%%~ni
-
+for /f %%i in ("%R_CMD%") do set R_CMD=%%~ni
 if /i "%R_CMD%"=="dir" goto:Rdir
 if /i "%R_CMD%"=="cd" goto:Rcd
 if /i "%R_CMD%"=="touch" goto:Rtouch
