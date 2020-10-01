@@ -39,7 +39,43 @@ used with `vim` or other text editor.
 
 `find-miktex.hta` displays a popup window showing where it found MiKTeX. 
 
-## R.bat ##
+## R.bat ### Windows Batch Files for R #
+
+G. Grothendieck
+
+Software and documentation is (c) 2013 GKX Associates Inc. and licensed under [GPL 2.0](http://www.gnu.org/licenses/gpl-2.0.html).
+
+## Introduction ##
+
+This document describes a number of Windows batch, javascript and `.hta` files
+that may be used in conjunction with R.  Each is self contained and independent
+of the others.  None requires installation - just place on the Windows path or
+in current directory.  ^[To display the Windows path enter `path` without
+arguments at the Windows `cmd` line.  To display the path to the current
+directory enter `cd` without arguments at the Windows `cmd` line.]
+
+`R.bat` and `Rpathset.bat` are alternatives to each other intended to
+facilitate the use of R without permanently modifying the Windows
+configuration.   They can also be useful on systems with
+restricted access to the registry.
+`R.bat` uses heuristics to automatically locate `R`, `MiKTeX` and `Rtools`.  In
+contrast, `Rpathset.bat` takes a simpler approach of having the user manually
+edit the `set` statements in it.  `R.bat` does not require changes when you
+install a new version of R.  It will automatically detect this; however,
+`Rpathset.bat` will require that the `set` statements be modified
+appropriately.  `R.bat help` gives a quick overview and some examples.  Another
+way to use `R.bat` is to copy it to `#Rscript.bat` in which case a call to
+the new
+version can be placed in the first line of any R script to turn it into a
+Windows batch file (as described later).
+
+`movedir.bat` and `copydir.bat` are used for moving or copying packages from
+one library to another such as when R is upgraded to a new version.
+
+`el.js` runs its arguments in elevated mode (i.e. with Administrator
+privileges).
+
+`clip2r.js` copies 
 
 ### Purpose ###
 
