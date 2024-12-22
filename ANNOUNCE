@@ -6,16 +6,16 @@ The key change is the new R.bat utility.  R.bat has a new interface and
 extended functionality covering many of the other prior utilities.  (These
 older utilities are no longer needed and have been removed.)
 
-Unlike R.bat which requires no configuration the new Rpathset.bat utility is
+Unlike R.bat which requires no configuration, the new Rpathset.bat utility is
 configured by manually changing the Windows batch SET statements in it.  The
 main advantage is just that it is very simple internally which may be 
 advantageous in some situations involving customization.
 
-A new pdf document accompanies the utilties providing more detail.
+A new pdf document accompanies the utilities providing more detail.
 
 OVERVIEW
 
-These are self contained independent no-install Windows batch, javascript and 
+These are self-contained independent no-install Windows batch, JavaScript and 
 .hta files. Just place any that you wish to use on your Windows PATH.
 
 R.bat
@@ -60,14 +60,14 @@ alternative to R.bat that lacks R.bat's "no configuration" nature but may be
 preferred in some situations due to its internal simplicity.
 
 Also Rpathset.bat is more likely to work on systems that have not been 
-tested given its simplicity.  (The utilities were tested on 32 bit Windows 
-Vista and 64 bit Windows 8 systems.)
+tested given its simplicity.  (The utilities were tested on 32-bit Windows 
+Vista and 64-bit Windows 8 systems.)
 
 Other
 
 Other commands which continue to be available are copydir.bat, movedir.bat, 
 el.js, clip2r.js and find-miktex.hta .  These copy and move R libraries,
-run a command in elevated mode (i.e. as Administrator), copy the clipboard to
+run a command in elevated mode (i.e., as Administrator), copy the clipboard to
 a running R instance and find MiKTeX.
 
 More Info

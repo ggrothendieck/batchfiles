@@ -277,7 +277,7 @@ if not defined R_MIKTEX_PATH for /f "delims=" %%a in (
 
 if not defined R_MIKTEX_PATH for /f "delims=" %%a in (
     'dir /b /on %SystemDrive%:\miktex* 2^>NUL'
-) do set R_MIKTEX_PATH=%SystemDrive%:\%%a\mixtex\bin
+) do set R_MIKTEX_PATH=%SystemDrive%:\%%a\miktex\bin
 
 :miktex_end
 
@@ -386,7 +386,7 @@ ver | findstr XP >NUL
 if not errorlevel 1 goto:Rtouch_next
 if not exist "%ProgramFiles%\R" goto:Rtouch_next
 reg query "HKU\S-1-5-19" >NUL 2>&1 && ( goto Rtouch_next ) || ( 
-        echo Please run this as Administator.
+        echo Please run this as Administrator.
         goto :eof
 ) 
 :Rtouch_next
@@ -495,7 +495,7 @@ goto:eof
  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
   :trimPath:<variable to trim> [segment to add] 
   :: Eliminates redundant path segments from the variable and 
-  :: optionally adds new segmants. 
+  :: optionally adds new segments. 
   :: Example: CALL :trimPath:PATH 
   :: Example: CALL :trimPath:PATH "C:\A & B" C:\a\b\c 
   :: 
@@ -555,35 +555,35 @@ echo   start set R_HOME=%ProgramFiles%\R\R-2.14.0 ^& R gui
 echo
 echo ==Customization by renaming==
 echo.
-echo If the optional first argument is missing then it uses the value of 
-echo the environment variable R_CMD or if that is not set it uses the name of 
-echo the script file as the default first argument.  The idea is one could have 
+echo If the optional first argument is missing, then it uses the value of 
+echo the environment variable R_CMD or if that is not set, it uses the name of 
+echo the script file as the default first argument. The idea is one could have 
 echo multiple versions of the script called R.bat, Rgui.bat, etc. which invoke
 echo the corresponding functionality without having to specify first argument.
 echo.
-echo ==Customization by setting environment variables at top of script==
+echo ==Customization by setting environment variables at the top of script==
 echo.
 echo It can be customized by setting any of R_CMD, R_HOME, R_ARCH, 
 echo R_MIKTEX_PATH, R_TOOLS after the @echo off command at the top of the 
 echo script.  R_CMD will be used as the default first argument (instead of the 
 echo script name).  
 echo.
-echo e.g. use the following after @echo off to force 32-bit
+echo e.g., use the following after @echo off to force 32-bit
 echo set R_ARCH=32
 echo.
-echo e.g.  use the following after @echo off to force a particular version of 
+echo e.g.,  use the following after @echo off to force a particular version of 
 echo R to be used
 echo set R_HOME=%ProgramFiles%\R\R-2.14.0
 echo.
-echo e.g. use the following after @echo off to change the default command to 
+echo e.g., use the following after @echo off to change the default command to 
 echo Rgui even if the script is called myRgui.bat, say:
 echo set R_CMD=Rgui
 echo.
 echo ==Installation==
 echo. 
-echo The script is self contained so just place it anywhere on your Windows
-echo PATH.  (From the Windows cmd line the command PATH shows your current
-echo Windows path.)  You may optionally make copies of this script with names 
+echo The script is self-contained so just place it anywhere on your Windows
+echo PATH. (From the Windows cmd line the command PATH shows your current
+echo Windows path.) You may optionally make copies of this script with names 
 echo like R.bat, Rscript.bat, Rcmd.bat so that each has a different default.
 echo.
 

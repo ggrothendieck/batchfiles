@@ -7,9 +7,9 @@ under \href{http://www.gnu.org/licenses/gpl-2.0.html}{GPL 2.0}.
 
 \subsection{Introduction}
 
-This document describes a number of Windows batch, javascript and
+This document describes a number of Windows batch, JavaScript and
 \texttt{.hta} files that may be used in conjunction with R. Each is self
-contained and independent of the others. Each requires no installation -
+-contained and independent of the others. Each requires no installation -
 just place it on the Windows path\footnote{To display the Windows path
   enter \texttt{path} at the Windows \texttt{cmd} line.}.
 
@@ -39,12 +39,12 @@ MiKTeX.
 
 \subsubsection{Purpose}
 
-The purpose of R.bat is to facilitiate the use of R from the Windows
+The purpose of R.bat is to facilitate the use of R from the Windows
 \texttt{cmd} line by eliminating the need to make any systems changes.
 There is no need to modify the Windows PATH or to set any environment
 variables for standard configurations of R. It will automatically locate
 R (and Rtools and MiKTeX if installed) and then run \texttt{R.exe},
-\texttt{Rgui.exe} or other command.
+\texttt{Rgui.exe} or other commands.
 
 It is a self contained no-install script with no dependencies so just
 place it anywhere on your Windows path.
@@ -111,7 +111,7 @@ R.bat show
 that \texttt{R.bat} uses. Here is a list with typical values. These
 values are determined by the script heuristically (or the user can set
 any before running \texttt{R.bat} or by customizing \texttt{R.bat}
-itself by setting any of them near top of the script).
+itself by setting any of them near the top of the script).
 
 \begin{verbatim}
 R_ARCH=x64
@@ -132,7 +132,7 @@ are the paths to the directories holding the \texttt{R}, \texttt{MiKTeX}
 and \texttt{Rtools} binaries.
 
 \texttt{R\_CMD} indicates the subcommand or if no subcommand specified
-then is derived from the name of the script. For example if the script
+then is derived from the name of the script. For example, if the script
 were renamed \texttt{Rgui.bat} then if no subcommand were specified it
 would default to \texttt{gui}.
 
@@ -141,7 +141,7 @@ would default to \texttt{gui}.
 \texttt{R\_HOME} is made up of \texttt{R\_ROOT} and \texttt{R\_VER} so
 that \texttt{R\_VER} represents the directory that holds the particular
 R version used. \texttt{R\_ARCH} is \texttt{i386} or \texttt{x64} for 32
-bit or 64 bit R respectively. It can also be specified as \texttt{32} or
+bit or 64-bit R respectively. It can also be specified as \texttt{32} or
 \texttt{64} in which case it will be translated automatically.
 
 \subsubsection{Path Setting Subcommands}
@@ -158,7 +158,7 @@ the Windows path for the current \texttt{cmd} line session. No other
 changes to the system. Once this is run one no longer needs R.bat in the
 current session as the R binaries such as \texttt{R.exe},
 \texttt{Rgui.exe} will be directly on the path. (An alternative to this
-is the \texttt{Rpathset.bat} utility which will be desribed later.)
+is the \texttt{Rpathset.bat} utility which will be described later.)
 
 \begin{verbatim}
 R.bat tools
@@ -171,7 +171,7 @@ you need to use those utilities without R.
 \subsubsection{Selecting R Version}
 
 For R installations using the standard locations and not specifying any
-of the R\_ environment variables the registry will determine which
+of the R\_ environment variables, the registry will determine which
 version of R is used (assuming \texttt{R\_REGISTRY} is not 0). If R is
 not found in the registry the R installation in \texttt{R\_ROOT} which
 has the most recent date will be used.
@@ -183,7 +183,7 @@ set R_VER=R-2.14.0
 \end{verbatim}
 
 and now for the remainder of this \texttt{cmd} line session that version
-will be used. If one wants to use two different R versions at once we
+will be used. If one wants to use two different R versions at once, we
 could spawn a new \texttt{cmd} line session with the new version:
 
 \begin{verbatim}
@@ -194,7 +194,7 @@ and then enter the same set command into the new window. Now any use of
 R in the original window will use the default version and in the new
 version will use the specified version.
 
-One can change the registry entry permanently to refer to a particlar
+One can change the registry entry permanently to refer to a particular
 version like this:
 
 \begin{verbatim}
@@ -283,7 +283,7 @@ is the \texttt{Rpathset.bat}. Unlike \texttt{R.bat},
 the various set commands in it. Running \texttt{Rpathset.bat} then sets
 the path accordingly and from then on in the session one can access
 Rgui.exe, etc. on the path. Although \texttt{Rpathset.bat} involves
-manual editing it does have the advantage that as a consequence it is
+manual editing, it does have the advantage that as a consequence it is
 very simple -- not much more than a collection of Windows batch set
 commands.
 
@@ -293,7 +293,7 @@ The set statements are documented in the source of the file itself.
 
 \texttt{movedir.bat} and \texttt{copydir.bat} move or copy the packages
 from one library to another. If used to transfer packages from one
-version of R to another it is recommended that the user run
+version of R to another, it is recommended that the user run
 \texttt{upgrade.packages()} in the target. For example, assuming the
 default location for the user libraries:
 
@@ -306,7 +306,7 @@ R.bat gui
 
 \subsection{el.js}
 
-\texttt{el.js} runs its arguments elevated (i.e.~with Adminstrator
+\texttt{el.js} runs its arguments elevated (i.e.,~with Administrator
 privileges).
 
 \subsection{clip2r.js}
@@ -315,7 +315,7 @@ This program writes the clipboard into the running R session. It can be
 used with vim or other editor. See the source for additional
 instructions.
 
-\subsection{find-mixtex.hta}
+\subsection{find-miktex.hta}
 
 This program displays a window showing where MiKTeX was found. It uses
 the MiKTeX API. This API is not used by \texttt{R.bat} . It may be

@@ -12,7 +12,7 @@
 :: where Rgui may be replaced with R, Rscript, etc.
 ::
 :: Install: Modify set statements appropriately for your installation.
-:: and then place this batch script anywhre on your existing path.
+:: and then place this batch script anywhere on your existing path.
 :: (The Windows commandline command PATH shows the current PATH.)
 :: 
 :: In many cases no changes are needed at all in this file.
@@ -76,15 +76,15 @@ set R_MIKTEX_PATH=C:\Program Files (x86)\MiKTeX 2.9\miktex\bin
 :: R_LIBS is the system library.
 :: If you have installed at least one package (at which point R will ask to 
 ::  set up a personal library -- which you should allow) then R_LIBS_USER
-::  is similar to output of .libPaths() with first comnponent being your
-::  personal library and second compnent being library holding packages that 
+::  is similar to output of .libPaths() with the first component being your
+::  personal library and second component being library holding packages that 
 ::  come with R.  
 :: Be sure NOT to store the packages that you downloaded from CRAN
 ::  in the %R_HOME%\library directory.
 :: set R_LIBS=%R_USER%\R\win-library\2.15
 :: set R_LIBS_USER=%R_LIBS%;%R_HOME%\library
 
-:: adds directory to path for the remainder of current cmd line session
+:: adds directory to path for the remainder of the current cmd line session
 path %R_TOOLS_PATH%;%R_MIKTEX_PATH%;%PATH%;%R_PATH%
 
 :: if there are no arguments we are done; else run the argument

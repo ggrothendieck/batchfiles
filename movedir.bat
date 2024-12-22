@@ -5,8 +5,8 @@ setlocal
 if not "%2"=="" goto:run
 echo Usage: copydir fromdir todir
 echo All files/directories in fromdir that do not also exist in todir are 
-echo recurisvely copied.
-echo e.g. 
+echo recursively copied.
+echo e.g., 
 echo      cd "%userprofile%\Documents\R\win-library"
 echo      movedir 2.14 2.15
 echo Now start up R 2.15.x and issue update.packages()

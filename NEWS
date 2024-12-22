@@ -10,13 +10,13 @@ Changes in version 0.7-1
 
 Changes in version 0.7-0
 
-  o R.bat reworked. It now has a  with different interface and many prior 
+  o R.bat reworked. It now has a different interface and many prior 
     batch files have been incorporated into it and removed
 
   o new Rpathset.bat
 
   o new documentation: batchfiles.md (and batchfiles.pdf produced from it
-    using make-batchfiles.pdf.bat
+    using make-batchfiles.pdf.bat)
 
 Change in version 0.6-7
 
@@ -72,7 +72,7 @@ Changes in version 0.5-0
 
   o new command find-miktex.hta can be run without arguments from the
     Windows command line or double clicked from Windows Explorer 
-    to show path to the MiKTeX bin directory.
+    to show the path to the MiKTeX bin directory.
 
   o Rversions.hta now also changes the .RData association and has
     been verified to work on both XP and Vista.
@@ -96,10 +96,10 @@ Changes in version 0.4-3
 Changes in version 0.4-2
 
   o can optionally work off initialization files in place of registry.
-    Place rbatchfilesrc.bat in current directory or %userprofile% (so 
+    Place rbatchfilesrc.bat in the current directory or %userprofile% (so 
     different directories can work off different versions of R, say) 
     or same directory as the other batchfiles and it will run it first.
-    Typically rbatchfiles.bat would constain these two lines or similar:
+    Typically rbatchfiles.bat would contain these two lines or similar:
 		set R_HOME=C:\Program Files\R\R-2.7.0
 		set R_TOOLS=C:\Rtools
 
@@ -133,7 +133,7 @@ Changes in version 0.4-0
     which is a directory and starts up there
 
   o the dependency of sweave.bat on Rterm.bat was eliminated so all
-    batch and javascript programs in this collection are now independent
+    batch and JavaScript programs in this collection are now independent
     of each other and have no dependencies aside form R.  (The perl
     program, toggleDoc.pl, is does depend on perl and toggleDoc.js.)
 
@@ -164,14 +164,14 @@ Changes in version 0.4-0
 Changes in version 0.3-2
  
   o sweave.bat now uses Rterm.bat rather than Rcmd.bat which makes it usable
-    with a basic R installation (i.e. sh.exe not needed).  Previously it
+    with a basic R installation (i.e., sh.exe not needed).  Previously it
     required Rcmd.bat but now it requires Rterm.bat instead.
 
   o added Rterm.bat (just a copy of Rcmd.bat)
 
 Changes in Version 0.3-1
 
-  o new find-miktex.bat which lists the mixktex folders from the registry
+  o new find-miktex.bat which lists the miktex folders from the registry
 
   o new Rscript.bat which allows one to use the Rscript facility in 
     R 2.5.0 and later without changing pathnames.  Just place Rscript.bat
@@ -218,7 +218,7 @@ Changes in Version 0.2-9
 
   o added sweave.bat
  
-  o new google code home page and svn repository
+  o new Google code home page and svn repository
     http://code.google.com/p/batchfiles/
 
 Changes in Version 0.2-8
@@ -242,7 +242,7 @@ Changes in Version 0.2-6
   o Rversions.hta - fix for path names with spaces
 
   o Rrefresh.bat has been removed (after having been deprecated in
-    in previous versions of batchfiles).
+    previous versions of batchfiles).
 
   o tested movedir.bat by using it to upgrade R-2.2.0pat to R-2.2.1.  
     See instructions in README.
@@ -266,7 +266,7 @@ Changes in Version 0.2-3
     R_ENVIRON, R_PROFILE and R_LIBS simplifying the batch files.  Use
     copydir.bat instead.
 
-  o Rversions.hta is a javascript GUI version of Rversions.bat 
+  o Rversions.hta is a JavaScript GUI version of Rversions.bat 
 
 Changes in Version 0.2-2
 
