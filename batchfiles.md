@@ -71,7 +71,7 @@ as any other environment variables that begin with R).
 
 ```
 > R help
-Usage: R.bat [command] [args...]
+Usage: R [command] [args...]
 
 Core R Executables (Default is 'r'):
   r       - Runs R.exe console

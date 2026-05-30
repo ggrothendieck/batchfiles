@@ -5,8 +5,8 @@ setlocal
 set "R_HOME=C:\Program Files\R\R-4.5"
 set "R_BIN=%R_HOME%\bin\x64"
 
-:: Capture the script's file name BEFORE shifting arguments
-set "SCRIPT_NAME=%~nx0"
+:: Capture the script's file name without its extension BEFORE shifting arguments
+set "SCRIPT_NAME=%~n0"
 
 :: Get the parent directory of R_HOME (Goes up 1 level to C:\Program Files\R)
 for %%I in ("%R_HOME%") do set "PARENT_DIR=%%~dpI"
