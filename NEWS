@@ -1,3 +1,9 @@
+Changes in version 0.8
+
+  o replaced R.bat with a simpler version that should be easier to maintain
+
+  o removed #Rscript2.bat, Rpathset.bat, find-miktex.hta
+
 Changes in version 0.7-2
 
   o new command #Rscript2.bat is a simpler version of #Rscript.bat
