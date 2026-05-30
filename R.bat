@@ -5,6 +5,9 @@ setlocal
 set "R_HOME=C:\Program Files\R\R-4.5"
 set "R_BIN=%R_HOME%\bin\x64"
 
+:: Capture the script's file name BEFORE shifting arguments
+set "SCRIPT_NAME=%~nx0"
+
 :: Get the parent directory of R_HOME (Goes up 1 level to C:\Program Files\R)
 for %%I in ("%R_HOME%") do set "PARENT_DIR=%%~dpI"
 if "%PARENT_DIR:~-1%"=="\" set "PARENT_DIR=%PARENT_DIR:~0,-1%"
@@ -89,7 +92,7 @@ set R
 goto :end
 
 :do_help
-echo Usage: %~nx0 [command] [args...]
+echo Usage: %SCRIPT_NAME% [command] [args...]
 echo.
 echo Core R Executables (Default is 'r'):
 echo   r       - Runs R.exe console
