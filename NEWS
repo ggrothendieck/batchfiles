@@ -1,3 +1,9 @@
+Changes in version 0.9
+
+  o R dir now shows subdirectories in date order
+
+  o improved documentation
+
 Changes in version 0.8
 
   o replaced R.bat with a simpler version that should be easier to maintain

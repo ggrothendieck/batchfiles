@@ -84,7 +84,9 @@ start cmd.exe /k cd /d "%PARENT_DIR%"
 goto :end
 
 :do_dir
-dir "%PARENT_DIR%"
+:: dir "%PARENT_DIR%"
+:: for /d %%i in ("%PARENT_DIR%\*") do echo %%~fxi
+for /f "delims=" %%i in ('dir "%PARENT_DIR%" /ad /b /od') do echo %PARENT_DIR%\%%i
 goto :end
 
 :do_show
@@ -108,7 +110,7 @@ echo   wish    - Spawns internal wish*.exe GUI
 echo.
 echo Utilities:
 echo   cd      - Opens a command prompt at the parent directory (%PARENT_DIR%)
-echo   dir     - Lists files in the parent directory
+echo   dir     - Lists paths to files in parent directory in date order
 echo   show    - Displays active environment variables starting with 'R'
 echo   help    - Displays this help details
 goto :end

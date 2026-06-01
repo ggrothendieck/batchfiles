@@ -36,8 +36,8 @@ used with `vim` or other text editor.
 
 ### Purpose ###
 
-The purpose of `R.bat` is to facilitiate the use of R from the Windows `cmd` 
-line by eliminating the need to make any registry changes.
+The purpose of `R.bat` is to run R from the Windows `cmd` 
+line while eliminating the need to make any registry changes.
 
 ### Typical Usage ###
 
@@ -94,28 +94,50 @@ Utilities:
 
 ### Selecting R Version ###
 
-IF you have multiple versions of R that you want to access at the same time
-make a copy of R.bat with a new name and set the `set R_HOME` line to that 
-version of R.
+To configure the R.bat edit it with a text editor and change the value
+of R_HOME to point to the root of the tree of the version of R you want it 
+to invoke. For example:
+```
+set "R_HOME=C:\Program Files\R\R-4.5"
+```
+If you have multiple versions of R that you want to access at the same time
+make a copy of R.bat with a new name and set the `set R_HOME` line to the
+relevant version of R in each.
 
 ## el.js ##
 
-`el.js` runs its arguments elevated (i.e. with Adminstrator privileges).  For example,
+`el.js` runs its arguments elevated (i.e. with Adminstrator privileges).  For example, if you have Rtools installed and on your PATH then:
 
-	el R touch
+	el touch "C:\Program Files\R\R-4.5"
 
 The user will be prompted to allow elevation to proceed.
 
 ## clip2r.js ##
 
-This program writes the clipboard into the running R session.  It can be used
-with `vim` or other editor.  See the source for additional instructions.
+This program writes the clipboard into the running Rgui session.  It can be 
+used with `vim` or other text editor.
+
+Here is the exact keystroke breakdown:
+
+Set the focus to Rgui and then send these keys to it:
+
+%  (Alt + Space): Opens the native Windows system menu (the window management menu in the top-left corner of the window frame).
+
+x: Selects Maximize from that menu to force the window into full screen.
+
+%{w} (Alt + W): Opens the Rgui Windows menu.
+
+1 Types the literal number 1 selecting R Console from the Windows menu.
+
+^{v} (Ctrl + V): Executes a standard Paste command, dumping whatever text payload is currently sitting in your Windows clipboard straight into the active input line.
+
+See the source for additional instructions.
 
 ## make-batchfiles-pdf.bat ##
 
-This batch file creates a pdf of this documentation from the markdown file
-`batchfiles.md` .  `pandoc` must be installed for this to run.  It is run
-without arguments:
+This batch file, which is mainly for my own use, creates `batchfiles.pdf` from
+the markdown file `batchfiles.md` .  `pandoc` must be installed for this to
+run.  It is run without arguments:
 
 	make-batchfiles-pdf
 
